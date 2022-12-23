@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ', ' << p.second << ')'; }
+template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ', '; return os << '}'; }
+void dbg_out() { cerr << endl; }
+template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
+#ifdef LOCAL
+#define dbg(...) cerr << '(' << #__VA_ARGS__ << '):', dbg_out(__VA_ARGS__)
+#else
+#define dbg(...)
+#endif
+#define ar array
+#define ll long long
+#define ld long double
+#define sza(x) ((int)x.size())
+#define all(a) (a).begin(), (a).end()
+const int MAX_N = 1e5 + 5;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e9;
+const ld EPS = 1e-9;
+void solve() {
+    int l,r,x,a,b;
+    cin>>l>>r>>x;
+    cin>>a>>b;
+    if(a==b)
+    cout<<0<<endl;
+    else if(abs(a-b)>=x)
+    cout<<1<<endl;
+    else if(max(abs(r-a),abs(l-a))<x or abs(r-l)<x or (abs(l-b)<x and abs(r-b)<x))
+    cout<<-1<<endl;
+    else if((a<b and (abs(l-a)>=x or abs(r-b)>=x)) or (a>b and (abs(l-b)>=x or abs(r-a)>=x)))
+    cout<<2<<endl;
+    else
+    cout<<3<<endl;
+
+}
+int main() {
+ios_base::sync_with_stdio(0);
+cin.tie(0); cout.tie(0);
+int n = 1;
+cin >> n;
+for (int t = 1; t <= n; t++) {
+// cout << 'Case #' << t << ': ';
+solve();
+}
+}

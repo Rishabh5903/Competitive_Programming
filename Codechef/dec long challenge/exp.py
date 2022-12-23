@@ -1,0 +1,1 @@
+print('YES' if 3==4 else 'NO')
