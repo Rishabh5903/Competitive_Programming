@@ -19,12 +19,39 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 void solve() {
-    map <int,int> mp;
-   if(mp[0]){
-    cout<<"yes"<<endl;
-   }
-   else
-   cout<<"NO"<<endl;
+    ll n;
+    cin>>n;
+    ll l[n];
+    ll n1=0,n2=0;
+    for (ll i = 0; i < n; i++)
+    {cin>>l[i];
+    if (l[i]!=i+1){
+        n1+=1;
+    }
+        if (l[i]!=n-i){
+            n2+=1;
+        }  /* code */
+    }
+
+    if (2*n1-1<2*n2){
+        if (2*n1<n){
+            cout<<"First"<<endl;
+        }
+ 
+        else{
+            cout<<"Tie"<<endl;
+        }
+    }
+    else{
+        if (2*n2+1<n ){
+            cout<<"Second"<<endl;
+        }
+        else {
+            cout<<"Tie"<<endl;
+        }
+    }
+
+ 
 }
 int main() {
 ios_base::sync_with_stdio(0);

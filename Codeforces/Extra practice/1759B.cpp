@@ -19,12 +19,46 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 void solve() {
-    map <int,int> mp;
-   if(mp[0]){
-    cout<<"yes"<<endl;
-   }
-   else
-   cout<<"NO"<<endl;
+ll m,s ;
+cin>>m>>s;
+vector<ll> l(1001,0);
+ll maxo=0;
+// string s;
+// cin>>s;
+for(ll i=0;i< m;i++){
+ll temp;
+cin>>temp;
+l[temp]=temp;
+maxo=max(maxo,temp);
+}
+// cout<<l<<endl;
+// sort(l.begin(),l.end());
+for (ll i = 1; i < maxo+1; i++)
+{ if (l[i]==0){
+    s-=i;
+}
+    /* code */
+}
+// cout<<l<<endl;
+if (s==0){
+    // cout<<"debug"<<endl;
+    cout<<"YES"<<endl;
+
+}
+else if( s<0){
+    cout<<"NO"<<endl;
+}
+else{
+    // cout<<s<<endl;
+    while (s>0)
+    {
+        /* code */
+        s-=(maxo+1);
+        maxo+=1;
+    }
+    // cout<<s<<endl;
+    cout<<(s<0 ? "NO" : "YES")<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

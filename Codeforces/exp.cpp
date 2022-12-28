@@ -19,12 +19,9 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 void solve() {
-    map <int,int> mp;
-   if(mp[0]){
-    cout<<"yes"<<endl;
-   }
-   else
-   cout<<"NO"<<endl;
+vector<vector> m={
+};
+cout<<m<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -5,8 +5,11 @@ input = sys.stdin.readline
 n=int(input())
 a=int(input())
 b=int(input())
-if n==1 and a==b:
-    print(1)
+if n==1 :
+    if a==b:
+        print(1)
+    else:
+        print(0)
     print(str(a)+':'+str(b))
     
 elif n<=(a+b):
@@ -15,14 +18,28 @@ elif n<=(a+b):
     # a=min(a, b)
     # b=max(a1,b)
     # flag=True
-    for _ in range(n-1):
-        if a>0:
-            print('1:0')
-            a-=1
-        else:
+    if a==0:
+        for j in range(n-1):
             print('0:1')
             b-=1
-    print(str(a)+':'+str(b))
+        print('0:'+str(b))
+    elif b==0:
+        for j in range(n-1):
+            print('1:0')
+            a-=1
+        print(str(a)+':0')
+    else:
+        a-=1
+        b-=1
+        for _ in range(n-2):
+            if a>0:
+                print('1:0')
+                a-=1
+            elif b>0:
+                print('0:1')
+                b-=1
+        print(str(a+1)+':0')
+        print('0:'+str(b+1))
 
 
 else:
