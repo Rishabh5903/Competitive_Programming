@@ -16,29 +16,45 @@ for _ in range(int(input())):
     l1=[0]*n1
     l2=[0]*n1
     flag=True
-    print(l)
+    # print(l)
     for j in l:
-        print(l1)
-        print(l2)
+        # print(l1)
+        # print(l2)
         if (j[0] in d1):
-            l2[j[1]]=j[0]
-            d2[j[0]]=1
-            if not(m1 in d1):
-                
-                while m1 in d1:
-                    m1+=1
-                if m1<=j[0]:
-                    l1[j[1]]=m1
-                    d1[m1]=1
-                    m1+=1
+            # print(l1)
+            # print(l2)
+            # print(m1)
+            if not(j[0] in d2):
+                l2[j[1]]=j[0]
+                d2[j[0]]=1
+                if not(m1 in d1):
+                    
+
+                    if m1<=j[0]:
+                        l1[j[1]]=m1
+                        d1[m1]=1
+                        m1+=1
+                        while m1 in d1:
+                            m1+=1
+                    else:
+                        flag=False
+                        break
+                else:
                     while m1 in d1:
                         m1+=1
-                else:
-                    flag=False
-                    break
+                    if m1<=j[0]:
+                        l1[j[1]]=m1
+                        d1[m1]=1
+                        m1+=1
+                        while m1 in d1:
+                            m1+=1
+                    else:
+                        flag=False
+                        break
             else:
                 flag=False
                 break
+ 
         else:
             l1[j[1]]=j[0]
             d1[j[0]]=1
@@ -55,8 +71,17 @@ for _ in range(int(input())):
                     flag=False
                     break
             else:
-                flag=False
-                break
+                while m2 in d2:
+                    m2+=1
+                if m2<=j[0]:
+                    l2[j[1]]=m2
+                    d2[m2]=1
+                    m2+=1
+                    while m2 in d2:
+                        m2+=1
+                else:
+                    flag=False
+                    break
     if flag:
         print("YES")
         print(*l1)
