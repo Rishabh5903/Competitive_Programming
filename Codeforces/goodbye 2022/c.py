@@ -1,10 +1,11 @@
 import sys
 input = sys.stdin.readline
-for _ in range(int(input())):
+for i in range(int(input())):
     #n1,n2=map(int,input().split())
     n1=int(input())
     #s=str(input())
     l=list(map(int,input().split()))
+
     l.sort()
     e=0
     o=0
@@ -25,7 +26,10 @@ for _ in range(int(input())):
             o+=1
         if e>=2 and o>=2:
             print('NO')
+            
             continue
         else:
             print('YES')
+            if i==75:
+                print(l)
     #l[:0]=s
