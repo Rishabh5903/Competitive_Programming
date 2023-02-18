@@ -26,13 +26,24 @@ ll l[n];
 // cin>>s;
 for(ll i=0;i< n;i++){
 cin>>l[i];
-
 }
+ll cnt=0;
+ll sum=0;
+ll mino=INF;
 for (ll i = 0; i < n; i++)
-{cout<<l[i]<<endl;
+{
     /* code */
+    sum+=abs(l[i]);
+    if (l[i]<=0){
+        cnt+=1;
+        
+    }
+    mino=min(mino,abs(l[i]));
 }
-
+if (cnt%2==1){
+    sum-=2*mino;
+}
+cout<<sum<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

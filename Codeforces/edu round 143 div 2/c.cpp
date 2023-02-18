@@ -21,18 +21,38 @@ const ld EPS = 1e-9;
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
+ll a[n];
+ll c[n];
+vector<ll> b(n+1);
 // string s;
 // cin>>s;
 for(ll i=0;i< n;i++){
-cin>>l[i];
-
+cin>>a[i];
 }
-for (ll i = 0; i < n; i++)
-{cout<<l[i]<<endl;
+// b[0]=0;
+// cin>>b[0];
+for(ll i=0;i< n;i++){
+    ll temp=0;
+cin>>temp;
+c[i]=temp;
+b[i+1]=b[i]+temp;
+}
+ll cnt[n+1];
+ll rem[n+1];
+for (ll i = 0; i < n; ++i)
+{int j=upper_bound(b.begin(), b.end(), a[i] + b[i])  ;
+ cnt[i] += 1;
+      cnt[j] -= 1;
+      rem[j] += a[i] - b[j] + b[i];
+    /* code */
+    cout<<cnt[j]<<" "<<rem[j]<<" ";
+}
+for (ll i = 0; i < n; ++i)
+{cout<<cnt[i]*c[i]+rem[i]<<" ";
+cnt[i + 1] += cnt[i];  
     /* code */
 }
-
+cout << '\n';
 }
 int main() {
 ios_base::sync_with_stdio(0);

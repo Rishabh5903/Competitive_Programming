@@ -21,16 +21,48 @@ const ld EPS = 1e-9;
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
+ll l1[n];
 // string s;
 // cin>>s;
 for(ll i=0;i< n;i++){
-cin>>l[i];
-
+cin>>l1[i];
 }
+ll mino=1;
+ll maxo=n;
+ll l=0;
+ll r=n-1;
 for (ll i = 0; i < n; i++)
-{cout<<l[i]<<endl;
+{
     /* code */
+       if(l==r){
+        break;
+    }
+    else if(l1[l]==mino){
+        l+=1;
+        mino+=1;
+    }
+    else if(l1[l]==maxo){
+        l+=1;
+        maxo-=1;
+    }
+    else if(l1[r]==mino){
+        r-=1;
+        mino+=1;
+    }
+    else if(l1[r]==maxo){
+        r-=1;
+        maxo-=1;
+    }
+
+    else{
+        break;
+    }
+}
+if(l!=r){
+    cout<<l+1<<" "<<r+1<<endl;
+}
+else{
+    cout<<-1<<endl;
 }
 
 }

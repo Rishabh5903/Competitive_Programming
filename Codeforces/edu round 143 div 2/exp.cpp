@@ -21,18 +21,13 @@ const ld EPS = 1e-9;
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
+vector<ll> b(n);
 // string s;
 // cin>>s;
 for(ll i=0;i< n;i++){
-cin>>l[i];
-
+cin>>b[i];
 }
-for (ll i = 0; i < n; i++)
-{cout<<l[i]<<endl;
-    /* code */
-}
-
+cout<<upper_bound(b.begin(), b.end(),5)<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

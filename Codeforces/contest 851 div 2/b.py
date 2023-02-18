@@ -12,8 +12,50 @@ for _ in range(int(input())):
             print(n//2,n//2)
         else:
             print(n//2,n//2+1)
-    elif int(s[-1])==9 and int(s[-2])%2==1:
-        print(int(str(int(s[:l-1])//2+1)+'4'),int(str(int(s[:l-1])//2)+'5'))
+    elif int(s[-1])==9 :
+        count=1
+        var=-1
+        for j in range(2,l+1):
+            if s[-j]=='9':
+                count+=1
+            elif int(s[-j])%2==0:
+                var=0
+                break
+            else:
+                var=1
+                break
+        s1=''
+        s2=''
+        if var==-1:
+            for j in range(count):
+                if j%2==0:
+                    s1+='4'
+                    s2+='5'
+                else:
+                    s1+='5'
+                    s2+='4'
+        elif var==0:
+            s1+=str(int(s[:l-count])//2)
+            s2+=str(int(s[:l-count])//2)
+            for j in range(count):
+                if j%2==0:
+                    s1+='4'
+                    s2+='5'
+                else:
+                    s1+='5'
+                    s2+='4'
+        else:
+            s1+=str(int(s[:l-count])//2+1)
+            s2+=str(int(s[:l-count])//2)
+            for j in range(count):
+                if j%2==0:
+                    s1+='4'
+                    s2+='5'
+                else:
+                    s1+='5'
+                    s2+='4'
+
+        print(int(s1),int(s2))
     else:
         if n%2==0:
             print(n//2,n//2)
