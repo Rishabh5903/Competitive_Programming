@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include<sstream> 
 using namespace std;
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ', ' << p.second << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ', '; return os << '}'; }
@@ -19,42 +20,38 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 void solve() {
-ll n;
-cin>>n;
-ll a[n];
-ll c[n];
-vector<ll> b(n+1);
-// string s;
-// cin>>s;
-for(ll i=0;i< n;i++){
-cin>>a[i];
-}
-// b[0]=0;
-// cin>>b[0];
-for(ll i=0;i< n;++i){
-    ll temp=0;
-cin>>temp;
-c[i]=temp;
-b[i+1]=b[i]+temp;
-}
-// cout<<b<<endl;
-vector<ll> cnt(n+1),rem(n+1);
-// ll rem[n+1];
-for (ll i = 0; i < n; ++i)
-{int j=upper_bound(b.begin(), b.end(), a[i] + b[i])-b.begin()-1  ;
-// cout<<j<<endl;
- cnt[i] += 1;
-      cnt[j] -= 1;
-      rem[j] += a[i] - b[j] + b[i];
+ll n,k;
+cin>>n>>k;
+// ll l[n];
+string a,b;
+cin>>a>>b;
+vector<char> v1,v2;
+ll flag=1;
+for (ll i = 0; i < n; i++)
+{
     /* code */
-    // cout<<cnt[j]<<" "<<rem[j]<<" ";
+    if (i+k>n-1 && i-k<0){
+        if(a[i]!=b[i]){
+        flag=0;
+        break;}
+    }
+    else{
+        v1.push_back(a[i]);
+        v2.push_back(b[i]);
+    }
 }
-for (ll i = 0; i < n; ++i)
-{cout<<cnt[i]*c[i]+rem[i]<<" ";
-cnt[i + 1] += cnt[i];  
-    /* code */
+if(!flag) cout<<"NO"<<endl;
+else{
+    sort(v1.begin(),v1.end());
+    sort(v2.begin(),v2.end());
+    if (v1==v2){
+        cout<<"YES"<<endl;
+
+    }
+    else cout<<"NO"<<endl;
 }
-cout << '\n';
+
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

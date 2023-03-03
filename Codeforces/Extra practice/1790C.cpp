@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include<sstream> 
 using namespace std;
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ', ' << p.second << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ', '; return os << '}'; }
@@ -21,40 +22,73 @@ const ld EPS = 1e-9;
 void solve() {
 ll n;
 cin>>n;
-ll a[n];
-ll c[n];
-vector<ll> b(n+1);
+map <vector<ll>,ll> mp;
+vector<vector<ll>> m;
+// ll l[n];
 // string s;
 // cin>>s;
+
 for(ll i=0;i< n;i++){
-cin>>a[i];
+    vector<ll> l1(n-1);
+    for (ll j = 0; j < n-1; j++)
+    {ll temp;
+    cin>>temp;
+l1[j]=temp;
+
+        /* code */
+    }
+    m.push_back(l1);
+
 }
-// b[0]=0;
-// cin>>b[0];
-for(ll i=0;i< n;++i){
-    ll temp=0;
-cin>>temp;
-c[i]=temp;
-b[i+1]=b[i]+temp;
+// cout<<m;
+vector<ll> ans(n);
+for (ll i = 0; i < n-1; i++)
+
+{ll f1=0,f2=0;
+ll num1,num2;
+    for (ll j = 0; j < n; j++)
+{
+    /* code */ll temp;
+    temp=m[j][i];
+if(j==0){
+    num1=temp;
+    // f1+=1;
 }
-// cout<<b<<endl;
-vector<ll> cnt(n+1),rem(n+1);
-// ll rem[n+1];
-for (ll i = 0; i < n; ++i)
-{int j=upper_bound(b.begin(), b.end(), a[i] + b[i])-b.begin()-1  ;
-// cout<<j<<endl;
- cnt[i] += 1;
-      cnt[j] -= 1;
-      rem[j] += a[i] - b[j] + b[i];
+if(temp!=num1){
+    num2=temp;
+    f2+=1;
+}
+else
+f1+=1;
+
+
+}
+// cout<<f1<<f2<<num1<<num2<<endl;
+if (f2>f1){
+    ll t1=f1;
+    f1=f2;
+    f2=t1;
+    t1=num1;
+    num1=num2;
+    num2=t1;
+    // num1,num2=num2,num1;
+}
+// cout<<f1<<f2<<num1<<num2<<endl;
+if(!ans[i]){
+    ans[i]=num1;
+}
+if(ans[i]==num1)
+    ans[i+1]=num2;
+else 
+ans[i+1]=num1;
+ /* code */
+}
+for (ll i = 0; i < n; i++)
+{
     /* code */
-    // cout<<cnt[j]<<" "<<rem[j]<<" ";
+    cout<<ans[i]<<" ";
 }
-for (ll i = 0; i < n; ++i)
-{cout<<cnt[i]*c[i]+rem[i]<<" ";
-cnt[i + 1] += cnt[i];  
-    /* code */
-}
-cout << '\n';
+cout<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -13,23 +13,24 @@ for _ in range(int(input())):
     n=int(input())
     #s=str(input())
     a=list(map(int,input().split()))
-    b=[0]
-    l=list(map(int,input().split()))
-    b=b+l
-    prev=[b[0]]
-    for j in range(1,n+1):
+    
+    b=list(map(int,input().split()))
+    # b=b+l
+    prev=[0]
+    for j in range(n):
         prev.append(prev[-1]+b[j])
     cnt=[0]*(n+2)
     rem=[0]*(n+2)
     for i in range(n):
         j=BinarySearch(prev, prev[i]+a[i])
+        print(j)
         # print(prev)
         # print(j)
         cnt[i] += 1
-        cnt[j+1] -= 1
-        rem[j+1] += a[i] - prev[j] + prev[i]                                                                                 
+        cnt[j] -= 1
+        rem[j] += a[i] - prev[j] + prev[i]                                                                                 
     ans=[]
-    for i in range(1,n+1):
+    for i in range(n):
         ans.append(cnt[i]*b[i]+rem[i])
         # if i<=n-1:
         cnt[i+1 ] += cnt[i]
