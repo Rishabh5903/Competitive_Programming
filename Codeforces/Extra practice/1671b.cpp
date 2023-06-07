@@ -21,8 +21,35 @@ const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
-void solve() {
-cout<<3*48%7<<endl;
+void solve(int t) {
+ll n;
+cin>>n;
+vector<ll> l(n);
+ll f=1;
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+// if(t==142)
+// cout<<l<<endl;
+ll a=0; ll b=0;
+FOR(i,0,n-1){
+
+    if(l[i+1]-l[i]==2)
+    a+=1;
+    else if (l[i+1]-l[i]==3)
+    b+=1;
+    if(l[i+1]-l[i]>3){
+        f=0;
+        break;
+    }
+}
+if(a & b || b>1 || a>2){
+    f=0;
+}
+if(f)
+cout<<"YES"<<endl;
+else
+cout<<"NO"<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -31,6 +58,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-solve();
+solve(t);
 }
 }

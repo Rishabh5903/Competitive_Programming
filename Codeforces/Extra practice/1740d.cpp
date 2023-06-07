@@ -21,8 +21,51 @@ const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
-void solve() {
-cout<<3*48%7<<endl;
+void solve(int a,int b) {
+ll n,m,k;
+cin>>n>>m>>k;
+vector<ll> l(k);
+for(ll i=0;i< k;i++){
+cin>>l[i];
+}
+ll cap=m*n-4;
+ll nxt=k;
+vector<ll> v={};
+make_heap(all(v));
+// ll temp=0;
+ll f=1;
+FOR(i,0,k){
+    if(sza(v)>0){
+        while (sza(v)>0 && v.front()==nxt)
+        {
+            pop_heap(all(v));
+            v.pop_back();
+            cap+=1;
+            nxt-=1;
+            // cout<<"debug"<<endl;
+        }
+    }
+    if(l[i]==nxt){
+        nxt-=1;
+    }
+    else{
+        v.push_back(l[i]);
+        push_heap(all(v));
+        cap-=1;
+    }
+    if (cap<0){
+        f=0;
+        break;
+    }
+    // cout<<v<<endl;
+}
+// if(a==3384 && b==3){
+//     cout<<n<<" "<<m<<" "<<k<<" "<<l<<endl;
+// }
+if(f)
+cout<<"YA"<<endl;
+else
+cout<<"TIDAK"<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -31,6 +74,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-solve();
+solve(n,t);
 }
 }

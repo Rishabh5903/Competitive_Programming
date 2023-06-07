@@ -15,14 +15,33 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ld long double
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
-#define FOR(i,a,b) for( long long int i = a; i<b;i++)
+#define FOR(i,n) for( long long int i = 0; i<n;i++)
 #define pb push_back
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;
+if(n==1){
+    cout<<1<<endl;
+    
+}
+else if (n%2==1){
+    cout<<-1<<endl;
+}
+else{
+    cout<<n<<" ";
+    FOR(i,n-1){
+        if (i%2==0){
+            cout<<n-1-i<<" ";
+        }
+        else
+        cout<<i+1<<" ";
+    }
+    cout<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

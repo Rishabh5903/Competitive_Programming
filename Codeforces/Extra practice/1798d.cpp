@@ -22,7 +22,74 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;
+vector<ll> l(n);
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+sort(all(l));
+if(l[0]==l[n-1]){
+cout<<"NO"<<endl;
+}
+else{
+cout<<"YES"<<endl;
+ll a=0;
+ll b=n-1;
+ll sum=l[0];
+ll maxo=l[n-1]-l[0];
+if(sum<0)
+a+=1;
+else
+b-=1;
+ll cnt=1;
+cout<<l[0]<<" ";
+ll prev=l[0];
+while (cnt<n)
+{
+    // if(abs(sum+l[a])<=abs(sum+l[b])){
+    //     cout<<l[a]<<" ";
+    //     sum+=l[a];
+    //     a+=1;
+    // }
+    // else {
+    //     cout<<l[b]<<" ";
+    //     sum+=l[b];
+    //     b-=1;
+    // }
+    if(sum<=0){
+        if(abs(sum+l[a])<maxo){
+            cout<<l[a]<<" ";
+            sum+=l[a];
+            prev=l[a];
+            a+=1;
+        }
+        else{
+            cout<<l[b]<<" ";
+            sum+=l[b];
+            prev=l[b];
+            b-=1;
+        }
+    }
+    else{
+        if(abs(sum+l[b])<maxo){
+                        cout<<l[b]<<" ";
+            sum+=l[b];
+            prev=l[b];
+            b-=1;
+
+        }
+        else{
+            cout<<l[a]<<" ";
+            sum+=l[a];
+            prev=l[a];
+            a+=1;
+        }
+    }
+    cnt+=1;
+}
+cout<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

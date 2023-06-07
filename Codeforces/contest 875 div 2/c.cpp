@@ -21,8 +21,53 @@ const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
+
+void dfs(ll u,map<pair<ll,ll>,ll>& mp,
+vector<ll>& dp,
+vector<ll>& id,
+vector<vector<ll>>& adj,
+ll& ans){
+    
+        for (ll v:adj[u])
+        { 
+            // cout<<v<<endl;
+        if(dp[v]==-1 || id[v]==-1 ){
+            if(mp[{u,v}]>=id[u]){
+                dp[v]=dp[u];
+                id[v]=mp[{u,v}];
+            }
+            else{
+                // cout<<"debug"<<endl;
+                dp[v]=dp[u]+1;
+                id[v]=mp[{u,v}];
+            }
+            ans=max(ans,dp[v]);
+            dfs(v,mp,dp,id,adj,ans);}
+        }
+        
+    
+}
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;
+map<pair<ll,ll>,ll> mp;
+vector<ll> dp(n+1,-1);
+vector<ll> id(n+1,-1);
+vector<vector<ll>> adj(n+1);
+ll ans=1;
+dp[1]=1;
+id[1]=0;
+FOR(i,0,n-1){
+    ll u,v;
+    cin>>u>>v;
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+    mp[{u,v}]=i+1;
+    mp[{v,u}]=i+1;
+}
+// cout<<dp<<" "<<id<<" "<<mp<<" "<<adj<<endl;
+dfs(1,mp,dp,id,adj,ans);
+cout<<ans<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

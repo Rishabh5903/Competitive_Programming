@@ -22,7 +22,52 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;ll cnt=0;ll temp=0;ll f=1;ll o=0;
+ll l[n];
+vector<ll> v;
+for(ll i=0;i< n;i++){
+cin>>l[i];if(l[i]==0)cnt+=1;
+}
+FOR(i,0,n){
+    if(l[i]==0){temp+=1;
+    // if(cnt-temp>=1)
+    // v.push_back(o);
+    }
+    else{
+        o+=1;if((cnt-temp)==0){f=0;break;}
+    }
+}
+if(!f)
+cout<<"NO"<<endl;
+else{
+    cout<<"YES"<<endl;
+    if(n==1)cout<<0<<endl;
+    else{
+    // reverse(all(v));
+    // FOR(i,0,o){cout<<0<<" ";}cout<<o<<" ";
+    // for(ll i:v){cout<<i<<" ";}
+    ll i=n-1;ll cnt=0;
+    while(i >=1)
+    {
+       if(l[i]==0){
+        if(l[i-1]==0)
+        cout<<0<<" ";
+        else{
+        cnt+=1;cout<<0<<" ";}
+
+       }
+       else{
+        if(l[i-1]==1){cnt+=1;cout<<0<<" ";}
+        else{ cout<<cnt<<" ";cnt=0;}
+       }
+       i--;
+    }
+    if(l[0]==0)cout<<0<<" ";
+    else cout<<cnt<<" ";
+    }
+    cout<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

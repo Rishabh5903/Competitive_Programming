@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include<sstream> 
+#include <sstream> 
 using namespace std;
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ', ' << p.second << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ', '; return os << '}'; }
@@ -22,7 +22,16 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;
+vector<ll> l(n);
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+sort(all(l));
+FOR(i,0,n/2){
+    cout<<l[i+1]<<" "<<l[0]<<endl;;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

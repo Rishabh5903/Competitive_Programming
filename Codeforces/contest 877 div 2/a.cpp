@@ -22,7 +22,17 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;
+vector<ll> l(n);
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+sort(all(l));
+if(l[0]<0) cout<<l[0]<<endl;
+else{
+    cout<<l[n-1]<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

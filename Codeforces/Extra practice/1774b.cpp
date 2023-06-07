@@ -22,7 +22,21 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+float n,k;ll m,cnt=0;
+cin>>n>>m>>k;
+ll l[m];ll f=1;
+for(ll i=0;i< m;i++){
+cin>>l[i];
+if(l[i]>ceil(n/k)){f=0;}
+if(l[i]>floor(n/k))cnt+=1;
+}
+if(!f)
+cout<<"NO"<<endl;
+else{
+    // cout<<cnt<<" "<<((int)n)<<" "<<((int)k)<<endl;
+    if(cnt<=n-k*floor(n/k) || cnt==k)cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

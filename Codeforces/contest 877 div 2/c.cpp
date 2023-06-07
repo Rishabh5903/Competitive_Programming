@@ -21,8 +21,53 @@ const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
+bool isPrime(int n)
+{
+    // Corner case
+    if (n <= 1)
+        return false;
+ 
+    // Check from 2 to n-1
+    for (int i = 2; i < n; i++)
+        if (n % i == 0)
+            return false;
+ 
+    return true;
+}
 void solve() {
-cout<<3*48%7<<endl;
+ll n,m;
+cin>>n>>m;
+// ll l[n];
+// string s;
+// cin>>s;
+if(!isPrime(n)){
+    FOR(i,1,n+1){
+        FOR(j,0,m){
+            cout<<j*n+i<<" ";
+        }
+        cout<<endl;
+    }
+}
+else if(!isPrime(m)){
+    FOR(i,0,n){
+        FOR(j,1,m+1){
+            cout<<i*m+j<<" ";
+        }
+        cout<<endl;
+    }
+}
+else {
+
+    FOR(i,0,n){
+        FOR(j,i%m+1,m+1){
+            cout<<i*m+j<<" ";
+        }
+        FOR(j,1,i%m+1){
+            cout<<i*m+j<<" ";
+        }
+        cout<<endl;
+    }
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

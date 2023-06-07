@@ -15,14 +15,54 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ld long double
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
-#define FOR(i,a,b) for( long long int i = a; i<b;i++)
+#define FOR(i,n) for( long long int i = 0; i<n;i++)
 #define pb push_back
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+int n,m;
+cin>>n>>m;
+vector<ll> l(n);
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+map<ll,ll> mp;
+int c1=0,c2=0,c3=0;
+vector<ll> v;
+FOR(i,n){
+    if (l[i]==-1)
+    c1+=1;
+    else if(l[i]==-2)
+    c2+=1;
+    else{
+        if(!mp[l[i]])
+        {mp[l[i]]=1;
+        c3+=1;
+        v.push_back(l[i]);
+        }
+    }
+}
+sort(all(v));
+int L=0,R=0,M=0;
+if(sza(v)>0){
+L=v[0]-1;
+R=m-v[sza(v)-1];
+FOR(i,sza(v)-1){
+    M+=v[i+1]-v[i];
+}
+}
+// cout<<L<<" "<<M<<" "<<R<<" "<<c1<<" "<<c2<<" "<<c3<<endl;
+if(R+M>=c2){
+    if(L+max(M-max(c2-R,0),0)>=c1){
+        cout<<min(c1+c2+c3,m)<<endl;
+    }
+    else
+    cout<<min(max(min(c1,L+M+R)+c3,min(c2,L+M+R)+c3),m)<<endl;
+}
+else
+cout<<min(max(min(c1,L+M+R)+c3,min(c2,L+M+R)+c3),m)<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

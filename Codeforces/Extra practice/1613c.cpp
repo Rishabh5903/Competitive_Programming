@@ -22,7 +22,39 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n; ld h;
+cin>>n>>h;
+ld l[n];
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+ld t=h/n;
+ld ans=ceil(t);
+ld temp=0;
+ll f=1;
+while (temp<ans)
+{
+    /* code */
+
+
+ll cnt=0;
+FOR(i,0,n-1){
+    temp+=min(l[i+1]-l[i],ans);
+    if(l[i+1]-l[i]>ans)
+    cnt+=1;
+}
+temp+=ans;
+cnt+=1;
+if(temp>=h){
+cout<<ans<<endl;
+f=0;
+break;}
+else{
+    ans+=ceil((h-temp)/(n-cnt));}}
+    if(f)
+    cout<<ans<<endl;
+// }
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

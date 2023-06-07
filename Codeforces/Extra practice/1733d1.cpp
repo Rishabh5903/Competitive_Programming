@@ -22,7 +22,41 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n,x,y;
+cin>>n>>x>>y;
+string a;
+cin>>a;
+string b;
+cin>>b;
+vector<ll> v;
+FOR(i,0,n){
+    if (a[i]!=b[i]){
+        v.push_back(i);
+    }
+}
+ll t=sza(v);
+if(t%2==1){
+    cout<<-1<<endl;
+    
+}
+else if(t==0)
+cout<<0<<endl;
+else if(t>2){
+    cout<<y*t/2<<endl;
+}
+else if(v[1]-v[0]>1)
+cout<<y<<endl;
+else{
+    ll ans=x;
+    if(v[0]>=1 && v[1]<=n-2){
+        ans=min(ans,3*y);
+    }
+    if(v[0]>=2 || v[1]<=n-3){
+        ans=min(ans,2*y);
+    }
+
+    cout<<ans<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

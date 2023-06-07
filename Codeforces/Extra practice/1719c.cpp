@@ -11,55 +11,53 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define dbg(...)
 #endif
 #define ar array
-#define ll long long
+#define ll long long int
 #define ld long double
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
-#define FOR(i,n) for( long long int i = 0; i<n;i++)
+#define FOR(i,a,b) for( long long int i = a; i<b;i++)
+#define pb push_back
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
-const ll INF = 1e9;
-const ld EPS = 1e-9;
+const ll INF = 1e20;
+const ld EPS = 1e-20;
 void solve() {
 ll n,q;
 cin>>n>>q;
 ll l[n];
-ll maxo=0;
-ll ind=0;
 for(ll i=0;i< n;i++){
 cin>>l[i];
-if (l[i]>maxo){
-    maxo=l[i];
-    ind=i;
-}
 }
 vector<tuple<ll,ll,ll>> v(q);
+for(ll i=0;i< q;i++){
+     
+    ll j,k;
+cin>>j>>k;
+tuple<ll,ll,ll> t=(k,j,i);
+v[i]=t;
+}
+sort(all(v));
+ll arr[n+1]={0};
+ll prev=l[0];
 ll ans[q];
-for (ll j = 0; j < q; i++)
-{
-   ll i,k;
-cin>>i>>k;
-tuple<ll,ll,ll> temp=(k,i,j);
-v.push_back(temp);
-
-}
-sort(v.begin(),v.end());
-ll wins[n];
-FOR(i,n){
-    wins[i]=0;
-}
-
-for (ll i = 0; i < q; i++)
-{
-    /* code */
-    if(v[i][0]>ind-1 || v[i][1]-1>ind){
-        ans[v[i][2]]=wins[v[i][1]-1];
+ll ind=0;
+FOR(i,0,n){
+    if(ind>q-1)
+    break;
+    prev=max(prev,l[i+1]);
+    arr[prev]+=1;
+    if(i==get<0>(v[ind])-1){
+    ans[get<2>(v[ind])]=arr[get<1>(v[ind])];
+    ind+=1;
     }
-    
-
 }
-
-
+FOR(i,ind,q){
+        arr[prev]+=1;
+        ans[get<2>(v[ind])]=arr[get<1>(v[ind])];
+}
+FOR(i,0,q){
+    cout<<ans[i]<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

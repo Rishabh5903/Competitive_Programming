@@ -21,8 +21,36 @@ const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
+ll maxm(ll n,vector<ll> v){
+sort(all(v));
+return v[n-1];
+}
+ll minm(ll n,vector<ll> v){
+sort(all(v));
+return v[0];
+}
 void solve() {
-cout<<3*48%7<<endl;
+ll n,k,q;ll ind=0;
+cin>>n>>k>>q;
+ll l[n];
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+vector<ll> v;ll temp=0;
+FOR(i,0,n){
+    if(l[i]>q){
+        v.push_back(i-ind);ind=i+1;
+    }
+}
+if(l[n-1]<=q)
+v.push_back(n-ind);
+ll ans=0;
+
+for (ll i:v)
+{
+    if(i>=k)ans+=(i-k+1)*(i-k+2)/2;
+}
+cout<<ans<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

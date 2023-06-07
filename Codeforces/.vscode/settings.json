@@ -8,6 +8,9 @@
         "xiosbase": "cpp",
         "utility": "cpp",
         "cstdlib": "cpp",
-        "xlocale": "cpp"
+        "xlocale": "cpp",
+        "algorithm": "cpp",
+        "tuple": "cpp",
+        "vector": "cpp"
     }
 }

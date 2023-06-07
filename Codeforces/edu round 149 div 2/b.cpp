@@ -22,7 +22,23 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;
+string s;
+cin>>s;
+int maxo=0;
+int temp=1;
+FOR(i,0,n-1){
+    if(s[i+1]==s[i]){
+        temp+=1;
+    }
+    else{
+        maxo=max(maxo,temp);
+        temp=1;
+    }
+}
+maxo=max(maxo,temp);
+cout<<maxo+1<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

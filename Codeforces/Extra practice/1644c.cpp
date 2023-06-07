@@ -22,8 +22,41 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n,x;
+cin>>n>>x;
+ll l[n];
+ll pos=0;
+ll cnt=0;
+ vector<ll> v;
+for(ll i=0;i< n;i++){
+cin>>l[i];
+if(l[i]>0){
+    pos+=l[i];cnt+=1;
 }
+else{
+    if(l[i]+x>0)
+        v.push_back(l[i]+x);
+}
+}
+sort(all(v));
+FOR(i,1,sza(v)-1){
+    v[i]=v[i-1]+v[i];
+}
+FOR(i,0,n+1)
+{
+    if(i<=cnt)
+    cout<<pos+i*x<<" ";
+    else{
+        if(i<=cnt+sza(v))
+        cout<<pos+cnt*x+v[i-cnt-1]<<" ";
+        else{
+            if(sza(v)>0)
+        cout<<pos+cnt*x+v[v.size()-1]<<" ";
+        else
+        cout<<pos+cnt*x<<" ";
+    }
+}
+}cout<<endl;}
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);

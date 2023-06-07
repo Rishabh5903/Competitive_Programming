@@ -22,7 +22,50 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;
+ll l[2*n];
+for(ll i=0;i< 2*n;i++){
+cin>>l[i];
+}
+if(n==1){
+    cout<<abs(l[1]-l[0])<<endl;
+}
+else if(n==2){
+    ll t1=0;
+    ll t2=0;
+    FOR(i,0,4){
+        t1+=abs(l[i]-2);
+        t2+=abs(l[i]+1);
+    }
+    ll prev=t2;
+    // cout<<t1<<" "<<t2<<endl;
+    FOR(i,0,4){
+        ll temp=prev-abs(l[i]+1)+abs(l[i]-2);
+        if(temp<prev){
+            t2=temp;
+        }
+        // cout<<t2<<endl;
+    }
+    if(t1<=t2)
+    cout<<t1<<endl;
+    else
+    cout<<t2<<endl;
+}
+else{
+    ll t2=0;
+    FOR(i,0,2*n){
+        t2+=abs(l[i]+1);
+    }
+    ll prev=t2;
+    FOR(i,0,2*n){
+        ll temp=prev-abs(l[i]+1)+abs(l[i]-n);
+        if(temp<prev){
+            t2=temp;
+        }
+    }
+    cout<<t2<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

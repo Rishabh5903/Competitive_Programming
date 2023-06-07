@@ -21,8 +21,25 @@ const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
+ll maxm(ll n,vector<ll> v){
+sort(all(v));
+return v[n-1];
+}
+ll minm(ll n,vector<ll> v){
+sort(all(v));
+return v[0];
+}
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;
+// ll l[n];
+string s;
+cin>>s;
+char prev=0;
+FOR(i,1,n){
+    if(s[i]==s[prev] && i!=prev){cout<<s[prev];prev=i+1;}
+}
+cout<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -22,7 +22,17 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 void solve() {
-cout<<3*48%7<<endl;
+ll n;
+cin>>n;
+string s;
+cin>>s;
+ll ans=n;
+FOR(i,1,n){
+if(s[i]!=s[i-1]){
+    ans+=i;
+}
+}
+cout<<ans<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
