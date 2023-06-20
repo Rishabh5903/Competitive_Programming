@@ -37,8 +37,42 @@ sort(all(v));
 return v[0];
 }
 void solve() {
-string s=to_string( 14586);
-cout<<s[3]<<endl;
+string s;
+cin>>s;
+ll n=s.size();
+map<char,ll> cnt;ll ans=0; char maxo='A';map<char,ll> val;val['A']=1;val['B']=10;val['C']=100;val['D']=1000;val['E']=10000;
+ll curr[n];ll maxl[n];ll sign[n];
+vector<char> chars={'A','B','C','D','E'};
+for (ll i = n-1; i>=0; i--)
+{if(s[i]>=maxo){maxo=s[i];ans+=val[s[i]];sign[i]=1;}
+else {ans-=val[s[i]];sign[i]=-1;}
+cnt[s[i]]++;
+curr[i]=ans;maxl[i]=maxo;
+}
+for (ll i = n-1;i>=0;i--)
+{
+   cnt[s[i]]--;
+// cout<<temp<<endl;
+    for(char j:chars){
+        ll temp=curr[i];ll var=curr[0]-curr[i];
+            if(i<=n-2){if(s[i]>=maxl[i+1])temp-=val[s[i]];else temp+=val[s[i]];}
+            else{temp-=val[s[i]];}
+            if(i<=n-2){if(j>=maxl[i+1])temp+=val[j];else temp-=val[j];}
+            else{temp+=val[j];}
+        for(char k:chars){
+            if(i>=1){
+                if(k<maxl[i-1])temp-=cnt[k]*val[k];
+                else{
+
+                }
+            }
+            // if(k<j){temp-=cnt[k]*val[k];} else temp+=cnt[k]*val[k];
+        }
+        cout<<i<<" "<<j<<" "<<curr[i]<<" "<<temp<<endl;
+        ans=maxm(2,{ans,temp});
+    }
+}
+cout<<ans<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

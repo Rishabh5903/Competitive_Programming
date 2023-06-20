@@ -30,17 +30,17 @@ sort(all(v));
 return v[0];
 }
 void solve() {
-string S1,S2;ll t;ll q;vector<vector<ll>> v={};make_heap(all(v));map<ll,ll> chk;ll cnt=0;
+string S1,S2;ll t;ll q;vector<vector<ll>> v={};make_heap(all(v));ll cnt=0;
 cin>>S1>>S2>>t>>q;
-vector<char> a(S1.size()),b(S2.size());
+vector<char> a(S1.size()),b(S2.size());vector<ll> chk(S1.size(),0);
 FOR(i,0,S1.size()){
     a[i]=S1[i];b[i]=S2[i];if(a[i]!=b[i]){cnt++;chk[i]=1;}
 }
 for(ll i=0;i< q;i++){
-    while(v.size()>0 && v.front()[0]>=i){pop_heap(all(v));v.pop_back();cnt--;}
+    while(v.size()>0 && v.front()[0]==-i){if(chk[v.front()[1]])cnt++; pop_heap(all(v));v.pop_back();}
     ll temp;cin>>temp;
 if(temp==1){ll p;
-    cin>>p;vector<ll> V={t+i,p-1};v.push_back(V);push_heap(all(v));if(chk[p-1])cnt--}
+    cin>>p;vector<ll> V={-(t+i),p-1};v.push_back(V);push_heap(all(v));if(chk[p-1])cnt--;}
 else if(temp==2){ll s1,s2,p1,p2;
     cin>>s1>>p1>>s2>>p2;
 if(s1==s2){if(s1==1)swap(a[p1-1],a[p2-1]);else swap(b[p1-1],b[p2-1]);
@@ -50,11 +50,17 @@ else{
     if(s1==1)swap(a[p1-1],b[p2-1]);
     else swap(a[p2-1],b[p1-1]);
 }
+if(chk[p1-1]){if(a[p1-1]==b[p1-1]){chk[p1-1]=0;cnt--;}}
+else{if(a[p1-1]!=b[p1-1]){chk[p1-1]=1;cnt++;}}
+if(chk[p2-1]){if(a[p2-1]==b[p2-1]){chk[p2-1]=0;cnt--;}}
+else{if(a[p2-1]!=b[p2-1]){chk[p2-1]=1;cnt++;}}
+// if(chk[p1-1]){if(a[p1-1]==b[p1-1]){chk[p1-1]=0;cnt--;}}
 }
 else {
 if(cnt)cout<<"NO"<<endl;
 else cout<<"YES"<<endl;
 }
+// cout<<a<<endl<<b<<cnt<<" "<<chk<<i<<endl;
 }
 }
 int main() {

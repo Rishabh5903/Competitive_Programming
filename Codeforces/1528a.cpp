@@ -17,6 +17,13 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define all(a) (a).begin(), (a).end()
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
+int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
+int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
+int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
+int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b);}
+int expo(int a,int n,int md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
+int expo(int a,int n){ int res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
+template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
@@ -29,32 +36,33 @@ ll minm(ll n,vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void dfs(ll i,ll j,vector<vector<ll>>& v,ll& temp){
-    if(i<0||j<0||i>=v.size()||j>=v[0].size()||v[i][j]==0)return;
-    temp+=v[i][j];
-    v[i][j]=0;
-    dfs(i+1,j,v,temp);dfs(i,j+1,v,temp);dfs(i-1,j,v,temp);dfs(i,j-1,v,temp);
-    return;
-    
+void dfs(ll v,ll& ans,map<ll,set<ll>>& adj,vector<ll>& vis,vector<vector<ll>>& dp,vector<ll>& l,vector<ll>& r){
+    vis[v]=1;
+set<ll> temp=adj[v];
+for(ll i:temp){
+    if(!vis[i]){
+        dfs(i,ans,adj,vis,dp,l,r);
+        dp[v][0]+=maxm(2,{dp[i][0]+abs(l[v]-l[i]),dp[i][1]+abs(l[v]-r[i])});
+        dp[v][1]+=maxm(2,{dp[i][0]+abs(r[v]-l[i]),dp[i][1]+abs(r[v]-r[i])});
+    }
+
+}
+return;
 }
 void solve() {
-ll n,m;ll ans=0;
-cin>>n>>m;
-ll l[n];
-vector<vector<ll>> v(n,vector<ll>(m));
-for(ll i=0;i< n;i++){
-    FOR(j,0,m){
-        cin>>v[i][j];
-    }
-}
+ll n;
+cin>>n;
+vector<ll> l(n+1);vector<ll> r(n+1);vector<vector<ll>> dp(n+1,vector<ll>(2));map<ll,set<ll>> adj;
 FOR(i,0,n){
-    FOR(j,0,m){
-        ll temp=0;
-        if(v[i][j]>0)dfs(i,j,v,temp);
-        ans=maxm(2,{ans,temp});
-    }
+    cin>>l[i+1]>>r[i+1];
 }
-cout<<ans<<endl;
+FOR(i,0,n-1){
+    ll u,v;
+    cin>>u>>v;adj[u].insert(v);adj[v].insert(u);
+}
+vector<ll> vis(n+1,0);ll ans=0;
+dfs(1,ans,adj,vis,dp,l,r);
+cout<<maxm(2,{dp[1][0],dp[1][1]})<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

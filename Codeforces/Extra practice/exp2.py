@@ -1,15 +1,31 @@
-# print(bin(513))
-# print(bin(516))
-# print(bin(517))
-# print(bin(3111))
-# print(3108^3109^3110^3111)
-# print(6^6148^6145^3)
-# print(10^11^12^13)
-# print(19^22^20^17)
-# print(0^1^2^3)
-# print(3^20^17^6)
-l=[122,130,116,125,142,122,141,132,122,151,133,157,144,128,135]
-ans=0
-for i in range(13):
-    ans+=l[i]*l[i+1]*l[i+2]
-print(ans)
+def can(pos, m):
+    k = len(pos) 
+    x = k - m
+    for i in range(m + 1):
+        l = pos[i]
+        r = pos[i + x - 1]
+        if r - l + 1 - x <= m:
+            return True
+    return False    
+
+t = int(input())
+for i in range(t):
+    s = input()
+    pos = []
+    n = len(s)
+    for i in range(n):
+        if s[i] == '1':
+            pos.append(i)
+    lf = 0
+    rg = len(pos)
+    while rg - lf > 1:
+        mid = (lf + rg) // 2
+        if can(pos, mid):
+            rg = mid
+        else:
+            lf = mid
+        print(mid)
+    if len(pos) == 0 or pos[-1] - pos[0] == len(pos) - 1:
+        print(0)
+    else:
+        print(rg)

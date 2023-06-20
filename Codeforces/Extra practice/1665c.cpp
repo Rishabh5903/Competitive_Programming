@@ -29,16 +29,57 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 ll maxm(ll n,vector<ll> v){
-sort(all(v));
-return v[n-1];
+if(v[0]>=v[1]) return v[0];
+else return v[1];
 }
 ll minm(ll n,vector<ll> v){
 sort(all(v));
 return v[0];
 }
 void solve() {
-string s=to_string( 14586);
-cout<<s[3]<<endl;
+ll n;
+cin>>n;
+ll l[n];map<ll,ll> cnt;vector<ll> nos;
+for(ll i=0;i< n-1;i++){
+cin>>l[i];
+// if(!cnt[l[i]]){nos.push_back(l[i]);}
+cnt[l[i]]++;
+}
+vector<ll> v;
+// for (ll i:nos)
+// {
+//     v.push_back(cnt[i]);}
+for(auto i:cnt){
+    v.push_back(i.second);
+}
+    v.push_back(1);
+sort(all(v));
+// cout<<v<<endl;
+if(v.size()>=v[v.size()-1]) cout<<v.size()<<endl;
+else{
+    ll temp=v.size();
+    for (ll i = v.size()-1; i >=0; i--)
+    {
+        while (temp<v[i] && v[i]>=v[i-1])
+        {
+                        temp++;v[i]--;
+            
+        }
+        // ll var=(v[i]+temp)/2;
+        // temp+=v[i]-var;
+        // v[i]=var;
+        if(i>=1){if(temp>=v[i-1]) break;}
+        // cout<<v<<endl;
+        
+    }
+    sort(all(v));
+    ll ans=maxm(2,{temp,v.back()});
+    for (ll i = v.size()-2; i >=0; i--){
+        ans=maxm(2,{ans,v[i]+v.size()-i-1});
+    }
+    cout<<ans<<endl;
+}
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

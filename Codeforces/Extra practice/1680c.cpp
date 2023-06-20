@@ -17,6 +17,13 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define all(a) (a).begin(), (a).end()
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
+int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
+int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
+int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
+int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b);}
+int expo(int a,int n,int md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
+int expo(int a,int n){ int res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
+template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
@@ -29,32 +36,32 @@ ll minm(ll n,vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void dfs(ll i,ll j,vector<vector<ll>>& v,ll& temp){
-    if(i<0||j<0||i>=v.size()||j>=v[0].size()||v[i][j]==0)return;
-    temp+=v[i][j];
-    v[i][j]=0;
-    dfs(i+1,j,v,temp);dfs(i,j+1,v,temp);dfs(i-1,j,v,temp);dfs(i,j-1,v,temp);
-    return;
-    
+bool can(vector<ll> pos,ll k){
+    ll n=pos.size();
+    FOR(i,0,k+1){
+        if(pos[i+n-k-1]-pos[i]+1<=n){
+            return true;
+        }
+    }
+    return false;
 }
 void solve() {
-ll n,m;ll ans=0;
-cin>>n>>m;
-ll l[n];
-vector<vector<ll>> v(n,vector<ll>(m));
-for(ll i=0;i< n;i++){
-    FOR(j,0,m){
-        cin>>v[i][j];
-    }
+string s;
+cin>>s;
+vector<ll> pos;
+FOR(i,0,s.size()){
+    if(s[i]=='1')pos.push_back(i);
 }
-FOR(i,0,n){
-    FOR(j,0,m){
-        ll temp=0;
-        if(v[i][j]>0)dfs(i,j,v,temp);
-        ans=maxm(2,{ans,temp});
-    }
+ll l=0;ll r=pos.size();ll mid=0;
+while(r-l>1){
+    mid=(r+l)/2;
+    if(can(pos,mid))r=mid;
+    else l=mid;
+    // cout<<mid<<" ";
 }
-cout<<ans<<endl;
+// cout<<endl;
+if(pos.size()==0 || pos[pos.size()-1]-pos[0]==pos.size()-1)cout<<0<<endl;
+else cout<<r<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

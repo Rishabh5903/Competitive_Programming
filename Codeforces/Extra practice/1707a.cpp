@@ -24,6 +24,11 @@ int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b);}
 int expo(int a,int n,int md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
 int expo(int a,int n){ int res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
 template <typename T> bool revsort(T a, T b){return a > b;}
+// vb sieve(int n){vb prime(n+1,1); prime[0] = prime[1] = 0; for(int i=2;i*i<=n;i++){if(prime[i]){for(int j=i*i;j<=n;j+=i) prime[j]=0;}} return prime;}
+// vs rmspace(string s){ vs toreturn; string tmp = 
+// ; for(auto i : s){ if(i == ' '){ toreturn.pb(tmp); tmp = 
+// ;} else tmp += i;} toreturn.pb(tmp); return 
+// toreturn;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
@@ -37,8 +42,37 @@ sort(all(v));
 return v[0];
 }
 void solve() {
-string s=to_string( 14586);
-cout<<s[3]<<endl;
+ll n,q;
+cin>>n>>q;
+ll l[n];map<ll,ll> mp;ll cnt=0;vector<ll> ans(n);
+for(ll i=0;i< n;i++){
+cin>>l[i];mp[l[i]]++;if(i>=1){if(l[i]<=q)cnt++;}
+}
+FOR(i,0,n){
+    if(!q)break;
+    if(l[i]<=q){cnt--;mp[l[i]]--;ans[i]=1;}
+    // else if(cnt<q){ans[i]=1;
+    //     q--;}
+    else{
+        if(cnt<=n-i-mp[q]){
+            ll temp=mp[q];ll j=i;
+            while (temp)
+            {if(l[j]<=q){cnt--;mp[l[j]]--;}
+            else{temp--;}
+            ans[j]=1;j++;q--;
+                
+            }
+            i=j-1;
+        // if(mp[q]==0){ans[i]=1;
+        // q--;}
+        }
+    }
+    // cout<<cnt<<endl;
+}
+FOR(i,0,n){
+    cout<<ans[i];
+}
+cout<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
