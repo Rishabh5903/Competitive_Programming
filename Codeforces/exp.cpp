@@ -19,20 +19,8 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
-// string s;
-// cin>>s;
-for(ll i=0;i< n;i++){
-cin>>l[i];
-
-}
-for (ll i = 0; i < n; i++)
-{cout<<l[i]<<endl;
-    /* code */
-}
-
+ll a,b;cin>>a>>b;
+cout<<ceil(log(b/(double)a)/(double)log(2))<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

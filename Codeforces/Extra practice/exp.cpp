@@ -57,7 +57,7 @@ return v[0];
                 if(b<0)b=matrix[i+k-1][j-1];if(c<0)c=matrix[i-1][j+k-1];if(d<0)d=matrix[i-1][j-1];
                     int val=a-b-c+d;
                     if(val==k*k){ans++;
-                    cout<<i<<" "<<j<<" "<<k<<" "<<matrix<<a<<" "<<b<<" "<<c<<" "<<d<<endl;
+                    // cout<<i<<" "<<j<<" "<<k<<" "<<matrix<<a<<" "<<b<<" "<<c<<" "<<d<<endl;
                     }
                 }
             }
