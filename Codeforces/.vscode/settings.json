@@ -11,7 +11,9 @@
         "xlocale": "cpp",
         "algorithm": "cpp",
         "tuple": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "string": "cpp",
+        "type_traits": "cpp"
     },
     "julia.environmentPath": "C:\\Users\\risha\\.julia\\environments\\v1.6"
 }

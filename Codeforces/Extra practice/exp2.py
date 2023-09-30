@@ -1,31 +1,14 @@
-def can(pos, m):
-    k = len(pos) 
-    x = k - m
-    for i in range(m + 1):
-        l = pos[i]
-        r = pos[i + x - 1]
-        if r - l + 1 - x <= m:
-            return True
-    return False    
+K = int(input())
+M = 10
 
-t = int(input())
-for i in range(t):
-    s = input()
-    pos = []
-    n = len(s)
-    for i in range(n):
-        if s[i] == '1':
-            pos.append(i)
-    lf = 0
-    rg = len(pos)
-    while rg - lf > 1:
-        mid = (lf + rg) // 2
-        if can(pos, mid):
-            rg = mid
-        else:
-            lf = mid
-        print(mid)
-    if len(pos) == 0 or pos[-1] - pos[0] == len(pos) - 1:
-        print(0)
-    else:
-        print(rg)
+l = []
+for mask in range(1 << M):
+    s = ""
+    for i in range(M - 1, -1, -1):
+        if mask & (1 << i):
+            s += chr(ord("0") + i)
+    if s != "" and int(s) > 0:
+        l.append(int(s))
+# l.sort()
+print(l)
+print(l[K - 1])

@@ -28,58 +28,45 @@ const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
-ll maxm(ll n,vector<ll> v){
-if(v[0]>=v[1]) return v[0];
-else return v[1];
+ll maxm(vector<ll> v){
+sort(all(v));
+return v[v.size()-1];
 }
-ll minm(ll n,vector<ll> v){
+ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void solve() {
+void solve(int a,int b) {
 ll n;
 cin>>n;
-ll l[n];map<ll,ll> cnt;vector<ll> nos;
+ll l[n];
+map<ll,ll> mp;vector<ll> v;
 for(ll i=0;i< n-1;i++){
-cin>>l[i];
-// if(!cnt[l[i]]){nos.push_back(l[i]);}
-cnt[l[i]]++;
+cin>>l[i];mp[l[i]]++;
 }
-vector<ll> v;
-// for (ll i:nos)
-// {
-//     v.push_back(cnt[i]);}
-for(auto i:cnt){
+for(auto i:mp){
     v.push_back(i.second);
 }
-    v.push_back(1);
-sort(all(v));
-// cout<<v<<endl;
-if(v.size()>=v[v.size()-1]) cout<<v.size()<<endl;
-else{
-    ll temp=v.size();
-    for (ll i = v.size()-1; i >=0; i--)
-    {
-        while (temp<v[i] && v[i]>=v[i-1])
-        {
-                        temp++;v[i]--;
-            
-        }
-        // ll var=(v[i]+temp)/2;
-        // temp+=v[i]-var;
-        // v[i]=var;
-        if(i>=1){if(temp>=v[i-1]) break;}
-        // cout<<v<<endl;
-        
-    }
-    sort(all(v));
-    ll ans=maxm(2,{temp,v.back()});
-    for (ll i = v.size()-2; i >=0; i--){
-        ans=maxm(2,{ans,v[i]+v.size()-i-1});
-    }
-    cout<<ans<<endl;
-}
+sort(all(v));reverse(all(v)); vector<ll> temp=v;
 
+ll ans=v.size();ll f=0;
+// cout<<v<<endl;
+FOR(i,0,v.size()){
+    v[i]=v[i]-v.size()+i;
+    if(v[i]>0)f=1;
+}
+while(f){
+    // cout<<v<<endl;
+    ans++;
+    f=0;ll f1=1;
+    FOR(i,0,v.size()){
+        v[i]-=1;
+        if(v[i]>0 && f1){v[i]-=1;f1=0;}
+        if(v[i]>0)f=1;
+    }
+}
+// if(a==10000 && b==13 && ans==4)cout<<temp<<endl;
+cout<<ans+1<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -88,6 +75,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-solve();
+solve(n,t);
 }
 }
