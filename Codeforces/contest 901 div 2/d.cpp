@@ -41,66 +41,49 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-    int dp[1000][1000];
-    bool chk(int i,int j,vector<string>& words,vector<int>& groups){
-        int n=words[i].size();
-        if(words[j].size()!=n || groups[i]==groups[j])return 0;
-        int cnt=0;
-        for (int k=0;k<n;k++){
-            if(cnt>=2)break;
-            if(words[i][k]!=words[j][k])cnt++;
-        }
-        if(cnt==1)return 1;
-        else return 0;
-            
+ll dp[5000][5000];
+ll sol(ll curr,ll mex,vl& fre){
+    if(dp[curr][mex]!=-1)return dp[curr][mex];
+if(curr==0)return dp[curr][mex]=mex*(fre[0]-1);
+return dp[curr][mex]=minm({(fre[curr]-1)*mex+curr+sol(curr-1,curr,fre),sol(curr-1,mex,fre)});
+}
+void solve() {
+    // memset(dp,sizeof(dp),-1);
+    // memset(dp,sizeof(dp),-1);
+
+    // cout<<"debug"<<endl;
+ll n;
+cin>>n;
+vl l(n);vl fre(5001);
+for(ll i=0;i< n;i++){
+cin>>l[i];
+if(l[i]<=5000)fre[l[i]]++;
+}
+// sort(all(l));
+    ll mex = 0;
+    while (mex < 5000 && fre[mex]) {
+        mex++;
     }
-    int solve(int i,int j,int prev,vector<string>& words, vector<int>& groups){
-        if(dp[i][j]!=-1)return dp[i][j];
-        if(j==words.size())return dp[i][j]=1;
-        if(chk(prev,j,words,groups)){
-            // prev=j;
-            return dp[i][j]=max(1+solve(j,j+1,j,words,groups),solve(i,j+1,prev,words,groups));
-        }
-        else return dp[i][j]=solve(i,j+1,prev,words,groups);
-    }
-    vector<string> getWordsInLongestSubsequence(int n, vector<string>& words, vector<int>& groups) {
-        for(int i=0;i<1000;i++){
-                    for(int j=0;j<1000;j++){
+ 
+// if(l[0]!=0){cout<<0<<endl;return;}
+// FOR(i,1,n){
+// if(l[i]!=l[i-1])
+// {
+//     if(l[i]>(l[i-1]+1)){mex=l[i-1]+1;break;}
+// }
+// }
+if(mex==0){cout<<0<<endl;return;}
+ll ans=INF;
+    FOR(i,0,mex+1){
+        FOR(j,0,mex+1){
             dp[i][j]=-1;
         }
-        }
-        for(int i=0;i<n;i++){
-                    for(int j=0;j<n;j++){
-            solve(i,j,i,words,groups);
-        }
-        }
-        
-    vector<string>ans={};
-        for(int i=0;i<n;i++){
-            vector<string>temp={words[i]};int prev=i;
-            for(int j=i+1;j<n;j++){
-                if( chk(prev,j,words,groups) && (dp[prev][j]==1+dp[j][j+1] || (i==n-2 && j==n-1))){
-                    temp.push_back(words[j]);prev=j;
-                }
-            }
-            if(temp.size()>ans.size())ans=temp;
-        }
-        return ans;
     }
+FOR(i,1,mex+1){
+    ans=minm({ans,sol(i-1,mex,fre)});
+}
+cout<<ans<<endl;
 
-void solve() {int n;
-vector<string> words;
-vector<int> groups;
-// n=11;
-// words={"dba","dac","ac","ccc","dc","cdc","ab","ad","dcc","cc","ba"};
-// groups={1,8,11,6,3,5,10,8,7,6,7};
-n=9;
-words={"bad","dc","bc","ccd","dd","da","cad","dba","aba"};
-groups={9,7,1,2,6,8,3,7,2};
-// cout<<dp[1][2]<<" "<<dp[2][3]<<endl;
-getWordsInLongestSubsequence(n,words,groups);
-cout<<dp[2][4]<<" "<<dp[4][6]<<endl;
-cout<<getWordsInLongestSubsequence(n,words,groups)<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

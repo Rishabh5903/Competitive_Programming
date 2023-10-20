@@ -41,66 +41,79 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-    int dp[1000][1000];
-    bool chk(int i,int j,vector<string>& words,vector<int>& groups){
-        int n=words[i].size();
-        if(words[j].size()!=n || groups[i]==groups[j])return 0;
-        int cnt=0;
-        for (int k=0;k<n;k++){
-            if(cnt>=2)break;
-            if(words[i][k]!=words[j][k])cnt++;
-        }
-        if(cnt==1)return 1;
-        else return 0;
-            
+void solve() {
+int q;
+cin>>q;
+for(int p=0;p< q;p++){
+int t;cin>>t;
+if(t==1){
+    int n,k;cin>>n>>k;vector<int> arr(n);
+    for (int j = 0; j < n; j++)
+    {
+        cin>>arr[j];
     }
-    int solve(int i,int j,int prev,vector<string>& words, vector<int>& groups){
-        if(dp[i][j]!=-1)return dp[i][j];
-        if(j==words.size())return dp[i][j]=1;
-        if(chk(prev,j,words,groups)){
-            // prev=j;
-            return dp[i][j]=max(1+solve(j,j+1,j,words,groups),solve(i,j+1,prev,words,groups));
-        }
-        else return dp[i][j]=solve(i,j+1,prev,words,groups);
+    sort(arr.begin(),arr.end());
+    int ans=0;
+    for (int j = n-k; j < n; j++)
+    {
+        ans+=arr[j];
     }
-    vector<string> getWordsInLongestSubsequence(int n, vector<string>& words, vector<int>& groups) {
-        for(int i=0;i<1000;i++){
-                    for(int j=0;j<1000;j++){
-            dp[i][j]=-1;
-        }
-        }
-        for(int i=0;i<n;i++){
-                    for(int j=0;j<n;j++){
-            solve(i,j,i,words,groups);
-        }
-        }
-        
-    vector<string>ans={};
-        for(int i=0;i<n;i++){
-            vector<string>temp={words[i]};int prev=i;
-            for(int j=i+1;j<n;j++){
-                if( chk(prev,j,words,groups) && (dp[prev][j]==1+dp[j][j+1] || (i==n-2 && j==n-1))){
-                    temp.push_back(words[j]);prev=j;
-                }
-            }
-            if(temp.size()>ans.size())ans=temp;
-        }
-        return ans;
+    cout<<ans<<endl;
+}
+else if(t==2){
+    int n,m;cin>>n>>m;
+    vector<int> a(n),b(m);
+    for (int i = 0; i < n; i++)cin>>a[i];
+    for (int i = 0; i < m; i++)cin>>b[i];
+    sort(a.begin(),a.end());
+    sort(b.begin(),b.end());
+    vector<int> ans;
+    int i1=0,i2=0;
+    while(i1<n && i2<m){
+        if(a[i1]<=b[i2]){ans.push_back(a[i1]);i1++;}
+        else{ans.push_back(b[i2]);i2++;}
     }
-
-void solve() {int n;
-vector<string> words;
-vector<int> groups;
-// n=11;
-// words={"dba","dac","ac","ccc","dc","cdc","ab","ad","dcc","cc","ba"};
-// groups={1,8,11,6,3,5,10,8,7,6,7};
-n=9;
-words={"bad","dc","bc","ccd","dd","da","cad","dba","aba"};
-groups={9,7,1,2,6,8,3,7,2};
-// cout<<dp[1][2]<<" "<<dp[2][3]<<endl;
-getWordsInLongestSubsequence(n,words,groups);
-cout<<dp[2][4]<<" "<<dp[4][6]<<endl;
-cout<<getWordsInLongestSubsequence(n,words,groups)<<endl;
+    while(i1<n){
+        ans.push_back(a[i1]);i1++;
+    }
+    while(i2<m){
+        ans.push_back(b[i2]);i2++;
+    }
+    for (int i = 0; i < n+m; i++)
+    {
+    cout<<ans[i]<<" ";
+    }
+    cout<<endl;
+    
+}
+else{
+    int n;cin>>n;int arr[n];
+    for (int i = 0; i <n; i++)
+    {
+        cin>>arr[i];
+    }
+    vector<vector<int>> m(n,vector<int>(n));
+    for (int i = 0; i < n; i++)
+    {
+        int num=arr[i];int ind=n-1;
+        while(num){
+            m[ind][i]=num%2;num/=2;ind--;
+        }
+    }
+    for (int i = 0; i <n; i++)
+    {
+       for (int j = 0; j < n; j++)
+       {
+         cout<<m[i][j]<< " ";
+       }
+       cout<<endl;
+       
+    }
+    
+    
+}
+// cin>>l[i];
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);
