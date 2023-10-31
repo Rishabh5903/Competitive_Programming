@@ -13,7 +13,10 @@
     "tuple": "cpp",
     "vector": "cpp",
     "string": "cpp",
-    "type_traits": "cpp"
+    "type_traits": "cpp",
+    "chrono": "cpp",
+    "complex": "cpp",
+    "iostream": "cpp"
   },
   "julia.environmentPath": "C:\\Users\\risha\\.julia\\environments\\v1.6",
   "C_Cpp_Runner.msvcBatchPath": "",
