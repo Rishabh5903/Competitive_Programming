@@ -31,7 +31,7 @@ int expo(int a,int n){ int res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a
 template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
-const ll INF = 1e20;
+const ll INF = 1e10;
 const ld EPS = 1e-20;
 ll maxm(vector<ll> v){
 sort(all(v));
@@ -41,42 +41,39 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(s[u]=='0' && s[v]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v-1,s,ans);
+ll dp[300002];
+ll dfs(ll i,vvl& adj,string& s){
+    // cout<<i<<endl;
+    if(i==0)return dp[i]=INF;
+    if(dp[i]!=-1)return dp[i];
+    
+if(adj[i-1][0]==adj[i-1][1] && adj[i-1][0]==0){
+    return dp[i]=0;
 }
-else if(s[u]==s[v] && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    ans.pb(i-1);help(i,j+1,u+1,v-1,s,ans);
+if(s[i-1]=='U'){
+    return dp[i]=min({1+dfs(adj[i-1][0],adj,s),1+dfs(adj[i-1][1],adj,s)});
 }
 else{
-    if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
+    ll a=INF,b=INF;
+    if(s[i-1]=='L'){a=dfs(adj[i-1][0],adj,s);b=1+dfs(adj[i-1][1],adj,s);
 }
+    if(s[i-1]=='R'){b=dfs(adj[i-1][1],adj,s);a=1+dfs(adj[i-1][0],adj,s);
+}
+return dp[i]=minm({a,b});
+}}
 void solve() {
 ll n;
 cin>>n;
+// ll l[n];
 string s;
 cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+vvl adj(n,vl(2));
+for(ll i=0;i< n;i++){
+cin>>adj[i][0]>>adj[i][1];
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+FOR(i,0,n+2){dp[i]=-1;}
+// cout<<adj<<endl;
+cout<<dfs(1,adj,s)<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

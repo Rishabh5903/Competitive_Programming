@@ -41,42 +41,41 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(s[u]=='0' && s[v]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v-1,s,ans);
-}
-else if(s[u]==s[v] && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    ans.pb(i-1);help(i,j+1,u+1,v-1,s,ans);
-}
-else{
-    if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
-}
+    long long dfs(int i,int f,int p,vector<vector<int>>& adj, vector<int>& values){
+        // cout<<i<<endl;
+        if(adj[i].size()==1 &&i!=0 && f==0)return 0;
+        else if(adj[i].size()==1 && i!=0)return values[i];
+        // vis[i]=1;
+        long long ans=0;
+        if(f==1){
+            ans+=values[i];
+            for(auto j:adj[i]){if(j!=p)ans+=dfs(j,1,i,adj,values);}
+        }
+        else{
+            long long temp1=0,temp2=0;
+            
+            for(auto j:adj[i]){if(j!=p)temp1+=dfs(j,0,i,adj,values);}
+            for(auto j:adj[i]){if(j!=p)temp2+=dfs(j,1,i,adj,values);}
+            // cout<<values[i]+temp1<<" "<<temp2<<endl;
+            ans=max(values[i]+temp1,temp2);
+        }
+        return ans;
+    }
+    long long maximumScoreAfterOperations(vector<vector<int>>& edges, vector<int>& values) {
+        vector<vector<int>> adj(values.size());
+        vector<int> vis(values.size(),0);
+        for (auto i:edges){
+            adj[i[0]].push_back(i[1]);
+            adj[i[1]].push_back(i[0]);
+        }
+        // cout<<adj<<endl;
+        return dfs(0,0,-1,adj,values);
+    }
 void solve() {
-ll n;
-cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
-}
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+vvi edges={{7,0},{3,1},{6,2},{4,3},{4,5},{4,6},{4,7}};
+vi values={2,16,23,17,22,21,8,6};
+cout<<maximumScoreAfterOperations(edges,values)<<endl;
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

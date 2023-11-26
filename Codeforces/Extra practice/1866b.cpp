@@ -30,7 +30,7 @@ int expo(int a,int n,int md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,m
 int expo(int a,int n){ int res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
 template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
-const ll MOD = 1e9 + 7;
+const ll MOD = 998244353;
 const ll INF = 1e20;
 const ld EPS = 1e-20;
 ll maxm(vector<ll> v){
@@ -41,48 +41,38 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(s[u]=='0' && s[v]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v-1,s,ans);
-}
-else if(s[u]==s[v] && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    ans.pb(i-1);help(i,j+1,u+1,v-1,s,ans);
-}
-else{
-    if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
-}
 void solve() {
-ll n;
+ll n,m;map<ll,ll>mp;
 cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+ll a[n],b[n];
+for(ll i=0;i< n;i++){
+cin>>a[i];
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+for(ll i=0;i< n;i++){
+cin>>b[i];mp[a[i]]+=b[i];
+}
+cin>>m;ll c[m],d[m];
+for(ll i=0;i< m;i++){
+cin>>c[i];
+}
+for(ll i=0;i< m;i++){
+cin>>d[i];mp[c[i]]-=d[i];
+}
+ll ans=1;ll f=1;
+for(auto i:mp){
+if(i.second<0){f=0;break;}
+ans=ans*((minm({2,i.second+1}))%MOD);ans%=MOD;
+}
+// cout<<mp<<endl;
+if(f)cout<<ans;
+else cout<<0;
+cout<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

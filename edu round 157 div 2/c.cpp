@@ -41,48 +41,41 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(s[u]=='0' && s[v]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v-1,s,ans);
-}
-else if(s[u]==s[v] && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    ans.pb(i-1);help(i,j+1,u+1,v-1,s,ans);
-}
-else{
-    if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
-}
 void solve() {
 ll n;
 cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+string l[n];
+
+for(ll i=0;i< n;i++){
+cin>>l[i];
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+vvl v1(n),v2(n);map<pair<ll,ll>,ll>mp;
+FOR(i,0,n){
+    string temp=l[i];ll n1=0,n2=0;ll len=temp.size();
+    FOR(j,0,len){
+        n1+=temp[j]-'0';n2+=temp[len-j-1]-'0';
+        v1[i].pb(n1);v2[i].pb(n2);
+    }
+    mp[{n1,len}]++;
+}
+ll ans=0;
+FOR(i,0,n){
+    ll len=v1[i].size();
+    FOR(j,0,len){
+        ans+=mp[{2*v1[i][j]-v1[i][len-1],2*j+2-len}];
+        ans+=mp[{2*v2[i][j]-v2[i][len-1],2*j+2-len}];
+        
+    }
+    ans-=mp[{2*v1[i][len-1]-v1[i][len-1],len}];;
+}
+// cout<<v1<<v2<<mp<<endl;
+cout<<ans<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

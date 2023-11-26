@@ -41,42 +41,47 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(s[u]=='0' && s[v]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v-1,s,ans);
+pair<string,string> convert1(string s){
+    pair<string,string> p;
+    if(s.size()==2){
+        p.first=s[0];p.second=s[1];
+    }
+    else{
+        p.first="90";p.second=s[2];
+    }
+    if(p.first=="J")p.first="91";
+    if(p.first=="Q")p.first="92";
+    if(p.first=="K")p.first="93";
+    if(p.first=="A")p.first="94";
+    return p;
 }
-else if(s[u]==s[v] && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    ans.pb(i-1);help(i,j+1,u+1,v-1,s,ans);
+string convert2(pair<string,string> p){
+    if(p.first=="90")p.first="10";
+    if(p.first=="91")p.first="J";
+    if(p.first=="92")p.first="Q";
+    if(p.first=="93")p.first="K";
+    if(p.first=="94")p.first="A";
+    return p.first+p.second;
 }
-else{
-    if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
+pair<bool,vector<string>> Pair(vector<string> cards){
+    vector<pair<string,string>> v;
+    for(auto i:cards)v.push_back(convert1(i));
+    
+    sort(v.begin(),v.end());
+    cout<<v<<endl;
+    int f=0;vector<string> ans={};
+    for(int i=v.size()-1;i>=1;i--){
+        if(v[i].first==v[i-1].first){
+            f=1;ans.push_back(convert2(v[i]));
+            ans.push_back(convert2(v[i-1]));
+            break;
+        }
+    }
+    cout<<ans<<endl;
+    return {f,ans};
 }
 void solve() {
-ll n;
-cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
-}
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+Pair({"2H", "4H", "7C", "9D", "10D", "KS"});
 }
 int main() {
 ios_base::sync_with_stdio(0);
