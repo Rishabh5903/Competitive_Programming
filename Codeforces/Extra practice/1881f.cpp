@@ -41,50 +41,63 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,ll prev,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(prev==0 && s[u]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v,0,s,ans);
+void solve() {
+ll n,k;
+cin>>n>>k;
+ll l[k];
+for(ll i=0;i< k;i++){
+cin>>l[i];
 }
-else if(prev==0 && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u+1,v,-1,s,ans);
+vvl adj(n+1,vl(0));
+FOR(i,1,n){ll u,v;
+    cin>>u>>v;adj[u].pb(v);adj[v].pb(u);
 }
-else if(prev==1 && s[v]=='1'){
-    // cout<<"debug"<<endl;
-ans.pb(i-1);help(i,j+1,u,v-1,1,s,ans);
+vl dist(n+1,200001);dist[l[0]]=0;
+priority_queue<pair<ll,ll>, vector<pair<ll,ll>>, greater<pair<ll,ll>>> pq;
+pq.push({0,l[0]});
+ll vis[n+1]={0};vis[l[0]]=1;
+while(!pq.empty()){
+    pair<ll,ll> temp=pq.top();pq.pop();vis[temp.second]=1;
+    for(ll i:adj[temp.second]){
+        if(!vis[i])
+        {dist[i]=minm({dist[i],temp.first+1});
+        pq.push({dist[i],i});
+        }
+    }
 }
-else if(prev==1 && s[v]=='0'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u,v-1,-1,s,ans);
+ll ans=200001;
+// cout<<dist<<endl;
+if(k==1){
+ans=0;
 }
 else{
-    // if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
+    ll ind=1,node=-1,maxo=0;
+    FOR(i,1,n+1){
+        if(ind==k)break;
+        if(i==l[ind]){maxo=maxm({maxo,dist[i]});if(maxo==dist[i])node=i;ind++;}
+    }
+vl d2(n+1,200001);d2[node]=0;
+priority_queue<pair<ll,ll>, vector<pair<ll,ll>>, greater<pair<ll,ll>>> pq2;
+pq2.push({0,node});
+ll vis2[n+1]={0};vis2[node]=1;
+while(!pq2.empty()){
+    pair<ll,ll> temp=pq2.top();pq2.pop();vis2[temp.second]=1;
+    for(ll i:adj[temp.second]){
+        if(!vis2[i])
+        {d2[i]=minm({d2[i],temp.first+1});
+        pq2.push({d2[i],i});
+        }
+    }
 }
-void solve() {
-ll n;
-cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+// cout<<d2<<endl;
+ind=0;maxo=0;
+    FOR(i,1,n+1){
+        if(ind==k)break;
+        if(i==l[ind] ){if(i!=node)maxo=maxm({maxo,d2[i]});ind++;}
+    }
+    ans=maxo/2+maxo%2;
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+cout<<ans<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -41,50 +41,30 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,ll prev,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(prev==0 && s[u]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v,0,s,ans);
+void dfs(int i,vvl& adj,vl& vis,ll& ans){
+vis[i]=1;ll f=0;
+for(auto v:adj[i]){
+    if(!vis[v]){
+        dfs(v,adj,vis,ans);f=1;
+    }
 }
-else if(prev==0 && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u+1,v,-1,s,ans);
-}
-else if(prev==1 && s[v]=='1'){
-    // cout<<"debug"<<endl;
-ans.pb(i-1);help(i,j+1,u,v-1,1,s,ans);
-}
-else if(prev==1 && s[v]=='0'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u,v-1,-1,s,ans);
-}
-else{
-    // if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
+if(!f){ans++;}
 }
 void solve() {
 ll n;
 cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+vvl adj(n,vl(0));vl vis(n,0);
+// string s;
+// cin>>s;
+for(ll i=0;i< n-1;i++){ll u,v;
+cin>>u>>v;adj[u-1].pb(v-1);adj[v-1].pb(u-1);
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+ll ans=0;
+FOR(i,0,n){
+    if(adj[i].size()==1){dfs(i,adj,vis,ans);break;}
+}
+// float var=ans/2.0;cout<<var<<endl;
+cout<<(ans/2+1)<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

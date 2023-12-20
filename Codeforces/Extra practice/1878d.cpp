@@ -41,50 +41,39 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,ll prev,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(prev==0 && s[u]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v,0,s,ans);
+void help(string& s,ll a,ll b){
+    a--;b--;
+    FOR(i,0,(b-a+1)/2){
+        swap(s[i+a],s[b-i]);
+    }
+    // cout<<a<<" "<<b<< " "<<s<<endl;
 }
-else if(prev==0 && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u+1,v,-1,s,ans);
-}
-else if(prev==1 && s[v]=='1'){
-    // cout<<"debug"<<endl;
-ans.pb(i-1);help(i,j+1,u,v-1,1,s,ans);
-}
-else if(prev==1 && s[v]=='0'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u,v-1,-1,s,ans);
-}
-else{
-    // if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
-}
+ll cnt[200001];
 void solve() {
-ll n;
-cin>>n;
+ll n,k;
+cin>>n>>k;
+vl l(k),r(k);
 string s;
 cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+for(ll i=0;i< k;i++){
+cin>>l[i];
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+for(ll i=0;i< k;i++){
+cin>>r[i];
+}
+ll q;cin>>q;
+vl x(q);FOR(i,0,q){cin>>x[i];cnt[x[i]]=0;}
+// map<ll,ll> cnt;
+vl temp;
+FOR(i,0,q){cnt[x[i]]++;if(cnt[x[i]]==1)temp.pb(x[i]);}
+for(auto i:temp){
+    if(cnt[i]%2){
+        ll x=i;ll ind=lower_bound(all(r),x)-r.begin();
+        ll a=minm({x,r[ind]+l[ind]-x}),b=maxm({x,r[ind]+l[ind]-x});
+    help(s,a,b);
+    }
+}
+cout<<s<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

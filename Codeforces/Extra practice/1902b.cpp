@@ -37,54 +37,27 @@ ll maxm(vector<ll> v){
 sort(all(v));
 return v[v.size()-1];
 }
-ll minm(vector<ll> v){
-sort(all(v));
-return v[0];
-}
-void help(ll i,ll j,ll u,ll v,ll prev,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(prev==0 && s[u]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v,0,s,ans);
-}
-else if(prev==0 && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u+1,v,-1,s,ans);
-}
-else if(prev==1 && s[v]=='1'){
-    // cout<<"debug"<<endl;
-ans.pb(i-1);help(i,j+1,u,v-1,1,s,ans);
-}
-else if(prev==1 && s[v]=='0'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u,v-1,-1,s,ans);
-}
-else{
-    // if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
+ll minm(pair<double,ll> v){
+// sort(all(v));
+if(v.first<=v.second)
+return v.first;
+else return v.second;
 }
 void solve() {
-ll n;
-cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+ll n,p,l,t;
+cin>>n>>p>>l>>t;
+// ll l[n];
+ll low=1,high=n,k=1;
+while(low<=high){
+    // cout<<low<<high<<endl;
+    k=(low+high)/2;
+    if((k*l+(minm({ceil((n)/7.0),2*k})*t))>=p)high=k-1;
+    else low=k+1;
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+// cout<<low<<endl;
+// k=low-1;
+// if((k*l+(minm({ceil((n)/7.0),2*k})*t))<p)k++;
+cout<<maxm({n-(low),0})<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

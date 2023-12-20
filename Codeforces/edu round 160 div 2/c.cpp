@@ -41,56 +41,39 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,ll prev,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(prev==0 && s[u]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v,0,s,ans);
-}
-else if(prev==0 && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u+1,v,-1,s,ans);
-}
-else if(prev==1 && s[v]=='1'){
-    // cout<<"debug"<<endl;
-ans.pb(i-1);help(i,j+1,u,v-1,1,s,ans);
-}
-else if(prev==1 && s[v]=='0'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u,v-1,-1,s,ans);
-}
-else{
-    // if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
-}
 void solve() {
 ll n;
 cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+ll l[n];
+map<ll,ll> mp;
+for(ll i=0;i< n;i++){ll a,b;
+cin>>a>>b;
+if(a==1){
+    mp[b]++;
+
+        
+    
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+else{
+    ll p=0,f=1;
+    while(b){ll var=(1<<(p+1));
+        ll temp=mp[p]/var;
+        mp[p]
+        if(mp[p]<(b%(2))){
+            f=0;break;
+        }p++;b/=2;
+    }
+    if(f)cout<<"YES";
+    else cout<<"NO";
+    cout<<endl;
+}
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

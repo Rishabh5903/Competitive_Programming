@@ -41,56 +41,46 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,ll prev,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(prev==0 && s[u]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v,0,s,ans);
-}
-else if(prev==0 && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u+1,v,-1,s,ans);
-}
-else if(prev==1 && s[v]=='1'){
-    // cout<<"debug"<<endl;
-ans.pb(i-1);help(i,j+1,u,v-1,1,s,ans);
-}
-else if(prev==1 && s[v]=='0'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u,v-1,-1,s,ans);
-}
-else{
-    // if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
+
+bool help(ll i,ll j,vl& l,ll k){
+    if(j==l.size() && i==-1)return true;
+    if(j==l.size()){
+        if(l[i]<=k)return help(i-1,j,l,k-1);
+    }
+    else if(i==-1){
+        if(l[j]<=k)return help(i,j+1,l,k-1);
+    }
+    else{
+        if(l[i]==l[j] && l[i]<k)return help(i-1,j,l,k-1)&&help(i,j+1,l,k-1);
+        else{
+            if(l[i]<l[j] && l[i]<k)return help(i-1,j,l,k-1);
+            else if(l[i]>l[j] && l[j]<k)return help(i,j+1,l,k-1);
+        }
+    }return false;
 }
 void solve() {
 ll n;
 cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+vl l(n);ll maxo=0;vl ind={};
+for(ll i=0;i< n;i++){
+cin>>l[i];maxo=maxm({maxo,l[i]});if(l[i]==maxo)ind.pb(i);
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+ll ind1=ind[ind.size()/2],ind2=-1;
+if(ind.size()%2==0)ind2=ind[ind.size()/2-1];
+
+ll low=1,high=1e9+3*1e5,mid;
+while(low<=high){
+    mid=(low+high)/2;
+    if(help(ind1,ind1,l,mid)&&((ind2!=-1)? help(ind2,ind2,l,mid) :1))high=mid-1;
+    else low=mid+1;
+}
+cout<<(mid-1)<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

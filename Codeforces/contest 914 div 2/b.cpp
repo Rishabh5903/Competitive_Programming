@@ -41,50 +41,32 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void help(ll i,ll j,ll u,ll v,ll prev,string& s,vl& ans){
-// if(i>j)return;
-// cout<<"debug"<<endl;
-// cout<<s<<endl;
-// cout<<ans<<endl;
-// cout<<s[0]<<" "<<s[s.size()-1] <<endl;
-if(u<v && i<j){
-if(prev==0 && s[u]=='0'){
-    // cout<<"debug"<<endl;
-ans.pb(j);help(i,j+1,u+1,v,0,s,ans);
-}
-else if(prev==0 && s[u]=='1'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u+1,v,-1,s,ans);
-}
-else if(prev==1 && s[v]=='1'){
-    // cout<<"debug"<<endl;
-ans.pb(i-1);help(i,j+1,u,v-1,1,s,ans);
-}
-else if(prev==1 && s[v]=='0'){
-    // cout<<"debug"<<endl;
-    help(i+1,j+1,u,v-1,-1,s,ans);
-}
-else{
-    // if(s.size()>2)
-    help(i+1,j-1,u+1,v-1,s,ans);
-}}
-}
 void solve() {
 ll n;
 cin>>n;
-string s;
-cin>>s;
-ll c1=0,c2=0;
-FOR(i,0,n){
-    if(s[i]=='1')c1++;
-    else c2++;
+vvl l(n,vl(2));
+// string s;
+// cin>>s;
+for(ll i=0;i< n;i++){
+cin>>l[i][0];l[i][1]=i;
 }
-if(c1!=c2){cout<<-1<<endl;return;}
-vl ans={};
-help(1,n,0,n-1,s,ans);
-// cout<<ans<<endl;
-cout<<sza(ans)<<endl;
-for (auto i:ans)cout<<i<<" ";cout<<endl;
+sort(all(l));vl v(n);
+vl sum(n);
+FOR(i,0,n){v[i]=l[i][0];
+    if(i==0)sum[i]=l[i][0];else sum[i]=sum[i-1]+l[i][0];}
+vl ans(n);
+FOR(i,0,n){
+    ll temp=l[i][0];ll prev=-1;ll ind;
+    while(prev!=temp){
+    ind=upper_bound(all(v),temp)-v.begin();
+    if(ind>=1){prev=temp;temp=sum[ind-1];}
+    else break;
+    }
+    if(ind==n)ans[l[i][1]]=n-1;
+    else ans[l[i][1]]=ind-1;
+}
+for(auto i:ans)cout<<i<<" ";
+cout<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
