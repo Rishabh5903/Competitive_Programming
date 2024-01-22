@@ -45,37 +45,48 @@ void solve() {
 ll n;
 cin>>n;
 ll l[n];
-map<ll,ll> mp;
-for(ll i=0;i< n;i++){ll a,b;
-cin>>a>>b;
-if(a==1){
-    mp[b]++;if(mp[b]==2){
-        ll temp=b;
-        while(mp[temp]==2){
-mp[temp]=0;mp[temp+1]++;temp++;
-        }
-        
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+vl v1,v2;v1.pb(INF);v2.pb(INF);
+ll prev=0;
+FOR(i,0,n){
+    // if(l[i+1]>l[i]){
+    //     if(prev==0){v2.pb(l[i+1]);prev=1;}
+    //     else{v1.pb(l[i+1]);prev=0;}
+    // }
+    // else{
+    //     if(v1.size() && v2.size()){
+    //         if(l[i+1]<=v1.back() && v1.back()<=v2.back())v1.pb(l[i+1]);
+    //         else if(l[i+1]<=v1.back())v2.pb(l[i+1]);
+    //         else()
+    //     }
+    // }
+    if(l[i]>v1.back() && l[i]>v2.back()){
+        if(v1.back()<v2.back())v1.pb(l[i]);else v2.pb(l[i]);
+    }
+    else if(l[i]>v1.back()) {v2.pb(l[i]);
+
+    }
+    else if(l[i]>v2.back()) {v1.pb(l[i]);
+
+    }
+    else{
+         if(v1.back()<v2.back())v1.pb(l[i]);else v2.pb(l[i]);
     }
 }
-else{
-    ll p=0,f=1;
-    while(b){
-        if(mp[p]<(b%(2))){
-            f=0;break;
-        }p++;b/=2;
-    }
-    cout<<mp<<endl;
-    if(f)cout<<"YES";
-    else cout<<"NO";
-    cout<<endl;
-}
-}
+ll ans=0;
+if(v1.size())
+FOR(i,0,v1.size()-1)if(v1[i+1]>v1[i])ans++;
+if(v2.size())
+FOR(i,0,v2.size()-1)if(v2[i+1]>v2[i])ans++;
+cout<<ans<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-// cin >> n;
+cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

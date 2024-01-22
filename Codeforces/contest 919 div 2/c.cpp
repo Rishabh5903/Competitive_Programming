@@ -22,6 +22,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
 #define ce(x) cout<<x<<endl
+#define cinv(v,size) for( long long int i = 0; i<size;i++)cin>>v[i];
 int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
 int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
 int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
@@ -41,41 +42,58 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void solve() {
-ll n;
-cin>>n;
-ll l[n];
-map<ll,ll> mp;
-for(ll i=0;i< n;i++){ll a,b;
-cin>>a>>b;
-if(a==1){
-    mp[b]++;if(mp[b]==2){
-        ll temp=b;
-        while(mp[temp]==2){
-mp[temp]=0;mp[temp+1]++;temp++;
+vector<int> getAllFactors(int n) {
+    vector<int> factors;
+    
+    for (int i = 1; i <= sqrt(n); i++) {
+        if (n % i == 0) {
+            factors.push_back(i);
+            
+            // If i is not the square root of n, add the corresponding factor
+            if (i != n / i) {
+                factors.push_back(n / i);
+            }
         }
-        
     }
+    
+    return factors;
 }
-else{
-    ll p=0,f=1;
-    while(b){
-        if(mp[p]<(b%(2))){
-            f=0;break;
-        }p++;b/=2;
+
+void solve() {
+    int n;
+    cin >> n;
+    int l[n];
+    for(int i = 0; i < n; i++){
+        cin >> l[i];
     }
-    cout<<mp<<endl;
-    if(f)cout<<"YES";
-    else cout<<"NO";
-    cout<<endl;
-}
-}
+    vector<int> fac = getAllFactors(n);
+    int ans = 0;
+    for(auto k : fac) {
+        vector<int> temp(n);FOR(i,0,n)temp[i]=l[i];
+        FOR(i, 0, k) {
+            int mino = INT_MAX;
+            FOR(j, 0, n / k) {
+                mino = min(mino, temp[k * j + i]);
+            }
+            FOR(j, 0, n / k) {
+                temp[k * j + i] -= mino;
+            }
+        }
+        int g = 0;
+        FOR(i, 0, n) {
+
+            g = gcd(g, temp[i]);
+        }
+        if(g >= 2 || g==0) ans++;
+        // ce(temp);
+    }
+    cout << ans << endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-// cin >> n;
+cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

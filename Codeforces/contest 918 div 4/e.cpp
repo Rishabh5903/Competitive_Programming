@@ -41,41 +41,55 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
+bool check_indices_linear(vector<ll>& A, vector<ll>& B) {
+    int i = 0, j = 0, k = 0;
+    while (i < A.size() && j < B.size() && k < B.size()) {
+        if (A[j] - A[i] == B[k] - B[i]) {
+            if (j == k + 1 || j == k) {
+                return true;
+            }
+            j++;
+            k++;
+        } else if (A[j] - A[i] < B[k] - B[i]) {
+            j++;
+        } else {
+            k++;
+        }
+        if (j == A.size()) {
+            i++;
+            j = i;
+        }
+        if (k == B.size()) {
+            i++;
+            k = i;
+        }
+    }
+    return false;
+}
 void solve() {
 ll n;
 cin>>n;
+
 ll l[n];
-map<ll,ll> mp;
-for(ll i=0;i< n;i++){ll a,b;
-cin>>a>>b;
-if(a==1){
-    mp[b]++;if(mp[b]==2){
-        ll temp=b;
-        while(mp[temp]==2){
-mp[temp]=0;mp[temp+1]++;temp++;
-        }
-        
-    }
+for(ll i=0;i< n;i++){
+cin>>l[i];
 }
-else{
-    ll p=0,f=1;
-    while(b){
-        if(mp[p]<(b%(2))){
-            f=0;break;
-        }p++;b/=2;
-    }
-    cout<<mp<<endl;
-    if(f)cout<<"YES";
-    else cout<<"NO";
-    cout<<endl;
+if(n==1){cout<<"YES"<<endl;return;}
+
+vl a,b;a.pb(l[0]);b.pb(l[1]);
+FOR(i,2,n){
+    if(i%2==0)a.pb(a.back()+l[i]);
+    else b.pb(b.back()+l[i]);
 }
-}
+cout<<a<<b<<endl;
+if(check_indices_linear(a,b)){cout<<"YES"<<endl;return;}
+cout<<"NO"<<endl;return;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-// cin >> n;
+cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

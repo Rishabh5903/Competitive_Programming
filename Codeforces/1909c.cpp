@@ -22,6 +22,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
 #define ce(x) cout<<x<<endl
+#define cinv(v,size) for( long long int i = 0; i<size;i++)cin>>v[i];
+
 int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
 int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
 int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
@@ -42,40 +44,31 @@ sort(all(v));
 return v[0];
 }
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
-map<ll,ll> mp;
-for(ll i=0;i< n;i++){ll a,b;
-cin>>a>>b;
-if(a==1){
-    mp[b]++;if(mp[b]==2){
-        ll temp=b;
-        while(mp[temp]==2){
-mp[temp]=0;mp[temp+1]++;temp++;
-        }
-        
-    }
+ll n,L,R,C;
+cin>>n;L=n;R=n;C=n;
+vl l(L),r(R),c(C);
+cinv(l,L);
+cinv(r,R);
+cinv(c,C);
+sort(all(l));
+sort(all(r));
+sort(all(c));
+priority_queue<int> pq;pq.push(r[0]);
+vl v={};ll i1=n-1,i2=1;
+while(v.size()<n){
+    ce(pq);
+    if(!pq.size()){pq.push(r[i2]);i2++;}
+if(pq.top()>=l[i1]){v.pb(pq.top()-l[i1]);pq.pop();i1--;}
+else {pq.push(r[i2]);i2++;}
 }
-else{
-    ll p=0,f=1;
-    while(b){
-        if(mp[p]<(b%(2))){
-            f=0;break;
-        }p++;b/=2;
-    }
-    cout<<mp<<endl;
-    if(f)cout<<"YES";
-    else cout<<"NO";
-    cout<<endl;
-}
-}
+sort(all(v));ll ans=0;
+FOR(j,0,n)ans+=(c[n-j-1]*v[j]);ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-// cin >> n;
+cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

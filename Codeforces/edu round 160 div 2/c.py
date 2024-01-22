@@ -1,34 +1,28 @@
-from collections import defaultdict
+def is_possible_sum(query_values):
+    max_possible_sum = 3000  # Maximum possible sum based on constraints
+    dp = [False] * (max_possible_sum + 1)
+    dp[0] = True  # Base case: You can always make a sum of 0
 
-def isSubsetSum(query_values):
-    max_val = max(query_values)
-    dp = defaultdict(bool)
-    dp[0] = True
-
-    for val in query_values:
-        temp = list(dp.keys())
-        for sub in temp:
-            dp[sub + val] = True
+    for value in query_values:
+        for j in range(max_possible_sum, -1, -1):
+            if j >= value and dp[j - value]:
+                dp[j] = True
 
     return dp
 
-def process_queries(m, queries):
-    query_values = []
-    for i in range(m):
-        t, v = queries[i]
+def main():
+    m = int(input())
+    queries = []
+    for _ in range(m):
+        t, v = map(int, input().split())
         if t == 1:
-            query_values.append(2 * v)
+            queries.append(2 * v)
         else:
-            dp = isSubsetSum(query_values)
-            if v in dp:
+            possible_sums = is_possible_sum(queries)
+            if v < len(possible_sums) and possible_sums[v]:
                 print("YES")
             else:
                 print("NO")
 
-m = int(input())
-queries = []
-for _ in range(m):
-    t, v = map(int, input().split())
-    queries.append((t, v))
-
-process_queries(m, queries)
+if __name__ == "__main__":
+    main()

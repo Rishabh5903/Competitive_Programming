@@ -41,41 +41,73 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
+long long merge(vector<ll>& arr, long long left, long long mid, long long right) {
+    long long inv_count = 0;
+
+    vector<int> temp(right - left + 1);
+    long long i = left; // Index for left subarray
+    long long j = mid + 1; // Index for right subarray
+    long long k = 0; // Index for temporary merged array
+
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) {
+            temp[k++] = arr[i++];
+        } else {
+            temp[k++] = arr[j++];
+            inv_count += (mid - i + 1); // Count the inversions
+        }
+    }
+
+    while (i <= mid) {
+        temp[k++] = arr[i++];
+    }
+
+    while (j <= right) {
+        temp[k++] = arr[j++];
+    }
+
+    for (long long i = left, k = 0; i <= right; ++i, ++k) {
+        arr[i] = temp[k];
+    }
+
+    return inv_count;
+}
+
+long long mergeSort(vector<ll>& arr, long long left, long long right) {
+    long long inv_count = 0;
+    if (left < right) {
+        long long mid = left + (right - left) / 2;
+
+        inv_count += mergeSort(arr, left, mid);
+        inv_count += mergeSort(arr, mid + 1, right);
+
+        inv_count += merge(arr, left, mid, right);
+    }
+    return inv_count;
+}
+
+long long countSmallerElementsAfter(vector<ll>& arr) {
+    return mergeSort(arr, 0, arr.size() - 1);
+}
+
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
-map<ll,ll> mp;
-for(ll i=0;i< n;i++){ll a,b;
-cin>>a>>b;
-if(a==1){
-    mp[b]++;if(mp[b]==2){
-        ll temp=b;
-        while(mp[temp]==2){
-mp[temp]=0;mp[temp+1]++;temp++;
-        }
-        
-    }
+vvl v(n,vl(2));
+for(ll i=0;i< n;i++){
+cin>>v[i][0]>>v[i][1];
 }
-else{
-    ll p=0,f=1;
-    while(b){
-        if(mp[p]<(b%(2))){
-            f=0;break;
-        }p++;b/=2;
-    }
-    cout<<mp<<endl;
-    if(f)cout<<"YES";
-    else cout<<"NO";
-    cout<<endl;
-}
-}
+sort(all(v));
+vl arr={};
+for(auto i:v)arr.pb(i[1]);
+// cout<<arr<<endl;
+cout<<countSmallerElementsAfter(arr)<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-// cin >> n;
+cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

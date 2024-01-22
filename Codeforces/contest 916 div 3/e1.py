@@ -12,24 +12,32 @@ for _ in range(int(input())):
         if(j%2==0):
             maxo=0
             ind=0
+            maxo2=0
+            lis=[]
             for i in range(n):
                 
                 if(a[i]!=0 and b[i]!=0):
-                    maxo=max(maxo,abs(a[i]-b[i]))
-                    if(abs(a[i]-b[i])==maxo):
-                        ind=i
+                    
+                    lis.append((b[i]+a[i],a[i],i))
+                    # lis.append((a[i],a[i],i))
+            lis.sort()
+            ind=lis[-1][2]
             a[ind]-=1
             b[ind]=0
             # ans+=a[i]
         else:
             maxo=0
             ind=0
+            maxo2=0
+            lis=[]
             for i in range(n):
                 
                 if(b[i]!=0 and a[i]!=0):
-                    maxo=max(maxo,abs(a[i]-b[i]))
-                    if(abs(a[i]-b[i])==maxo):
-                        ind=i
+                    
+                    lis.append((a[i]+b[i],b[i],i))
+                    # lis.append((b[i],b[i],i))
+            lis.sort()
+            ind=lis[-1][2]
             b[ind]-=1
             a[ind]=0
             # ans-=b[i]

@@ -42,40 +42,37 @@ sort(all(v));
 return v[0];
 }
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
-map<ll,ll> mp;
-for(ll i=0;i< n;i++){ll a,b;
-cin>>a>>b;
-if(a==1){
-    mp[b]++;if(mp[b]==2){
-        ll temp=b;
-        while(mp[temp]==2){
-mp[temp]=0;mp[temp+1]++;temp++;
-        }
-        
-    }
+int n,k,d;
+cin>>n>>k>>d;
+ll l[n],v[k];
+for(ll i=0;i< n;i++){
+cin>>l[i];
 }
-else{
-    ll p=0,f=1;
-    while(b){
-        if(mp[p]<(b%(2))){
-            f=0;break;
-        }p++;b/=2;
-    }
-    cout<<mp<<endl;
-    if(f)cout<<"YES";
-    else cout<<"NO";
-    cout<<endl;
+for(ll i=0;i< k;i++){
+cin>>v[i];
 }
-}
+ll ans=0;
+    // ll var=0;FOR(j,0,n)if(l[j]==(j+1))var++;
+    // ans=maxm({ans,var+(d-1)/2});
+    // vl l(n);FOR(j,0,n)l[j]=l[j];
+FOR(i,0,min(d,2*n)){
+    
+    // cout<<l<<endl;
+    ll var=0;FOR(j,0,n)if(l[j]==(j+1))var++;
+    ans=maxm({ans,var+(d-i-1)/2});
+    FOR(j,0,v[i%k])l[j]+=1;
+    // cout<<l<<" "<<var<<" "<<ans<<endl;
+    // var=0;FOR(j,0,n)if(l[j]==(j+1))var++;
+    // if((d-i)>=2)
+    // ans=maxm({ans,var+(d-i-2)/2});
+
+}cout<<ans<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-// cin >> n;
+cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

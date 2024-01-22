@@ -41,41 +41,25 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
+bool comp(const vector<int> &a, const vector<int> &b) {
+    return a[0] < b[0]; // Assuming x coordinate is stored at index 0
+}
+long getNumberOfDroppedPackets(vector<vector<int>> requests,int max_packets,int rate){
+    sort(requests.begin(),requests.end(),comp);
+    long ans=0;long curr=min(max_packets,requests[0][1]);if(requests[0][1]>max_packets)ans=requests[0][1]-max_packets;
+    for(int i=0;i<requests.size()-1;i++){
+        curr-=(requests[i+1][0]-requests[i][0])*rate;if(curr<0)curr=0;if((curr+requests[i+1][1])>max_packets)ans+=(curr+requests[i+1][1])-max_packets;
+        curr=curr+requests[i+1][1];if(curr>max_packets)curr=max_packets;
+    }return ans;
+}
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
-map<ll,ll> mp;
-for(ll i=0;i< n;i++){ll a,b;
-cin>>a>>b;
-if(a==1){
-    mp[b]++;if(mp[b]==2){
-        ll temp=b;
-        while(mp[temp]==2){
-mp[temp]=0;mp[temp+1]++;temp++;
-        }
-        
-    }
-}
-else{
-    ll p=0,f=1;
-    while(b){
-        if(mp[p]<(b%(2))){
-            f=0;break;
-        }p++;b/=2;
-    }
-    cout<<mp<<endl;
-    if(f)cout<<"YES";
-    else cout<<"NO";
-    cout<<endl;
-}
-}
+cout<<getNumberOfDroppedPackets({{1,8},{4,9},{6,7}},10,2)<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-// cin >> n;
+cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

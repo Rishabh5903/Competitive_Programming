@@ -22,6 +22,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
 #define ce(x) cout<<x<<endl
+#define cinv(v,size) for( long long int i = 0; i<size;i++)cin>>v[i];
 int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
 int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
 int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
@@ -45,39 +46,34 @@ void solve() {
 ll n;
 cin>>n;
 ll l[n];
-map<ll,ll> mp;
-for(ll i=0;i< n;i++){ll a,b;
-cin>>a>>b;
-if(a==1){
-    mp[b]++;if(mp[b]==2){
-        ll temp=b;
-        while(mp[temp]==2){
-mp[temp]=0;mp[temp+1]++;temp++;
-        }
-        
-    }
-}
-else{
-    ll p=0,f=1;
-    while(b){
-        if(mp[p]<(b%(2))){
-            f=0;break;
-        }p++;b/=2;
-    }
-    cout<<mp<<endl;
-    if(f)cout<<"YES";
-    else cout<<"NO";
-    cout<<endl;
-}
+string s;
+cin>>s;
+for(ll i=0;i< n;i++){
+cin>>l[i];
 }
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-// cin >> n;
+cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();
 }
 }
+    vector<int> beautifulIndices(string s, string a, string b, int k) {
+        int ans=0;
+        for(int i=0;i<s.size()-a.size();i++){
+            string temp="";
+            
+            for(int j=i;j<a.size();j++)temp+=s[j];
+            if(temp==a){
+                for(int p=max(0,i-k);p<min(s.size()-b.size(),i+k);p++){
+                    string temp2="";
+                    for(int j=p;j<b.size();j++)temp2+=s[j];
+                    if(temp2==b)ans.push_back(i);
+                }
+            }
+        }return ans;
+    }
