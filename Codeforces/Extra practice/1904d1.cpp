@@ -22,8 +22,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
 #define ce(x) cout<<x<<endl
-#define cinv(v,size) for( long long int i = 0; i<size;i++)cin>>v[i];
-
+#define cinv(v) for( long long int i = 0; i<v.size();i++)cin>>v[i];
+#define coutv(v) for( long long int i = 0; i<v.size();i++)cout<<v[i]<<" ";cout<<endl;
 int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
 int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
 int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
@@ -43,29 +43,67 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-    void solve(int temp,int sz,TreeNode* root,int& ans){
-        if(root==NULL){if((sz%2 && __builtin_popcount(temp)==1)||(sz%2==0 && __builtin_popcount(temp)==0))ans++;return;}
-        solve(temp ^ (1<<(root->val)),sz+1,root->left,ans);
-        solve(temp ^ (1<<(root->val)),sz+1,root->right,ans);
-
-
+bool check_backward(ll start, ll end, const vl &a, const vl &b) {
+    vl temp;
+    ll curr = 0;
+    ll next = a[end - 1];
+    FOR(i, start, end) {
+        ll index = end - 1 - (i - start); // Adjust index for the subrange
+        if (temp.size() > curr) next = temp[curr];
+        else next = a[index];
+        if (a[index] == next && temp.size() > curr) curr++;
+        if (temp.size() > curr) next = temp[curr];
+        else next = a[index];
+        if (next != b[index]) {
+            temp.pb(b[index]);
+        }
     }
-    int pseudoPalindromicPaths (TreeNode* root) {
-        int ans=0;
-        solve(0,1,root,ans);
-        return ans;
-    }
-void sol() {
-ce(pseudoPalindromicPaths({2,3,1,3,1,NULL,1}));
+    return temp.size() == curr;
 }
+ 
+bool check_forward(ll start, ll end, const vl &a, const vl &b) {
+    vl temp={};
+    ll curr=0;
+    ll next=a[start];
+    FOR(i,start,end){
+        if(temp.size()>curr) next=temp[curr];
+        else next=a[i];
+        if(a[i]==next && temp.size()>curr) curr++;
+        if(temp.size()>curr) next=temp[curr];
+        else next=a[i];
+        if(next!=b[i]){
+            temp.pb(b[i]);
+        }
+    }
+    return temp.size()==curr;
+}
+
+bool check_any_index(const vl &a, const vl &b) {
+    ll n = a.size();
+    if (check_backward(0, n, a, b) || check_forward(0, n, a, b)) return true;
+    
+    for (ll i = 0; i <= n; i++) {
+        bool left_ok = i == n || check_backward(i, n, a, b);
+        bool right_ok = i == 0 || check_forward(0, i, a, b);
+        if (left_ok && right_ok) return true;
+        // cout<<i<<" "<<left_ok<<" "<<right_ok<<endl;
+    }
+
+    return false;
+}
+
+void solve(int t) {
+    ll n;
+    cin >> n;
+    vl a(n), b(n);
+    // if(t==63)cout<<a<<b<<endl;
+    for(ll i = 0; i < n; i++) cin >> a[i];
+    for(ll i = 0; i < n; i++) cin >> b[i];
+
+    if (check_any_index(a, b)) cout << "YES\n";
+    else cout << "NO\n";
+}
+
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
@@ -73,6 +111,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-sol();
+solve(t);
 }
 }

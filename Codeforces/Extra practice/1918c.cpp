@@ -22,8 +22,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
 #define ce(x) cout<<x<<endl
-#define cinv(v,size) for( long long int i = 0; i<size;i++)cin>>v[i];
-
+#define cinv(v) for( long long int i = 0; i<v.size();i++)cin>>v[i];
+#define coutv(v) for( long long int i = 0; i<v.size();i++)cout<<v[i]<<" ";cout<<endl;
 int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
 int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
 int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
@@ -43,28 +43,23 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-    void solve(int temp,int sz,TreeNode* root,int& ans){
-        if(root==NULL){if((sz%2 && __builtin_popcount(temp)==1)||(sz%2==0 && __builtin_popcount(temp)==0))ans++;return;}
-        solve(temp ^ (1<<(root->val)),sz+1,root->left,ans);
-        solve(temp ^ (1<<(root->val)),sz+1,root->right,ans);
+ll dp[100];
+ll help(ll x,ll& r,ll i,ll a,ll b){
+    if(x>r)return 1e10;
+    if(i<0)return abs(a-b);
+    if(dp[i]!=-1)return dp[i];
 
+        if(a<b)swap(a,b);
+    ll var=(1LL<<i);
+    // cout<<(a&(var))<<" "<<(b&(var))<<" "<<var<<" "<<(((b&(var))==0))<<endl;
+    if(a&(1ll<<i)!=b&(1ll<<i)) return dp[i]=minm({abs(a-b),help(x+var,r,i-1,a^var,b^var),help(x,r,i-1,a,b)});
+}
+void solve() {memset(dp,-1,sizeof(dp));
+ll a,b,r;
 
-    }
-    int pseudoPalindromicPaths (TreeNode* root) {
-        int ans=0;
-        solve(0,1,root,ans);
-        return ans;
-    }
-void sol() {
-ce(pseudoPalindromicPaths({2,3,1,3,1,NULL,1}));
+cin>>a>>b>>r;
+ll x=0;ll temp=int(floor(log2(r)));
+ce(help(0,r,temp,a,b));
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -73,6 +68,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-sol();
+solve();
 }
 }

@@ -23,7 +23,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pb push_back
 #define ce(x) cout<<x<<endl
 #define cinv(v,size) for( long long int i = 0; i<size;i++)cin>>v[i];
-
+#define coutv(v,size) for( long long int i = 0; i<size;i++)cout<<v[i]<<" ";cout<<endl;
 int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
 int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
 int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
@@ -43,28 +43,30 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-    void solve(int temp,int sz,TreeNode* root,int& ans){
-        if(root==NULL){if((sz%2 && __builtin_popcount(temp)==1)||(sz%2==0 && __builtin_popcount(temp)==0))ans++;return;}
-        solve(temp ^ (1<<(root->val)),sz+1,root->left,ans);
-        solve(temp ^ (1<<(root->val)),sz+1,root->right,ans);
+void solve() {
+ll n,k,m;
+cin>>n>>k>>m;
 
+string s;
+cin>>s;
+vl chk(k,0);ll cnt=0;
+FOR(i,0,m){
+    if(s[i]-'a'<k)chk[s[i]-'a']=1;
+    if(find(all(chk),0)==chk.end()){FOR(j,0,26)chk[j]=0;cnt++;}
+    if(cnt==n)break;
+    
 
-    }
-    int pseudoPalindromicPaths (TreeNode* root) {
-        int ans=0;
-        solve(0,1,root,ans);
-        return ans;
-    }
-void sol() {
-ce(pseudoPalindromicPaths({2,3,1,3,1,NULL,1}));
+}
+if(cnt>=n)
+cout<<("YES")<<endl;
+else{
+cout<<("NO")<<endl;
+    string ans="";ll ind=0;
+    FOR(i,0,k)if(chk[i]==0)ind=i;
+    char c=static_cast<char>(97 + ind);
+FOR(i,0,n)ans+=c;
+cout<<ans<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -73,6 +75,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-sol();
+solve();
 }
 }
