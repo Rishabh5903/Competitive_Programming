@@ -22,8 +22,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
 #define ce(x) cout<<x<<endl
-#define cinv(v,size) for( long long int i = 0; i<size;i++)cin>>v[i];
-
+#define cinv(v) for( long long int i = 0; i<v.size();i++)cin>>v[i];
+#define coutv(v) for( long long int i = 0; i<v.size();i++)cout<<v[i]<<" ";cout<<endl;
 int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
 int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
 int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
@@ -43,36 +43,67 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode() : val(0), left(nullptr), right(nullptr) {}
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-    void solve(int temp,int sz,TreeNode* root,int& ans){
-        if(root==NULL){if((sz%2 && __builtin_popcount(temp)==1)||(sz%2==0 && __builtin_popcount(temp)==0))ans++;return;}
-        solve(temp ^ (1<<(root->val)),sz+1,root->left,ans);
-        solve(temp ^ (1<<(root->val)),sz+1,root->right,ans);
 
-
+bool isAllZeros(const string &s) {
+    // Check if all characters in the string are '0'
+    for (char c : s) {
+        if (c != '0') {
+            return false;
+        }
     }
-    int pseudoPalindromicPaths (TreeNode* root) {
-        int ans=0;
-        solve(0,1,root,ans);
-        return ans;
-    }
-void sol() {
-ce(pseudoPalindromicPaths({2,3,1,3,1,NULL,1}));
+    return true;
 }
+
+bool isPossible(const string &s, int k) {
+    cout<<k<<endl;
+    int n = s.size();
+    vector<char> l(n);
+    FOR(i,0,n)l[i]=s[i];
+    ll ind=0;ll i=0;
+    while(i<n){
+        // ce(i);
+        if(l[i]=='0'){int f=1;
+        if(i+k<n)
+        {FOR(j,i,i+k){
+            if(l[j]=='0'){l[j]='1';}else {l[j]='0';if(f){ind=j;f=0;}};
+        }
+        if(!f)
+        i=ind;else i+=k;}
+        else break;
+        }
+        else i++;
+    }
+    if(find(all(l),'0')==l.end())return true;else return false;
+
+}
+
+int findMaxK(const string &s) {
+    if (isAllZeros(s)) return s.size(); // If all characters are '0', return n
+
+    int low = 1, high = s.size(), mid, ans = 1;
+    while (low <= high) {
+        mid = low + (high - low) / 2;
+        if (isPossible(s, mid)) {
+            ans = mid; // If it's possible with this k, try to find a larger k
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return ans;
+}
+
 int main() {
-ios_base::sync_with_stdio(0);
-cin.tie(0); cout.tie(0);
-int n = 1;
-cin >> n;
-for (int t = 1; t <= n; t++) {
-// cout << 'Case #' << t << ': ';
-sol();
-}
+    int t, n;
+    cin >> t; // Read the number of test cases
+    while (t--) {
+        string s;
+        cin >> n >> s; // Read the string length and the string itself for each test case
+        int f=1;
+        for(char i:s)if(i=='1'){f=0;break;}
+        if(f){cout<<n<<endl;}
+        else
+        cout << findMaxK(s) << "\n"; // Output the maximum k for each test case
+    }
+    return 0;
 }

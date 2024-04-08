@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "e:/IIT DELHI/OneDrive - IIT Delhi/Hustle/CP/Codeforces/Extra practice",
-      "program": "e:/IIT DELHI/OneDrive - IIT Delhi/Hustle/CP/Codeforces/Extra practice/build/Debug/outDebug",
+      "cwd": "e:/IIT DELHI/OneDrive - IIT Delhi/Work/CP/Codeforces/Extra practice",
+      "program": "e:/IIT DELHI/OneDrive - IIT Delhi/Work/CP/Codeforces/Extra practice/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

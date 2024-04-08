@@ -13,10 +13,17 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ar array
 #define ll long long
 #define ld long double
+#define vi vector<int>
+#define vvi vector<vector<int>>
+#define vl vector<ll>
+#define vvl vector<vector<ll>>
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
+#define ce(x) cout<<x<<endl
+#define cinv(v) for( long long int i = 0; i<v.size();i++)cin>>v[i];
+#define coutv(v) for( long long int i = 0; i<v.size();i++)cout<<v[i]<<" ";cout<<endl;
 int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
 int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
 int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
@@ -35,58 +42,38 @@ return v[v.size()-1];
 ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
-}
-void merge(std::vector<int>& arr, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-    std::vector<int> L(n1);
-    std::vector<int> R(n2);
-
-    for (int i = 0; i < n1; ++i)
-        L[i] = arr[left + i];
-    for (int j = 0; j < n2; ++j)
-        R[j] = arr[mid + 1 + j];
-
-    int i = 0, j = 0, k = left;
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
-            ++i;
-        } else {
-            arr[k] = R[j];
-            ++j;
+}struct ComparePairs {
+    bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b) const {
+        // First compare the first elements
+        if (a.first != b.first) return a.first >= b.first;
+        // If the first elements are equal, compare the second elements
+        return a.second >= b.second;
+    }
+};
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+        vector<int> f(n,0);int maxo=0;
+        priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, ComparePairs> pq;
+        for(int i=0;i<n;i++){
+            pq.push({0,i});
         }
-        ++k;
+        sort(meetings.begin(),meetings.end());
+        for(int i=0;i<meetings.size();i++){
+            pair<int, int>temp=pq.top();pq.pop();
+            // ce(temp.first);ce(temp.second);
+            f[temp.second]++;temp.first=max(temp.first,meetings[i][0])+meetings[i][1]-meetings[i][0];pq.push(temp);maxo=max(maxo,f[temp.second]);
+        }
+        // ce(f);
+        // return maxo;
+        for(int i=0;i<n;i++)if(f[i]==maxo)return i;return 0;
     }
-
-    while (i < n1) {
-        arr[k] = L[i];
-        ++i;
-        ++k;
-    }
-
-    while (j < n2) {
-        arr[k] = R[j];
-        ++j;
-        ++k;
-    }
-}
-
-void mergeSort(std::vector<int>& arr, int left, int right) {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-
-        mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
-
-        merge(arr, left, mid, right);
-    }
-}
 void solve() {
-    vector<int> arr={346,34,73,45,4546};mergeSort(arr,0,4);
-cout<<arr<<endl;
-// cout<<merge({3,5,6,8},{5,7,9,11})<<endl;
+int n = 2;vvi meetings;
+meetings.pb({0,10}) ;
+meetings.pb({1,5}) ;
+meetings.pb({2,7}) ;
+meetings.pb({3,4}) ;
+//  {{0,10},{1,5},{2,7},{3,4}};
+ce(mostBooked(n,meetings));
 }
 int main() {
 ios_base::sync_with_stdio(0);
