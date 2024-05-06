@@ -34,8 +34,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "e:/IIT DELHI/OneDrive - IIT Delhi/Work/CP",
-      "program": "e:/IIT DELHI/OneDrive - IIT Delhi/Work/CP/build/Debug/outDebug",
+      "cwd": ".",
+      "program": "build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
