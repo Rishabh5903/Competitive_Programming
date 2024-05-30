@@ -62,54 +62,34 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n,m;
-cin>>n>>m;
-vl a(n+m+1),b(n+m+1);
-// string s;
-// cin>>s;
-for(ll i=0;i< n+m+1;i++){
-cin>>a[i];
+ll n;
+cin>>n;
+vl l(n);
+for(ll i=0;i< n;i++){
+cin>>l[i];
 }
-for(ll i=0;i< n+m+1;i++){
-cin>>b[i];
+if(l[0]>l[n-1])reverse(all(l));
+vector<pair<ll,ll>> v(n);
+ll mino=l[n-1];ll ind=n-1;
+for(int i=n-1;i>=0;i--){
+    if(l[i]<=mino){
+        mino=l[i];ind=i;
+    }v[i]={mino,ind};
 }
-if(n>=m){
-    swap(n,m);
-    swap(a,b);
-}
-vl anum(n+m+1,0),asum(n+m+1,0),bsum(n+m+1,0);ll tot=0;
-// cout<<anum<<asum<<bsum<<endl;
-FOR(i,0,n+m+1){
-    if(i==0){
-        if(a[i]>b[i]){anum[0]=1;asum[0]=a[0];bsum[0]=b[0];}tot+=b[0];
-    }
-    else{
-    if(a[i]>b[i]){anum[i]=anum[i-1]+1;asum[i]=asum[i-1]+a[i];bsum[i]=bsum[i-1]+b[i];}
-    else {anum[i]=anum[i-1];asum[i]=asum[i-1];bsum[i]=bsum[i-1];}tot+=b[i];}
-}
-cout<<anum<<asum<<bsum<<" "<<tot<<endl;
-FOR(i,0,n+m+1){ll ind;ll temp=tot;
-    if(a[i]>b[i]){
-        ind=lower_bound(all(anum),n+1)-anum.begin();
-        if(i>=ind)ind=lower_bound(all(anum),n)-anum.begin();
+ll ans=0;
+ll it=1;ll prev=0;
+while(it<(n)){
 
-    }
-    else{
-        ind=lower_bound(all(anum),n)-anum.begin();
-    }
-    if(ind<(n+m+1)){
-        temp+=asum[ind]-bsum[ind];
-    }
-    else{
-        temp+=asum[n+m]-bsum[n+m];
-    }
-    cout<<temp<<" ";
-    if(i<=ind && a[i]>b[i]){
-        temp-=a[i];
-    }if(i>ind || a[i]<b[i])temp-=b[i];
-
-    cout<<temp<<" ";
-}cout<<endl;
+// if(v[it].first < l[n-1]){
+    ans+=maxm({l[prev],v[it].first})*(v[it].second-prev);
+    prev=v[it].second;
+    it=v[it].second + 1;
+// }
+// else{
+//     ans+=maxm({l[prev],l[n-1]})*(n-1-prev);break;
+// }
+// it++;
+}ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

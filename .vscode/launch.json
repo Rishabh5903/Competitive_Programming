@@ -34,8 +34,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": ".",
-      "program": "build/Debug/outDebug",
+      "cwd": "e:/IIT DELHI/OneDrive - IIT Delhi/Work/CP/Codeforces",
+      "program": "e:/IIT DELHI/OneDrive - IIT Delhi/Work/CP/Codeforces/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

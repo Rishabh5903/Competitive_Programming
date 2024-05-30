@@ -77,18 +77,23 @@ if(n>=m){
     swap(n,m);
     swap(a,b);
 }
-vl anum(n+m+1,0),asum(n+m+1,0),bsum(n+m+1,0);ll tot=0;
+vl anum(n+m+1,0),bnum(n+m+1,0),asum(n+m+1,0),bsum(n+m+1,0);ll atot=0,btot=0;
 // cout<<anum<<asum<<bsum<<endl;
 FOR(i,0,n+m+1){
     if(i==0){
-        if(a[i]>b[i]){anum[0]=1;asum[0]=a[0];bsum[0]=b[0];}tot+=b[0];
+        if(a[i]>b[i]){anum[0]=1;asum[0]=a[0]-b[0];}
+        else{bnum[0]=1;bsum[0]=b[0]-a[0];}
+        btot+=b[0];atot+=a[0];
     }
     else{
-    if(a[i]>b[i]){anum[i]=anum[i-1]+1;asum[i]=asum[i-1]+a[i];bsum[i]=bsum[i-1]+b[i];}
-    else {anum[i]=anum[i-1];asum[i]=asum[i-1];bsum[i]=bsum[i-1];}tot+=b[i];}
+    if(a[i]>b[i]){anum[i]=anum[i-1]+1;bnum[i]=bnum[i-1];asum[i]=asum[i-1]+a[i]-b[i];bsum[i]=bsum[i-1];}
+    else {anum[i]=anum[i-1];bnum[i]=bnum[i-1]+1;asum[i]=asum[i-1];bsum[i]=bsum[i-1]+b[i]-a[i];}btot+=b[i];atot+=a[i];}
 }
-cout<<anum<<asum<<bsum<<" "<<tot<<endl;
-FOR(i,0,n+m+1){ll ind;ll temp=tot;
+// cout<<anum<<bnum<<asum<<bsum<<" "<<atot<<" "<<btot<<endl;
+
+FOR(i,0,n+m+1){ll ind,ind2;ll temp;
+if(n==0){cout<<(btot-b[i])<<" ";continue;}
+if(m==0){cout<<(atot-a[i])<<" ";continue;}
     if(a[i]>b[i]){
         ind=lower_bound(all(anum),n+1)-anum.begin();
         if(i>=ind)ind=lower_bound(all(anum),n)-anum.begin();
@@ -96,18 +101,46 @@ FOR(i,0,n+m+1){ll ind;ll temp=tot;
     }
     else{
         ind=lower_bound(all(anum),n)-anum.begin();
+        // if(i==ind)ind=lower_bound(all(anum),n+1)-anum.begin();
     }
-    if(ind<(n+m+1)){
-        temp+=asum[ind]-bsum[ind];
+    // ce(ind);
+    // if(ind==0 && n<anum[0])ind=n+m+1;
+    if(b[i]>a[i]){
+        ind2=lower_bound(all(bnum),m+1)-bnum.begin();
+        if(i>=ind2)ind2=lower_bound(all(bnum),m)-bnum.begin();
+
     }
     else{
-        temp+=asum[n+m]-bsum[n+m];
+        ind2=lower_bound(all(bnum),m)-bnum.begin();
+        
     }
-    cout<<temp<<" ";
+    // if(ind2==0 && m<bnum[0])ind2=n+m+1;
+    // cout<<ind<<" "<<ind2<<endl;
+    if(ind<=ind2){temp=btot;
+    if(ind<(n+m+1)){
+        temp+=asum[ind];
+    }
+    else{
+        temp+=asum[n+m];
+    }
+    // cout<<temp<<" ";
     if(i<=ind && a[i]>b[i]){
         temp-=a[i];
     }if(i>ind || a[i]<b[i])temp-=b[i];
+    }
 
+    else {temp=atot;
+    if(ind2<(n+m+1)){
+        temp+=bsum[ind2];
+    }
+    else{
+        temp+=bsum[n+m];
+    }
+    // cout<<temp<<" ";
+    if(i<=ind2 && b[i]>a[i]){
+        temp-=b[i];
+    }if(i>ind2 || b[i]<a[i])temp-=a[i];
+    }
     cout<<temp<<" ";
 }cout<<endl;
 }

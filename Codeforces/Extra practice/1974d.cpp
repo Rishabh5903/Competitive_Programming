@@ -62,54 +62,58 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n,m;
-cin>>n>>m;
-vl a(n+m+1),b(n+m+1);
-// string s;
-// cin>>s;
-for(ll i=0;i< n+m+1;i++){
-cin>>a[i];
-}
-for(ll i=0;i< n+m+1;i++){
-cin>>b[i];
-}
-if(n>=m){
-    swap(n,m);
-    swap(a,b);
-}
-vl anum(n+m+1,0),asum(n+m+1,0),bsum(n+m+1,0);ll tot=0;
-// cout<<anum<<asum<<bsum<<endl;
-FOR(i,0,n+m+1){
-    if(i==0){
-        if(a[i]>b[i]){anum[0]=1;asum[0]=a[0];bsum[0]=b[0];}tot+=b[0];
-    }
-    else{
-    if(a[i]>b[i]){anum[i]=anum[i-1]+1;asum[i]=asum[i-1]+a[i];bsum[i]=bsum[i-1]+b[i];}
-    else {anum[i]=anum[i-1];asum[i]=asum[i-1];bsum[i]=bsum[i-1];}tot+=b[i];}
-}
-cout<<anum<<asum<<bsum<<" "<<tot<<endl;
-FOR(i,0,n+m+1){ll ind;ll temp=tot;
-    if(a[i]>b[i]){
-        ind=lower_bound(all(anum),n+1)-anum.begin();
-        if(i>=ind)ind=lower_bound(all(anum),n)-anum.begin();
+ll N;
+cin>>N;
+string st;
+cin>>st;
+ll n=0,s=0,e=0,w=0;
+for(char i:st){
+    if(i=='N')n++;else if(i=='S')s++;else if(i=='E')e++;else if(i=='W')w++;}
+if((abs(n-s))%2 || (abs(e-w))%2)ce("NO");
+else{
+    ll f1=0,f2=0;if(n<s)f1=1;if(e<w)f2=1;
+    ll n1=0,n2=0,s1=0,s2=0,e1=0,e2=0,w1=0,w2=0;
 
+    if(f1){n1=n;n2=0;s1=n+(s-n)/2;s2=(s-n)/2;}
+    else{s1=s;s2=0;n1=s+(abs(s-n))/2;n2=(abs(s-n))/2;}
+    if(f2){e1=e;e2=0;w1=e+(w-e)/2;w2=(w-e)/2;}
+    else{w1=w;w2=0;e1=w+(abs(w-e))/2;e2=(abs(w-e))/2;}
+    if(n==s && e==w){
+        if((n%2 && e==0)||(e%2 && n==0)){ce("NO");return;}
+        // else{
+        //     if(n%2 == 0){n1=n/2;n2=n/2;s1=s/2;s2=s/2;}
+        //     else{n1=n/2;n2=n/2;s1=s/2;s2=s/2;}
+        // }
     }
-    else{
-        ind=lower_bound(all(anum),n)-anum.begin();
+    if(n==s){
+        if(n%2){n1=n;n2=0;s1=s;s2=0;}
+        else {n1=n/2;n2=n/2;s1=s/2;s2=s/2;}
     }
-    if(ind<(n+m+1)){
-        temp+=asum[ind]-bsum[ind];
+    if(e==w){
+        if(e%2){e2=e;e1=0;w2=w;w1=0;}
+        else {e1=e/2;e2=e/2;w1=w/2;w2=w/2;}
     }
-    else{
-        temp+=asum[n+m]-bsum[n+m];
+    // n1=2*minm({n,s});n2=2*minm({e,w});
+    FOR(i,0,N){
+        if(st[i]=='N'){
+            if(n1){cout<<'R';n1--;}
+            else{cout<<'H';n2--;}
+        }
+        else if(st[i]=='S'){
+            if(s1){cout<<'R';s1--;}
+            else{cout<<'H';s2--;}
+        }
+        else if(st[i]=='E'){
+            if(e1){cout<<'R';e1--;}
+            else{cout<<'H';e2--;}
+        }
+        else if(st[i]=='W'){
+            if(w1){cout<<'R';w1--;}
+            else{cout<<'H';w2--;}
+        }
     }
-    cout<<temp<<" ";
-    if(i<=ind && a[i]>b[i]){
-        temp-=a[i];
-    }if(i>ind || a[i]<b[i])temp-=b[i];
-
-    cout<<temp<<" ";
-}cout<<endl;
+    cout<<endl;
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -64,52 +64,14 @@ return factors;
 void solve() {
 ll n,m;
 cin>>n>>m;
-vl a(n+m+1),b(n+m+1);
-// string s;
-// cin>>s;
-for(ll i=0;i< n+m+1;i++){
-cin>>a[i];
-}
-for(ll i=0;i< n+m+1;i++){
-cin>>b[i];
-}
-if(n>=m){
-    swap(n,m);
-    swap(a,b);
-}
-vl anum(n+m+1,0),asum(n+m+1,0),bsum(n+m+1,0);ll tot=0;
-// cout<<anum<<asum<<bsum<<endl;
-FOR(i,0,n+m+1){
-    if(i==0){
-        if(a[i]>b[i]){anum[0]=1;asum[0]=a[0];bsum[0]=b[0];}tot+=b[0];
-    }
-    else{
-    if(a[i]>b[i]){anum[i]=anum[i-1]+1;asum[i]=asum[i-1]+a[i];bsum[i]=bsum[i-1]+b[i];}
-    else {anum[i]=anum[i-1];asum[i]=asum[i-1];bsum[i]=bsum[i-1];}tot+=b[i];}
-}
-cout<<anum<<asum<<bsum<<" "<<tot<<endl;
-FOR(i,0,n+m+1){ll ind;ll temp=tot;
-    if(a[i]>b[i]){
-        ind=lower_bound(all(anum),n+1)-anum.begin();
-        if(i>=ind)ind=lower_bound(all(anum),n)-anum.begin();
-
-    }
-    else{
-        ind=lower_bound(all(anum),n)-anum.begin();
-    }
-    if(ind<(n+m+1)){
-        temp+=asum[ind]-bsum[ind];
-    }
-    else{
-        temp+=asum[n+m]-bsum[n+m];
-    }
-    cout<<temp<<" ";
-    if(i<=ind && a[i]>b[i]){
-        temp-=a[i];
-    }if(i>ind || a[i]<b[i])temp-=b[i];
-
-    cout<<temp<<" ";
-}cout<<endl;
+// ll l[n];
+string a,b;
+cin>>a>>b;
+int i=0,j=0;
+while(i<a.size() && j<b.size()){
+    if(b[j]==a[i]){i++;j++;}
+    else j++;
+}ce(i);
 }
 int main() {
 ios_base::sync_with_stdio(0);
