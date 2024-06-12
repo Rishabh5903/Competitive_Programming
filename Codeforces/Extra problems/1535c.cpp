@@ -134,57 +134,35 @@ void solve() {
     string s;
     cin >> s;
     ll ans = s.size();
-    ll temp2 = 1;
+    char curr = s[0], prev = curr;
+    ll ind = 0, temp2 = 1;
     priority_queue<int, vector<int>, greater<int>> pq;
-    ll prev1 = -1, prev0 = -1, ind = -1;
-
-    if (s[0] == '?') {
-        pq.push(0);
-    } else if (s[0] == '0') {
-        prev0 = 0;
-    } else {
-        prev1 = 0;
-    }
+    
+    if(s[0] == '?') pq.push(0);
 
     FOR(i, 1, s.size()) {
-        char curr = s[i];
+        curr = s[i];
         temp2++;
-        if (curr == '?') {
-            pq.push(i);
+        if(s[i] == '?') pq.push(i);
+
+        if(prev == '?' && s[i] != '?') {
+            prev = s[i];
+            ind = i;
+            continue;
         }
 
-        bool shouldReset = false;
-        if (curr != '?') {
-            if ((curr == '1' && (i - prev1) % 2 == 1 && prev1 != -1) || 
-                (curr == '1' && (i - prev0) % 2 == 0 && prev0 != -1) || 
-                (curr == '0' && (i - prev0) % 2 == 1 && prev0 != -1) || 
-                (curr == '0' && (i - prev1) % 2 == 0 && prev1 != -1)) {
-                shouldReset = true;
-            }
-        }
-
-        if (shouldReset) {
+        if(curr != '?' && ((curr == prev && (i - ind) % 2) || (curr != prev && (i - ind) % 2 == 0))) {
             ans += ((temp2 - 2) * (temp2 - 1)) / 2;
-            ind = (curr == '1' && (i - prev1) % 2 == 1 && prev1 != -1) || 
-                  (curr == '0' && (i - prev1) % 2 == 0 && prev1 != -1) ? prev1 : prev0;
-
-            while (!pq.empty() && pq.top() <= ind) pq.pop();
-            temp2 = !pq.empty() ? (i - pq.top() + 1) : 1;
-
-            if (prev1 < ind || (!pq.empty() && prev1 < pq.top())) prev1 = -1;
-            if (prev0 < ind || (!pq.empty() && prev0 < pq.top())) prev0 = -1;
+            prev = curr;
+            while(!pq.empty() && pq.top() <= ind) pq.pop();
+            if(!pq.empty()) temp2 = (i - pq.top() + 1);else temp2=1;
+            ind = i;
         }
-
-        if (curr == '0') prev0 = i;
-        else if (curr == '1') prev1 = i;
-
-        if (prev1 < ind) prev1 = -1;
-        if (prev0 < ind) prev0 = -1;
+        cout<<i<<" "<<ans<<" "<<ind<<" "<<temp2<<endl;
     }
     ans += ((temp2) * (temp2 - 1)) / 2;
     ce(ans);
 }
-
 
 int main() {
     ios_base::sync_with_stdio(0);
