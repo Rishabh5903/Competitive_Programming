@@ -13,72 +13,62 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ar array
 #define ll long long
 #define ld long double
+#define vi vector<int>
+#define vvi vector<vector<int>>
+#define vl vector<ll>
+#define vvl vector<vector<ll>>
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
 #define FOR(i,a,b) for( long long int i = a; i<b;i++)
 #define pb push_back
+#define ce(x) cout<<x<<endl
+#define cinv(v) for( long long int i = 0; i<v.size();i++)cin>>v[i];
+#define coutv(v) for( long long int i = 0; i<v.size();i++)cout<<v[i]<<" ";cout<<endl;
+int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
+int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
+int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
+int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b);}
+int expo(int a,int n,int md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
+int expo(int a,int n){ int res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
+template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
-const ll INF = 1e20;
+const ll INF = 1e18;
 const ld EPS = 1e-20;
+ll maxm(vector<ll> v){
+sort(all(v));
+return v[v.size()-1];
+}
+ll minm(vector<ll> v){
+sort(all(v));
+return v[0];
+}
+vl primeFactorization(ll n){
+vl factors;
+while (n % 2 == 0)
+{
+factors.pb(2);
+n = n/2;
+}
+for (int i = 3; i <= sqrt(n); i = i + 2)
+{
+while (n % i == 0)
+{
+factors.pb(i);
+n = n/i;
+}
+}
+if (n > 2) factors.pb(n);
+return factors;
+}
 void solve() {
 ll n;
 cin>>n;
-vector<ll> l(n);
+ll l[n];
+string s;
+cin>>s;
 for(ll i=0;i< n;i++){
 cin>>l[i];
-}
-sort(all(l));
-if(l[0]==l[n-1]){
-cout<<"NO"<<endl;
-}
-else{
-cout<<"YES"<<endl;
-ll a=0;
-ll b=n-1;
-ll sum=l[0];
-ll maxo=l[n-1]-l[0];
-if(sum<0)
-a+=1;
-else
-b-=1;
-ll cnt=1;
-cout<<l[0]<<" ";
-ll prev=l[0];
-while (cnt<n)
-{
-    if(sum<=0){
-        if(abs(sum+l[a])<maxo){
-            cout<<l[a]<<" ";
-            sum+=l[a];
-            prev=l[a];
-            a+=1;
-        }
-        else{
-            cout<<l[b]<<" ";
-            sum+=l[b];
-            prev=l[b];
-            b-=1;
-        }
-    }
-    else{
-        if(abs(sum+l[b])<maxo){
-                        cout<<l[b]<<" ";
-            sum+=l[b];
-            prev=l[b];
-            b-=1;
-
-        }
-        else{
-            cout<<l[a]<<" ";
-            sum+=l[a];
-            prev=l[a];
-            a+=1;
-        }
-    }
-    cnt+=1;
-}
-cout<<endl;
 }
 }
 int main() {
