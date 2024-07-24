@@ -61,18 +61,39 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-int dfs(vector<vector<int>>& v,vector<vector<int>>& vis,int i,int j,int& m,int& n,int t){
-    if()
-}
 void solve() {
-ll n;
-cin>>n;
+ll n,x;
+cin>>n>>x;
 ll l[n];
-string s;
-cin>>s;
+vl v={0};
 for(ll i=0;i< n;i++){
-cin>>l[i];
+cin>>l[i];v.pb(v.back()+l[i]);
 }
+ll ans=n+(n*(n-1))/2;
+unordered_map<ll ,ll> done;
+// ce(v);
+vl dp(n+1,0);
+for(ll i=n;i>=0;i--){
+    
+    ll ind=i;
+    if(!done[ind]){
+        ll cnt=0;
+    while (ind<(n+1))
+    {   
+        
+        
+        if(done[ind]){cnt+=dp[ind];break;}
+        done[ind]=1;
+        ind=upper_bound(v.begin()+ind,v.end(),v[ind]+x)-v.begin();
+        if(ind<(n+1))cnt++;
+        
+    }
+    // cout<<i<<" "<<ind<<" "<<cnt<<endl;
+    dp[i]=cnt;
+    ans-=cnt;
+    }
+    
+}ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

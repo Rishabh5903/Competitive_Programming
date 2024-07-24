@@ -61,9 +61,6 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-int dfs(vector<vector<int>>& v,vector<vector<int>>& vis,int i,int j,int& m,int& n,int t){
-    if()
-}
 void solve() {
 ll n;
 cin>>n;

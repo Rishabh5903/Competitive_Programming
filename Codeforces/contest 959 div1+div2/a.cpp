@@ -61,17 +61,28 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-int dfs(vector<vector<int>>& v,vector<vector<int>>& vis,int i,int j,int& m,int& n,int t){
-    if()
-}
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
-string s;
-cin>>s;
+ll n,m;
+cin>>n>>m;
+vvl v(n,vl(m));
+
 for(ll i=0;i< n;i++){
-cin>>l[i];
+FOR(j,0,m){
+    cin>>v[i][j];
+}
+}if(n==1 && m==1){ce(-1);return;}
+FOR(i,0,n){
+    FOR(j,0,m-1){
+        swap(v[i][j],v[i][(j+1)%m]);
+    }
+}
+FOR(i,0,n-1){
+    swap(v[i],v[(i+1)%n]);
+}
+FOR(i,0,n){
+    FOR(j,0,m){
+        cout<<v[i][j]<<" ";
+    }cout<<endl;
 }
 }
 int main() {

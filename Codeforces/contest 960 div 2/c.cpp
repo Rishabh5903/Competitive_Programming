@@ -61,18 +61,39 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-int dfs(vector<vector<int>>& v,vector<vector<int>>& vis,int i,int j,int& m,int& n,int t){
-    if()
-}
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
-string s;
-cin>>s;
+ll l[n];ll ans=0;
 for(ll i=0;i< n;i++){
-cin>>l[i];
+cin>>l[i];ans+=l[i];
 }
+ll prev=0;
+vl lis(n,0);unordered_map<ll,ll> fr,fr1;vvl v;v.pb({0,1});
+FOR(i,0,n){
+    fr[l[i]]++;if(fr[l[i]]>=2)prev=maxm({prev,l[i]});
+    lis[i]=prev;ans+=prev;fr1[lis[i]]++;
+}
+// ce(lis);
+for(auto i:fr1)if(i.first!=0)v.pb({i.first,i.second});
+if(v.size()){
+sort(all(v));
+// ce(v);
+FOR(i,1,v.size()-1){
+    if(v[i][1]==1){fr1[v[i][0]]=0;fr1[v[i-1][0]]++;v[i]={v[i-1][0],v[i-1][1]+1};}
+}
+// ce(v);
+fr1[v.back()[0]]--;}
+// ce(ans);
+// ce(fr1);
+v={};
+for(auto i:fr1)if(i.second>=1)v.pb({i.first,i.second});sort(all(v));ll k=v.size();
+// ce(v);
+ll temp=0;
+FOR(i,1,k)temp+=v[i][1];
+// ce(temp);
+FOR(i,1,k){temp-=v[i][1];ans+=(v[i][0]*((v[i][1]*(v[i][1]+1))/2 + v[i][1]*(temp)));}ce(ans);
+
 }
 int main() {
 ios_base::sync_with_stdio(0);
