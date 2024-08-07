@@ -33,7 +33,7 @@ int expo(int a,int n){ int res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a
 template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
-const ll INF = 1e20;
+const ll INF = 1e18;
 const ld EPS = 1e-20;
 ll maxm(vector<ll> v){
 sort(all(v));
@@ -43,10 +43,33 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
+vl primeFactorization(ll n){
+vl factors;
+while (n % 2 == 0)
+{
+factors.pb(2);
+n = n/2;
+}
+for (int i = 3; i <= sqrt(n); i = i + 2)
+{
+while (n % i == 0)
+{
+factors.pb(i);
+n = n/i;
+}
+}
+if (n > 2) factors.pb(n);
+return factors;
+}
 void solve() {
-ll a=5,b=2;
-ce(ceil(a/(b*1.0)));
-
+ll n;
+cin>>n;
+ll l[n];
+string s;
+cin>>s;
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

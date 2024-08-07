@@ -61,64 +61,63 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void solve(int k) {
-ll n,x;
-cin>>n>>x;
-vl l1(n);ll mino=INF,maxo=0;
+void solve() {
+ll n;
+cin>>n;
+vl l(n);vector<pair<ll,ll>> v;
 for(ll i=0;i< n;i++){
-cin>>l1[i];mino=min({mino,l1[i]});maxo=max({maxo,l1[i]});
+cin>>l[i];
+if(l[i]!=-1)v.pb({l[i],i});
 }
-vl l={l1[0]};
-FOR(i,0,n-1){
-    if(l1[i]!=l1[i+1])l.pb(l1[i+1]);
-}n=l.size();
-// if(k==109){cout<<n<<" "<<x<<" "<<l<<endl;}
-if(n==1){
-    ce((max({l[0],x})-1));return;
+ll prev=0;
+if(v.size()==0){
+    FOR(i,0,n){
+        if(i%2)l[i]=2;else l[i]=1;
+    }coutv(l);return;
 }
-ll x1=-1,x2=-1;
-if(mino>1)x1=mino-1;if(maxo<x)x2=maxo+1;
-if(x1!=-1){
-    ll mino=abs(x1-l[0])+abs(l[1]-l[0]),ind=0;
-    FOR(i,0,n-1){ll temp;
-        temp=min({abs(l[i]-1)+abs(l[i+1]-x1),abs(l[i]-x1)+abs(l[i+1]-1)});
-        if(temp<mino){mino=temp;ind=i+1;}
-    }
-    if((abs(x1-l[n-1])+abs(l[n-2]-l[n-1]))<mino){
-        l.pb(x1);l.pb(1);
-    }
-    else{
-        if(ind==0){l.insert(l.begin(),x1);l.insert(l.begin(),1);}
-        else{
-            if(abs(l[ind-1]-1)+abs(l[ind]-x1) <= abs(l[ind-1]-x1)+abs(l[ind]-1)){l.insert(l.begin()+ind,x1);l.insert(l.begin()+ind,1);}
-            else{l.insert(l.begin()+ind,1);l.insert(l.begin()+ind,x1);}
+FOR(i,0,v.size()){
+    if(i==0){
+        ll temp=v[i].second-1;
+        while(temp>=0){
+            if((v[i].second-temp)%2)l[temp]=2*v[i].first;else l[temp]=v[i].first;temp--;
         }
     }
-    n+=2;
-}
-if(x2!=-1){
-    ll mino=abs(x2-l[0])+abs(l[1]-l[0]),ind=0;
-    FOR(i,0,n-1){ll temp;
-        temp=min({abs(l[i]-x)+abs(l[i+1]-x2),abs(l[i]-x2)+abs(l[i+1]-x)});
-        if(temp<mino){mino=temp;ind=i+1;}
-    }
-    if(abs(x2-l[n-1]+abs(l[n-2]-l[n-1]))<mino){
-        l.pb(x2);l.pb(x);
-    }
     else{
-        if(ind==0){l.insert(l.begin(),x2);l.insert(l.begin(),x);}
+    ll f = 1;
+    // if ((v[i].first / v[i-1].first) % 2 || (v[i-1].second / v[i].second) % 2) f = 0;
+    if ((v[i].first >= v[i-1].first) && 
+        (ceil(log2(v[i].first / (v[i-1].first))) > (v[i].second - v[i-1].second) ||
+         ((v[i].second-v[i-1].second-static_cast<int>(ceil(log2(v[i].first / (v[i-1].first))))) % 2 == 1))) {
+        f = 0;
+    }
+    if ((v[i-1].first > v[i].first) && 
+        (ceil(log2(v[i-1].first / (v[i].first))) > (v[i].second - v[i-1].second) ||
+         ((v[i].second-v[i-1].second-static_cast<int>(ceil(log2(v[i-1].first / (v[i].first))))) % 2 == 1))) {
+        f = 0;
+    }
+        if(!f){ce(-1);return;}
         else{
-            if(abs(l[ind-1]-x)+abs(l[ind]-x2) <= abs(l[ind-x]-x2)+abs(l[ind]-x)){l.insert(l.begin()+ind,x2);l.insert(l.begin()+ind,x);}
-            else{l.insert(l.begin()+ind,x);l.insert(l.begin()+ind,x2);}
+            ll left=v[i-1].second+1,right=v[i].second-1;
+            while(left<=right){
+                if(l[left-1]==1)l[left]=2;else l[left]=l[left-1]/2;
+                if(l[right+1]==1)l[right]=2;else l[right]=l[right+1]/2;
+                left++;right--;
+            }
         }
     }
-    n+=2;
+
 }
-// ce(l);
-ll ans=0;
+FOR(i,v.back().second+1,n){
+    if((i-v.back().second)%2)l[i]=l[v.back().second]*2;else l[i]=l[v.back().second];
+}
+ll ans=1;
+// coutv(l);
 FOR(i,0,n-1){
-    ans+=abs(l[i]-l[i+1]);
-}ce(ans);
+    if((l[i]==l[i+1]/2) || (l[i+1]==l[i]/2))continue;else {ans=0;break;}
+}   if(!ans)ce(-1);
+    else coutv(l);
+    // else ce(-1);
+
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -127,6 +126,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-solve(t);
+solve();
 }
 }

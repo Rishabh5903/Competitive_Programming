@@ -33,7 +33,7 @@ int expo(int a,int n){ int res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a
 template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
-const ll INF = 1e20;
+const ll INF = 1e18;
 const ld EPS = 1e-20;
 ll maxm(vector<ll> v){
 sort(all(v));
@@ -43,10 +43,40 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
+vl primeFactorization(ll n){
+vl factors;
+while (n % 2 == 0)
+{
+factors.pb(2);
+n = n/2;
+}
+for (int i = 3; i <= sqrt(n); i = i + 2)
+{
+while (n % i == 0)
+{
+factors.pb(i);
+n = n/i;
+}
+}
+if (n > 2) factors.pb(n);
+return factors;
+}
+ll dp[300001];
+ll help(ll n){
+    if(dp[n]!=-1)return dp[n];
+    if(n==0 || n==1)return dp[n]=1;
+    // else if(n==1)return dp[n]=1;
+    return dp[n]=(help(n-1)%MOD+(2*n-2)*(help(n-2)%MOD))%MOD;
+}
 void solve() {
-ll a=5,b=2;
-ce(ceil(a/(b*1.0)));
-
+    memset(dp,-1,sizeof(dp));
+ll n,k;
+cin>>n>>k;
+set<ll> s;
+for(ll i=0;i< k;i++){ll r,c;
+cin>>r>>c;s.insert(r);s.insert(c);
+}
+ce(help(n-s.size()));
 }
 int main() {
 ios_base::sync_with_stdio(0);
