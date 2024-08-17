@@ -4,8 +4,10 @@ from bisect import bisect, bisect_right, bisect_left
 from math import inf, ceil, log2, gcd, lcm, sqrt, log,floor,pow
 from heapq import heapify, heappop, heappush
 from collections import Counter, deque
-for _ in range(int(input())):
+for t in range(int(input())):
     a,b=map(int,input().split())
+    if(t==241):
+        print(a,b)
     #n=int(input())
     #s=str(input())
     #s=s[:len(s)-1]
@@ -18,7 +20,6 @@ for _ in range(int(input())):
         temp+=1
         a=a//3
     ans+=2*temp
-    print(pow(2,3))
     # ans+=2*(a//3+1)
     for i in range(var+1,b+1):
         if(pow(3,floor(log(i,3)))==i):
