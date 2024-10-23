@@ -61,54 +61,65 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-
-int chk(int i,int j,string & a,string & b, int t){
-    int ans=0;
-    if(t==1){
-        if(a[i]=='A')ans++;
-        if(b[j]=='A')ans++;
-        if(b[j+1]=='A')ans++;
-    }
-    else if(t==2){
-        if(a[i]=='A')ans++;
-        if(b[j]=='A')ans++;
-        if(a[i+1]=='A')ans++;
-    }
-    else{
-        int cnt1=0,cnt2=0;
-        if (a[i]=='A')cnt1++; if(a[i+1]=='A')cnt1++;if(a[i+2]=='A')cnt1++;
-        if (b[j]=='A')cnt2++; if(b[j+1]=='A')cnt2++;if(b[j+2]=='A')cnt2++;
-        // ce("debug4");
-        return ((cnt1>=2)?1:0 + (cnt2>=2)?1:0);
-    }
-    return ((ans>=2) ? 1:0);
-}
-int help(int i, int j, string &a, string &b, int &n, vvi &dp) {
-    if (dp[i][j] != -1) return dp[i][j];
-    if (i >= n) return dp[i][j] = 0; 
-    
-    if (i == n - 1 && j == 0) {
-        return dp[i][j] = chk(i, j, a, b, 0);
-    } else if (i == n - 2 && j == 2) {
-        return dp[i][j] = chk(i, j, a, b, 1);
-    } else {
-        if(j==0)return dp[i][j]=maxm({chk(i,j,a,b,0)+help(i+1,1,a,b,n,dp),chk(i,j,a,b,2)+help(i+3,0,a,b,n,dp)});
-        else if(j==1)return dp[i][j]=maxm({chk(i,j,a,b,1)+help(i+1,1,a,b,n,dp)});
-    }
-    return 0;
-}
 void solve() {
-    int n;
-    cin >> n;
-    vvi dp(n, vi(3, -1));  
-    string a, b;
-    cin >> a >> b;
-
-    help(0, 0, a, b, n, dp);
-    cout << dp[0][0] << endl;
+    ll n;
+    cin>>n;
+    vl a(n+1),c(n+1);
+    vvl t(n+1);
+    vector<bool> v(n+1,false);
+    vl r;
+    iota(a.begin(),a.end(),0);
+    a[0]=0;
+    FOR(i,1,n+1) {
+        cin>>a[i];
+        t[a[i]].pb(i);
+    }
+    vl p(n+1,-1);
+    ll pMin=LLONG_MAX;
+    FOR(i,1,n+1) p[a[i]]=i;
+    FOR(i,1,n+1) {
+        if(p[i]!=-1) {
+            c[p[i]]++;
+            pMin=min(pMin,p[i]);
+        }
+    }
+    ll i=1;
+    while(i<=n) {
+        if(i==pMin) {
+            r.pb(a[i]);
+            c[p[a[i]]]--;
+            while(pMin<=n && c[pMin]==0) pMin++;
+            i++;
+        } else {
+            if(r.size()%2==0) {
+                ll m=0;
+                FOR(j,i,min(pMin,n)+1) if(!v[j]) m=max(m,a[j]);
+                FOR(j,i,min(pMin,n)+1) if(a[j]==m) {
+                    i=j+1;
+                    break;
+                }
+                if(m==0) break;
+                r.pb(m);
+                c[p[m]]--;
+                while(pMin<=n && c[pMin]==0) pMin++;
+            } else {
+                ll m=LLONG_MAX;
+                FOR(j,i,min(pMin,n)+1) if(!v[j]) m=min(m,a[j]);
+                FOR(j,i,min(pMin,n)+1) if(a[j]==m) {
+                    i=j+1;
+                    break;
+                }
+                if(m==LLONG_MAX) break;
+                r.pb(m);
+                c[p[m]]--;
+                while(pMin<=n && c[pMin]==0) pMin++;
+            }
+        }
+        for(auto idx:t[r.back()]) v[idx]=true;
+    }
+    ce(r.size());
+    coutv(r);
 }
-
-
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
