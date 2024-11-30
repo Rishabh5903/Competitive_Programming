@@ -62,20 +62,41 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
-string s;
-cin>>s;
+ll n,m;
+cin>>n>>m;
+vvl mat(n,vl(m));
+ll f=0;ll row,c1,c2;
+ll temp=0;
 for(ll i=0;i< n;i++){
-cin>>l[i];
+    FOR(j,0,m){
+        cin>>mat[i][j];
+        if(j && mat[i][j]!=mat[i][j-1] && !f){f=1;row=i;c1=0;c2=j;}
+    }
+
 }
+// if(!f){ce("NIE");return;}
+FOR(i,0,n){
+    if(!f || i!=row){
+        temp^=mat[i][0];
+    }
+    
+}
+if(!f && temp==0){ce("NIE");return;}
+if(mat[row][c1]==temp)c1=c2;
+
+// else{
+    ce("TAK");
+    FOR(i,0,n){
+        if(i==row)cout<<(c1+1)<<" ";
+        else cout<<1<<" ";
+    }cout<<endl;
+// }
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

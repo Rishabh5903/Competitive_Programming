@@ -24,12 +24,12 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ce(x) cout<<x<<endl
 #define cinv(v) for( long long int i = 0; i<v.size();i++)cin>>v[i];
 #define coutv(v) for( long long int i = 0; i<v.size();i++)cout<<v[i]<<" ";cout<<endl;
-ll modmul(ll a,ll b,ll m){ a %= m;b %= m; return (a * b) % m;}
-ll modadd(ll a,ll b,ll m){ a %= m;b %= m; return (a + b) % m;}
-ll modsub(ll a,ll b,ll m){ a %= m;b %= m; return (a - b + m) % m;}
-ll gcd(ll a, ll b){ if(b == 0) return a; return gcd(b, a % b);}
-ll expo(ll a,ll n,ll md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
-ll expo(ll a,ll n){ ll res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
+int modmul(int a,int b,int m){ a %= m;b %= m; return (a * b) % m;}
+int modadd(int a,int b,int m){ a %= m;b %= m; return (a + b) % m;}
+int modsub(int a,int b,int m){ a %= m;b %= m; return (a - b + m) % m;}
+int gcd(int a, int b){ if(b == 0) return a; return gcd(b, a % b);}
+int expo(int a,int n,int md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
+int expo(int a,int n){ int res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
 template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
@@ -64,12 +64,38 @@ return factors;
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
-string s;
-cin>>s;
-for(ll i=0;i< n;i++){
-cin>>l[i];
+vl l(n);
+ll maxo=0;
+priority_queue<ll,vector<ll>,greater<ll>> pq;
+priority_queue<ll> pq2;
+
+for(ll i=0;i< n;i++){cin>>l[i];pq.push(l[i]);maxo=maxm({maxo,l[i]});pq2.push(l[i]);
 }
+sort(all(l));ll min1=l[0],min2=l[1];
+ll ans1=0,ans2=0;
+while(1){
+    ll num1=pq.top();pq.pop();
+    ll num2=pq.top();
+    if((num1+num2 )> maxo)break;
+    else{
+        int ind=lower_bound(all(l),(maxo-num2+1))-l.begin();
+        num1=l[ind];
+        pq.push(num1);
+        ans1++;
+    }
+}
+while(1){
+    ll num=pq2.top();pq2.pop();
+    if((min1+min2) > num)break;
+    else{
+        ans2++;
+        int ind = lower_bound(all(l),(min2+min1))-l.begin()-1;
+        num=l[ind];
+        pq2.push(num);
+
+    }
+}
+ce(minm({ans1,ans2}));
 }
 int main() {
 ios_base::sync_with_stdio(0);

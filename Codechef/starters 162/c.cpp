@@ -61,15 +61,80 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+long long reduceArray(vector<long long>& arr) {
+    int n = arr.size();
+    
+    // Pair each element with its index and sort by value
+    vector<pair<long long, int>> indexedArr;
+    for (int i = 0; i < n; ++i) {
+        indexedArr.emplace_back(arr[i], i);
+    }
+    sort(indexedArr.begin(), indexedArr.end()); // Sort by values
+
+    set<int> removed; // To keep track of removed indices
+    for (const auto& [val, idx] : indexedArr) {
+        if (removed.count(idx)) {
+            continue; // Skip already removed elements
+        }
+
+        // Check if it forms a valid triplet
+        if (idx > 0 && idx < n - 1) { // Needs left and right neighbors
+            int left = idx - 1;
+            int right = idx + 1;
+            
+            if (!removed.count(left) && !removed.count(right)) {
+                if (arr[idx] < arr[left] && arr[idx] < arr[right]) {
+                    // Perform the reduction
+                    arr[idx] = arr[left] + arr[right] - arr[idx];
+                    removed.insert(left);
+                    removed.insert(right);
+                }
+            }
+        }
+    }
+
+    // Find the maximum value in the reduced array
+    long long maxVal = LLONG_MIN;
+    for (int i = 0; i < n; ++i) {
+        if (!removed.count(i)) {
+            maxVal = max(maxVal, arr[i]);
+        }
+    }
+    return maxVal;
+}
+
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
 string s;
 cin>>s;
-for(ll i=0;i< n;i++){
-cin>>l[i];
+vl v;
+ll temp=1;
+FOR(i,1,n){
+    if(s[i]==s[i-1])temp++;
+    // else{
+    //     v.pb(temp);temp=1;
+    // }
 }
+ce(temp);
+// v.pb(temp);
+// ll ans=v[0];
+// // ce(v);
+// if(v.size()==1){ce(v[0]);return;}
+// FOR(i,0,v.size()-1){
+//     // ce(i);
+//     if(v[i+1]<ans){
+//         if((i+1) == (v.size()-1)){break;}
+//         else if(v[i+2]>=v[i+1]){
+//             ans=ans+v[i+2]-v[i+1];
+//             i++;
+//         }
+//     }
+//     else{
+//         ans=v[i+1];
+//     }
+// }
+// ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

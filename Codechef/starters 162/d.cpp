@@ -65,17 +65,25 @@ void solve() {
 ll n;
 cin>>n;
 ll l[n];
-string s;
-cin>>s;
+ll tot=0;
 for(ll i=0;i< n;i++){
-cin>>l[i];
+cin>>l[i];tot+=l[i];
 }
+ll ans=0;
+FOR(i,0,(1LL<<n)){
+    ll temp=0;
+    FOR(j,0,n){
+        if(i&(1LL<<j))temp+=l[j];
+    }
+    if(abs(tot-2*temp)%360==0){ans=1;break;}
+}
+ce((ans ? "YES" : "NO"));
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();
