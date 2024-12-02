@@ -61,32 +61,69 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void solve() {
-ll u,v;
-cin>>u>>v;
-if(u==v)ce("YES");
-else if(u>v){
-    cout<<"NO"<<endl;
+void help(int i,int j, set<pair<int,int>>& yes,set<pair<int,int>>& no,set<pair<int,int>>& temp,vector<vector<char>>& v){
+    
+    if(v[i][j]=='U'){
+        v[i][j]='O';
+        if(i==0){v[i][j]='P';
+        for(auto x:temp)v[x.first][x.second]='P';
+        temp.clear();return;}
+        else {temp.insert({i,j});help(i-1,j,yes,no,temp,v);}
+    }
+    else if(v[i][j]=='D'){
+        v[i][j]='O';
+        if(i==v.size()-1){v[i][j]='P';for(auto x:temp)v[x.first][x.second]='P';temp.clear();return;}
+        else {temp.insert({i,j});help(i+1,j,yes,no,temp,v);}
+    }
+    else if(v[i][j]=='L'){
+        v[i][j]='O';
+        if(j==0){v[i][j]='P';for(auto x:temp)v[x.first][x.second]='P';temp.clear();return;}
+        else {temp.insert({i,j});help(i,j-1,yes,no,temp,v);}
+    }
+    else if(v[i][j]=='R'){
+        v[i][j]='O';
+        if(j==v[0].size()-1){v[i][j]='P';for(auto x:temp)v[x.first][x.second]='P';temp.clear();return;}
+        else {temp.insert({i,j});help(i,j+1,yes,no,temp,v);}
+    }
+    else if(v[i][j]=='?' || v[i][j]=='O'){
+        for(auto x:temp){
+            yes.insert(x);
+        }temp.clear();
+    }
+    else{
+        for(auto x:temp)v[x.first][x.second]='P';temp.clear();
+    }
 }
-else{
-    while(u<v){
-        while(floor(log2(u))==floor(log2(v))){ll num=(1LL<<((int)floor(log2(u))));u-=num;v-=num;
-        if(u==0){ce("NO");return;}
-        }
-        ll diff=v-u;
-        if(diff>=u){
-            u+=(1LL<<((int)floor(log2(u))));
-        }
-        else{
-            if(!(u & (1LL<<((int)floor(log2(diff)))))){
-                cout<<"NO"<<endl;
-                return;
-            }
-            else u+=(1LL<<((int)floor(log2(diff))));
+void solve() {
+ll n,m;
+cin>>n>>m;
+vector<vector<char>> v(n,vector<char>(m));
+set<pair<int,int>> yes,no,temp;
+for(ll i=0;i< n;i++){
+    FOR(j,0,m){
+        cin>>v[i][j];
+    }
+}
+FOR(i,0,n){
+    FOR(j,0,m){
+        temp.clear();
+        if(v[i][j]!='O' && v[i][j]!='?' && v[i][j]!='P'){
+            help(i,j,yes,no,temp,v);
         }
     }
-    ce("YES");
 }
+FOR(i,0,n){
+    FOR(j,0,m){
+        if(v[i][j]=='?'){
+            if(i+1 <= n-1 && (yes.find({i+1,j})!=yes.end() || v[i+1][j]=='?')){yes.insert({i,j});continue;}
+            if(i-1 >= 0 && (yes.find({i-1,j})!=yes.end() || v[i-1][j]=='?')){yes.insert({i,j});continue;}
+            if(j+1 <= m-1 && (yes.find({i,j+1})!=yes.end() || v[i][j+1]=='?')){yes.insert({i,j});continue;}
+            if(j-1 >= 0 && (yes.find({i,j-1})!=yes.end() || v[i][j-1]=='?')){yes.insert({i,j});continue;}
+        }
+    }
+}
+// ce(yes);
+ce(yes.size());
 }
 int main() {
 ios_base::sync_with_stdio(0);

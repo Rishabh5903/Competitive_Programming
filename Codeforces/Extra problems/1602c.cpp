@@ -62,31 +62,27 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll u,v;
-cin>>u>>v;
-if(u==v)ce("YES");
-else if(u>v){
-    cout<<"NO"<<endl;
+ll n;
+cin>>n;
+ll l[n];
+vl v;
+for(ll i=0;i< n;i++){
+cin>>l[i];
 }
-else{
-    while(u<v){
-        while(floor(log2(u))==floor(log2(v))){ll num=(1LL<<((int)floor(log2(u))));u-=num;v-=num;
-        if(u==0){ce("NO");return;}
-        }
-        ll diff=v-u;
-        if(diff>=u){
-            u+=(1LL<<((int)floor(log2(u))));
-        }
-        else{
-            if(!(u & (1LL<<((int)floor(log2(diff)))))){
-                cout<<"NO"<<endl;
-                return;
-            }
-            else u+=(1LL<<((int)floor(log2(diff))));
-        }
+ll gc=0;
+FOR(i,0,30){
+    int temp=0;
+    FOR(j,0,n){
+        if(l[j] & (1LL<<i))temp++;
     }
-    ce("YES");
+    v.pb(temp);
+    gc=gcd(gc,temp);
 }
+// ce(v);
+FOR(i,1,n+1){
+    if(gc%i==0)cout<<i<<" ";
+}
+cout<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

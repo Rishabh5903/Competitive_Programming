@@ -62,30 +62,13 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll u,v;
-cin>>u>>v;
-if(u==v)ce("YES");
-else if(u>v){
-    cout<<"NO"<<endl;
-}
-else{
-    while(u<v){
-        while(floor(log2(u))==floor(log2(v))){ll num=(1LL<<((int)floor(log2(u))));u-=num;v-=num;
-        if(u==0){ce("NO");return;}
-        }
-        ll diff=v-u;
-        if(diff>=u){
-            u+=(1LL<<((int)floor(log2(u))));
-        }
-        else{
-            if(!(u & (1LL<<((int)floor(log2(diff)))))){
-                cout<<"NO"<<endl;
-                return;
-            }
-            else u+=(1LL<<((int)floor(log2(diff))));
-        }
-    }
-    ce("YES");
+ll n;
+cin>>n;
+ll l[n];
+string s;
+cin>>s;
+for(ll i=0;i< n;i++){
+cin>>l[i];
 }
 }
 int main() {

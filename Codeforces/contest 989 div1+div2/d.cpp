@@ -62,32 +62,76 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll u,v;
-cin>>u>>v;
-if(u==v)ce("YES");
-else if(u>v){
-    cout<<"NO"<<endl;
-}
-else{
-    while(u<v){
-        while(floor(log2(u))==floor(log2(v))){ll num=(1LL<<((int)floor(log2(u))));u-=num;v-=num;
-        if(u==0){ce("NO");return;}
+    ll n;
+    cin >> n;
+    vl a(n);
+    FOR(i, 0, n) cin >> a[i];
+
+    vector<pair<ll, ll>> operations;
+    set<ll> s0, s1, s2;
+
+
+    FOR(i, 0, n) {
+        if (a[i] == 0) s0.insert(i);
+        else if (a[i] == 1) s1.insert(i);
+        else s2.insert(i);
+    }
+
+    ll idx = -1; 
+
+
+    FOR(i, 0, n) {
+        if (s0.empty()) {
+            idx = i;
+            break;
         }
-        ll diff=v-u;
-        if(diff>=u){
-            u+=(1LL<<((int)floor(log2(u))));
-        }
-        else{
-            if(!(u & (1LL<<((int)floor(log2(diff)))))){
-                cout<<"NO"<<endl;
-                return;
-            }
-            else u+=(1LL<<((int)floor(log2(diff))));
+
+        if (a[i] == 0) {
+            s0.erase(i);
+        } else if (a[i] == 1) {
+            ll x = *s0.rbegin();
+            s0.erase(x);
+            swap(a[i], a[x]);
+            operations.push_back({i + 1, x + 1}); 
+            s1.erase(i);
+            s1.insert(x);
+        } else { 
+            ll x = *s0.rbegin();
+            ll y = *s1.rbegin();
+            s0.erase(x);
+            s1.erase(y);
+
+            swap(a[i], a[y]);
+            operations.push_back({i + 1, y + 1});
+            s2.erase(i);
+            s2.insert(y);
+
+            swap(a[i], a[x]);
+            operations.push_back({i + 1, x + 1});
+            s1.insert(x);
         }
     }
-    ce("YES");
+
+    for (ll i = idx; i < n; i++) {
+        if (s1.empty()) break;
+        if (a[i] == 1) {
+            s1.erase(i);
+        } else {
+            ll x = *s1.rbegin();
+            s1.erase(x);
+            swap(a[i], a[x]);
+            operations.push_back({i + 1, x + 1});
+            s2.erase(i);
+            s2.insert(x);
+        }
+    }
+
+    ce(operations.size());
+    for (auto [x, y] : operations) {
+        cout << x << " " << y << endl;
+    }
 }
-}
+
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);

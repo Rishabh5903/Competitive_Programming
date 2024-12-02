@@ -78,7 +78,7 @@ else{
             u+=(1LL<<((int)floor(log2(u))));
         }
         else{
-            if(!(u & (1LL<<((int)floor(log2(diff)))))){
+            if(u & diff != diff){
                 cout<<"NO"<<endl;
                 return;
             }
