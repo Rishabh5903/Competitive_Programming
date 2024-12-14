@@ -61,28 +61,36 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-    int maxCount(vector<ll>& banned, int n, int maxSum) {
-        sort(banned.begin(),banned.end());
-        int i=0;
-        int j=1;
-        int sum=0;
-        int ans=0;
-        vl temp;
-        while(sum+j<=maxSum && j<=n){
-            while(i<banned.size() && banned[i]==j){i++;j++;}
-            // if(i<banned.size() && banned[i]==j){j++;continue;}
-            if(sum+j<=maxSum && j<=n){sum+=j;ans++;temp.pb(j);}
-            j++;
-        }
-        ce(banned);
-        ce(temp);
-        return ans;
-
+const int MAXN=1000000;
+int n, t[4*MAXN];
+void update(string& a,int v) {
+    
+    while(v>=1){
+        if(a[v-1]=='?')
+        t[v] = t[v*2] + t[v*2+1];
+        else if(a[v-1]=='1') t[v]= t[2*v];
+        else t[v]=t[2*v+1];
+        v/=2;
     }
+    
+}
 void solve() {
-vl banned={87,193,85,55,14,69,26,133,171,180,4,8,29,121,182,78,157,53,26,7,117,138,57,167,8,103,32,110,15,190,139,16,49,138,68,69,92,89,140,149,107,104,2,135,193,87,21,194,192,9,161,188,73,84,83,31,86,33,138,63,127,73,114,32,66,64,19,175,108,80,176,52,124,94,33,55,130,147,39,76,22,112,113,136,100,134,155,40,170,144,37,43,151,137,82,127,73};
-ll n =1079,maxSum = 87;
-ce(maxCount(banned,n,maxSum));
+ll k;
+cin>>k;
+string a;
+cin>>a;ll q;cin>>q;
+reverse(all(a));
+n=(1<<k);
+FOR(i,0,4*n)t[i]=1;
+for(int i=n-1;i>=1;i--)update(a,i);
+// FOR(i,1,8)cout<<t[i]<<" ";cout<<endl;
+for(ll i=0;i< q;i++){
+int p;char c;cin>>p>>c;
+a[n-1-p]=c;
+update(a,n-p);
+// FOR(i,1,8)cout<<t[i]<<" ";cout<<endl;
+ce(t[1]);
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

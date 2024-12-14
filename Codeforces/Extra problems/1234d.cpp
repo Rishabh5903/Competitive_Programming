@@ -61,28 +61,79 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-    int maxCount(vector<ll>& banned, int n, int maxSum) {
-        sort(banned.begin(),banned.end());
-        int i=0;
-        int j=1;
-        int sum=0;
-        int ans=0;
-        vl temp;
-        while(sum+j<=maxSum && j<=n){
-            while(i<banned.size() && banned[i]==j){i++;j++;}
-            // if(i<banned.size() && banned[i]==j){j++;continue;}
-            if(sum+j<=maxSum && j<=n){sum+=j;ans++;temp.pb(j);}
-            j++;
-        }
-        ce(banned);
-        ce(temp);
-        return ans;
+const int MAXN=100000;
+set<char> t[4*MAXN];
+void build(string& s,int v,int tl,int tr){
+    if(tl==tr)t[v].insert(s[tl]);
+    else{
+        int tm=(tl+tr)/2;
+        build(s,2*v,tl,tm);
+        build(s,2*v+1,tm+1,tr);
+        t[v].insert(all(t[2*v]));
+        t[v].insert(all(t[2*v+1]));
+    }
+}
+void query(set<char>& temp,int v, int tl, int tr, int l, int r) {
+    if (l > r) 
+        return ;
+    if (l == tl && r == tr) {
+        temp.insert(all(t[v]));
+        return;
+    }
+    int tm = (tl + tr) / 2;
+    query(temp,v*2, tl, tm, l, min(r, tm));
+    query(temp,v*2+1, tm+1, tr, max(l, tm+1), r);
+    return;
+
+}
+void update(string& s, int v, int tl, int tr, int pos, char val) {
+    if (tl == tr) {
+        t[v].clear(); 
+        t[v].insert(val);
+        s[tl] = val;
+    } else {
+        int tm = (tl + tr) / 2;
+        int f=0;
+        char temp=s[pos];
+        if (pos <= tm){         
+            update(s, 2 * v, tl, tm, pos, val);
+            if(t[2*v].find(val)!=t[2*v].end())t[v].insert(val);
+            }
+        else{
+            
+            update(s, 2 * v + 1, tm + 1, tr, pos, val);
+
+            if(t[2*v+1].find(val)!=t[2*v+1].end())t[v].insert(val);
+            }
+        if(t[2*v].find(temp)!=t[2*v].end())f=1;
+        if(t[2*v+1].find(temp)!=t[2*v+1].end())f=1;
+        if(!f)t[v].erase(temp);
 
     }
+}
+
+
 void solve() {
-vl banned={87,193,85,55,14,69,26,133,171,180,4,8,29,121,182,78,157,53,26,7,117,138,57,167,8,103,32,110,15,190,139,16,49,138,68,69,92,89,140,149,107,104,2,135,193,87,21,194,192,9,161,188,73,84,83,31,86,33,138,63,127,73,114,32,66,64,19,175,108,80,176,52,124,94,33,55,130,147,39,76,22,112,113,136,100,134,155,40,170,144,37,43,151,137,82,127,73};
-ll n =1079,maxSum = 87;
-ce(maxCount(banned,n,maxSum));
+string s;
+cin>>s;
+int q;cin>>q;int n=s.size();
+set<char> temp;
+build(s,1,0,n-1);
+for(ll i=0;i< q;i++){
+    int type;cin>>type;
+    if(type==1){
+        int pos;char c;cin>>pos>>c;
+        update(s,1,0,n-1,pos-1,c);
+    }
+    else{
+        int l,r;cin>>l>>r;
+        temp.clear();
+        query(temp,1,0,n-1,l-1,r-1);
+        // FOR(i,0,16)cout<<t[i]<<" ";cout<<endl;
+        ce(temp.size());
+    }
+
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

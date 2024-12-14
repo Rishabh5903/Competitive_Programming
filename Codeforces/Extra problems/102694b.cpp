@@ -61,28 +61,67 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-    int maxCount(vector<ll>& banned, int n, int maxSum) {
-        sort(banned.begin(),banned.end());
-        int i=0;
-        int j=1;
-        int sum=0;
-        int ans=0;
-        vl temp;
-        while(sum+j<=maxSum && j<=n){
-            while(i<banned.size() && banned[i]==j){i++;j++;}
-            // if(i<banned.size() && banned[i]==j){j++;continue;}
-            if(sum+j<=maxSum && j<=n){sum+=j;ans++;temp.pb(j);}
-            j++;
-        }
-        ce(banned);
-        ce(temp);
-        return ans;
-
+vvl adj;vl par;
+pair<ll,ll> dfs(ll u,ll p=-1,ll dist=0){
+    par[u]=p;
+    pair<ll,ll> temp={dist,u};
+    for(auto i:adj[u]){
+        if(i==p)continue;
+        temp=max(temp,dfs(i,u,dist+1));
     }
+    return temp;
+}
 void solve() {
-vl banned={87,193,85,55,14,69,26,133,171,180,4,8,29,121,182,78,157,53,26,7,117,138,57,167,8,103,32,110,15,190,139,16,49,138,68,69,92,89,140,149,107,104,2,135,193,87,21,194,192,9,161,188,73,84,83,31,86,33,138,63,127,73,114,32,66,64,19,175,108,80,176,52,124,94,33,55,130,147,39,76,22,112,113,136,100,134,155,40,170,144,37,43,151,137,82,127,73};
-ll n =1079,maxSum = 87;
-ce(maxCount(banned,n,maxSum));
+ll n;
+cin>>n;
+if(n==1){ce(1);return;}
+adj = vvl(n);par=vl(n,-1);
+for(ll i=0;i< n-1;i++){ll a,b;cin>>a>>b;a--;b--;
+adj[a].pb(b);adj[b].pb(a);
+}
+auto x=dfs(0);
+auto y=dfs(x.second);
+vl diam;
+ll z=y.second;
+while(z!=x.second){
+    diam.pb(z);z=par[z];
+}diam.pb(x.second);
+
+ll c1=diam[diam.size()/2],c2=-1,d1=(diam.size()-1)/2,d2=-1;
+if(diam.size()%2==0){c2=diam[diam.size()/2-1];d2=d1+1;}
+
+set<ll> dleaf;
+queue<ll> q;
+q.push(c1);
+vl dist(n,-1);dist[c1]=0;
+if(dist[c1]==d1 && adj[c1].size()==1)dleaf.insert(c1);
+if(d2!=-1 && dist[c1]==d2 && adj[c1].size()==1)dleaf.insert(c1);
+while(!q.empty()){
+    ll temp=q.front();q.pop();
+    for(ll i:adj[temp]){
+        if(dist[i]==-1){dist[i]=dist[temp]+1;q.push(i);}
+        if(dist[i]==d1 && adj[i].size()==1)dleaf.insert(i);
+        if(d2!=-1 && dist[i]==d2 && adj[i].size()==1)dleaf.insert(i);
+    }
+}
+if(c2!=-1){
+    FOR(i,0,n)dist[i]=-1;dist[c2]=0;q.push(c2);
+    if(dist[c2]==d1 && adj[c2].size()==1)dleaf.insert(c2);
+    if(dist[c2]==d2 && adj[c2].size()==1)dleaf.insert(c2);
+    while(!q.empty()){
+        ll temp=q.front();q.pop();
+        for(ll i:adj[temp]){
+            if(dist[i]==-1){dist[i]=dist[temp]+1;q.push(i);}
+            if(dist[i]==d1 && adj[i].size()==1)dleaf.insert(i);
+            if(dist[i]==d2 && adj[i].size()==1)dleaf.insert(i);
+        }
+    }
+}
+
+FOR(i,0,n){
+    if(dleaf.find(i)!=dleaf.end())ce(diam.size());
+    else ce(diam.size()-1);
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

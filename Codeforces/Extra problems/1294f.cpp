@@ -61,28 +61,55 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-    int maxCount(vector<ll>& banned, int n, int maxSum) {
-        sort(banned.begin(),banned.end());
-        int i=0;
-        int j=1;
-        int sum=0;
-        int ans=0;
-        vl temp;
-        while(sum+j<=maxSum && j<=n){
-            while(i<banned.size() && banned[i]==j){i++;j++;}
-            // if(i<banned.size() && banned[i]==j){j++;continue;}
-            if(sum+j<=maxSum && j<=n){sum+=j;ans++;temp.pb(j);}
-            j++;
-        }
-        ce(banned);
-        ce(temp);
-        return ans;
+vvl adj;vl par;
+pair<ll,ll> dfs(ll u,ll p=-1,ll temp=0){
+par[u] = p;
+pair<ll,ll> x={temp,u};
+for(auto i:adj[u]){
+    if(i==p)continue;
+    x=max(x,dfs(i,u,temp+1));
+}
+return x;
+}
 
-    }
 void solve() {
-vl banned={87,193,85,55,14,69,26,133,171,180,4,8,29,121,182,78,157,53,26,7,117,138,57,167,8,103,32,110,15,190,139,16,49,138,68,69,92,89,140,149,107,104,2,135,193,87,21,194,192,9,161,188,73,84,83,31,86,33,138,63,127,73,114,32,66,64,19,175,108,80,176,52,124,94,33,55,130,147,39,76,22,112,113,136,100,134,155,40,170,144,37,43,151,137,82,127,73};
-ll n =1079,maxSum = 87;
-ce(maxCount(banned,n,maxSum));
+ll n;
+cin>>n;
+adj=vvl(n);par=vl(n);
+for(ll i=0;i< n-1;i++){ll a,b;
+cin>>a>>b;a--;b--;
+adj[a].pb(b);
+adj[b].pb(a);
+}
+auto x=dfs(0);
+auto y=dfs(x.second);
+
+vl diam;
+ll z=y.second;
+while(z!=x.second){
+    diam.pb(z);
+    z=par[z];
+}diam.pb(x.second);
+if(diam.size()==n){
+    ce(n-1);
+    cout<<diam[0]+1<<" "<<diam[1]+1<< " "<<diam.back()+1<<endl;
+    return;
+}
+queue<ll> q;vl dist(n,-1);
+for(auto i:diam){q.push(i);dist[i]=0;}
+
+
+while(!q.empty()){
+    ll temp=q.front();q.pop();
+    for(auto i:adj[temp]){
+        if(dist[i]==-1){dist[i]=dist[temp]+1;q.push(i);}
+    }
+}
+
+pair<ll,ll> maxo={dist[0],0};
+FOR(i,0,n)maxo=max(maxo,{dist[i],i});
+ce(diam.size()-1+maxo.first);
+cout<<diam[0]+1<<" "<<diam.back()+1<<" "<<maxo.second+1<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

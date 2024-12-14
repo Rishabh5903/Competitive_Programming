@@ -61,28 +61,46 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-    int maxCount(vector<ll>& banned, int n, int maxSum) {
-        sort(banned.begin(),banned.end());
-        int i=0;
-        int j=1;
-        int sum=0;
-        int ans=0;
-        vl temp;
-        while(sum+j<=maxSum && j<=n){
-            while(i<banned.size() && banned[i]==j){i++;j++;}
-            // if(i<banned.size() && banned[i]==j){j++;continue;}
-            if(sum+j<=maxSum && j<=n){sum+=j;ans++;temp.pb(j);}
-            j++;
-        }
-        ce(banned);
-        ce(temp);
-        return ans;
-
+int n, t[4000001];
+void build(int a[], int v, int tl, int tr,int type) {
+    if (tl == tr) {
+        t[v] = a[tl];
+    } else {
+        int tm = (tl + tr) / 2;
+        build(a, v*2, tl, tm, (type+1)%2);
+        build(a, v*2+1, tm+1, tr, (type+1)%2);
+        if(type==0)
+        t[v] = t[v*2] ^ t[v*2+1];
+        else t[v]=t[v*2] | t[v*2+1];
     }
+}
+void update(int v, int tl, int tr, int pos, int new_val,int type) {
+    if (tl == tr) {
+        t[v] = new_val;
+    } else {
+        int tm = (tl + tr) / 2;
+        if (pos <= tm)
+            update(v*2, tl, tm, pos, new_val, (type+1)%2);
+        else
+            update(v*2+1, tm+1, tr, pos, new_val, (type+1)%2);
+        if(type==0)
+        t[v] = t[v*2] ^ t[v*2+1];
+        else t[v]=t[v*2] | t[v*2+1];
+    }
+}
 void solve() {
-vl banned={87,193,85,55,14,69,26,133,171,180,4,8,29,121,182,78,157,53,26,7,117,138,57,167,8,103,32,110,15,190,139,16,49,138,68,69,92,89,140,149,107,104,2,135,193,87,21,194,192,9,161,188,73,84,83,31,86,33,138,63,127,73,114,32,66,64,19,175,108,80,176,52,124,94,33,55,130,147,39,76,22,112,113,136,100,134,155,40,170,144,37,43,151,137,82,127,73};
-ll n =1079,maxSum = 87;
-ce(maxCount(banned,n,maxSum));
+ll n,m;
+cin>>n>>m;
+int a[(int) pow(2,n)];
+FOR(i,0,pow(2,n)){
+cin>> a[i];
+}
+build(a,1,0,(int) pow(2,n) - 1,n%2);
+FOR(i,0,m){
+    int p,b;cin>>p>>b;
+    update(1,0,(int) pow(2,n) - 1,p-1,b,n%2);
+    ce(t[1]);
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

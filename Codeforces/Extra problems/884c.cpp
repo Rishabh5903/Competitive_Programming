@@ -61,29 +61,63 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-    int maxCount(vector<ll>& banned, int n, int maxSum) {
-        sort(banned.begin(),banned.end());
-        int i=0;
-        int j=1;
-        int sum=0;
-        int ans=0;
-        vl temp;
-        while(sum+j<=maxSum && j<=n){
-            while(i<banned.size() && banned[i]==j){i++;j++;}
-            // if(i<banned.size() && banned[i]==j){j++;continue;}
-            if(sum+j<=maxSum && j<=n){sum+=j;ans++;temp.pb(j);}
-            j++;
-        }
-        ce(banned);
-        ce(temp);
-        return ans;
-
+vl par;
+vl Rank;
+void make(ll u){
+    par[u]=u;
+    Rank[u]=0LL;
+    return;
     }
-void solve() {
-vl banned={87,193,85,55,14,69,26,133,171,180,4,8,29,121,182,78,157,53,26,7,117,138,57,167,8,103,32,110,15,190,139,16,49,138,68,69,92,89,140,149,107,104,2,135,193,87,21,194,192,9,161,188,73,84,83,31,86,33,138,63,127,73,114,32,66,64,19,175,108,80,176,52,124,94,33,55,130,147,39,76,22,112,113,136,100,134,155,40,170,144,37,43,151,137,82,127,73};
-ll n =1079,maxSum = 87;
-ce(maxCount(banned,n,maxSum));
+
+ll find_set(ll u){
+    if(u==par[u])return u;
+    else return par[u]=find_set(par[u]);
 }
+
+void merge(ll u,ll v){
+    ll a=find_set(u),b=find_set(v);
+    if(a!=b){
+        if(Rank[a]<Rank[b])swap(a,b);
+        par[b]=a;
+        if(Rank[a]==Rank[b])Rank[a]++;
+    }
+}
+
+void solve() {
+    ll n;
+    cin >> n;
+    par = vl(n + 1);
+    Rank = vl(n + 1);
+    FOR(i, 1, n + 1) make(i);
+
+    FOR(i, 1, n + 1) {
+        ll temp;
+        cin >> temp;
+        merge(i, temp);
+    }
+
+    FOR(i, 1, n + 1) find_set(i);
+
+    unordered_map<ll, ll> fr;
+    FOR(i, 1, n + 1) fr[par[i]]++;
+    
+    vl sizes;
+    for (auto& p : fr) sizes.pb(p.second);
+    sort(all(sizes));
+
+    ll ans = 0;
+
+    if (sizes.size() == 1) {
+        ans = sizes[0] * sizes[0];
+    } else {
+        sizes[sizes.size() - 2] += sizes.back();
+        sizes.pop_back();
+        for (ll size : sizes) ans += size * size;
+    }
+
+    ce(ans);
+}
+
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);

@@ -61,28 +61,63 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-    int maxCount(vector<ll>& banned, int n, int maxSum) {
-        sort(banned.begin(),banned.end());
-        int i=0;
-        int j=1;
-        int sum=0;
-        int ans=0;
-        vl temp;
-        while(sum+j<=maxSum && j<=n){
-            while(i<banned.size() && banned[i]==j){i++;j++;}
-            // if(i<banned.size() && banned[i]==j){j++;continue;}
-            if(sum+j<=maxSum && j<=n){sum+=j;ans++;temp.pb(j);}
-            j++;
-        }
-        ce(banned);
-        ce(temp);
-        return ans;
-
+const int MAXN=500001;
+int n, t[4*MAXN];
+void build(int a[], int v, int tl, int tr) {
+    if (tl == tr) {
+        t[v] = a[tl];
+    } else {
+        int tm = (tl + tr) / 2;
+        build(a, v*2, tl, tm);
+        build(a, v*2+1, tm+1, tr);
+        t[v] = gcd(t[v*2] , t[v*2+1]);
     }
+}
+int query(int v, int tl, int tr, int l, int r,int k) {
+    if (l > r) 
+        return 0;
+    if(tl==tr)return t[v]%k!=0;
+    if (l == tl && r == tr) {
+        if(t[2*v]%k==0 && t[2*v+1]%k==0)return 0;
+        else if(t[2*v]%k!=0 && t[2*v+1]%k!=0) return 2;
+    }
+    int tm = (tl + tr) / 2;
+    return query(v*2, tl, tm, l, min(r, tm),k)
+           + query(v*2+1, tm+1, tr, max(l, tm+1), r,k);
+}
+void update(int v, int tl, int tr, int pos, int new_val) {
+    if (tl == tr) {
+        t[v] = new_val;
+    } else {
+        int tm = (tl + tr) / 2;
+        if (pos <= tm)
+            update(v*2, tl, tm, pos, new_val);
+        else
+            update(v*2+1, tm+1, tr, pos, new_val);
+        t[v] = gcd(t[v*2] , t[v*2+1]);
+    }
+}
+
 void solve() {
-vl banned={87,193,85,55,14,69,26,133,171,180,4,8,29,121,182,78,157,53,26,7,117,138,57,167,8,103,32,110,15,190,139,16,49,138,68,69,92,89,140,149,107,104,2,135,193,87,21,194,192,9,161,188,73,84,83,31,86,33,138,63,127,73,114,32,66,64,19,175,108,80,176,52,124,94,33,55,130,147,39,76,22,112,113,136,100,134,155,40,170,144,37,43,151,137,82,127,73};
-ll n =1079,maxSum = 87;
-ce(maxCount(banned,n,maxSum));
+ll n;
+cin>>n;
+int a[n];
+for(ll i=0;i< n;i++){
+cin>>a[i];
+}
+build(a,1,0,n-1);
+ll q;cin>>q;
+FOR(i,0,q){
+    ll type;cin>>type;
+    if(type==1){
+        int l,r,k;cin>>l>>r>>k;
+        if(query(1,0,n-1,l-1,r-1,k)<=1)ce("YES");else ce("NO");
+    }
+    else{
+        int i,y;cin>>i>>y;
+        update(1,0,n-1,i-1,y);
+    }
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);
