@@ -62,19 +62,19 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
-for(ll i=0;i< n;i++){
-cin>>l[i];
-}
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
-}
-ce(n-ans);
+ll x1,y1,z1,x2,y2,z2,k;
+cin>>x1>>y1>>z1>>x2>>y2>>z2>>k;
+ll a,b,c;
+a=abs(x1-x2);b=abs(y1-y2);c=abs(z1-z2);
+vl v={a,b,c};sort(all(v));
+a=v[0];b=v[1];c=v[2];
+ll ans=0,temp=0;
+ll y=c/k;
+if(y%2==0)temp+=y/2;else {if(c%k)temp+=(y+1)/2;else temp+=(y-1)/2;}
+temp=max(0LL,temp-(a+b));ans+=2*temp;
+ans+=a+b+c;
+
+ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

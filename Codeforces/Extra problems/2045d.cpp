@@ -65,17 +65,20 @@ void solve() {
 ll n;
 cin>>n;
 ll l[n];
+set<ll> s;
+vl ans(n);ll curr=1;
 for(ll i=0;i< n;i++){
 cin>>l[i];
+if(s.find(l[i])==s.end())ans[i]=l[i];
+else {
+    while(s.find(curr)!=s.end())curr++;
+    ans[i]=curr;}
+s.insert(ans[i]);
 }
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
+
+coutv(ans);
 }
-ce(n-ans);
-}
+
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);

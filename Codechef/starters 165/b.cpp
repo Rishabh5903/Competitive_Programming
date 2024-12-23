@@ -68,13 +68,13 @@ ll l[n];
 for(ll i=0;i< n;i++){
 cin>>l[i];
 }
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
+ll curr=l[n-1];ll ans=0;ll temp=0;
+for(int i=n-2;i>=0;i--){
+    if(l[i]<curr){temp++;}
+    else {curr=l[i];ans=max(ans,temp);temp=0;}
 }
-ce(n-ans);
+ans=max(ans,temp);
+ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -61,20 +61,25 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+struct comp{
+    bool operator()(const pair<int, int>& a, const pair<int, int>& b){
+        return a.first>b.first;
+    }
+};
 void solve() {
-ll n;
-cin>>n;
+ll n,m,x;
+cin>>n>>m>>x;
 ll l[n];
+priority_queue<pair<int,int>,vector<pair<int,int>>,comp> pq;
+vl ans(n,0);
+FOR(i,0,m)pq.push({0,i});
 for(ll i=0;i< n;i++){
 cin>>l[i];
+ll x,y;x=pq.top().first;y=pq.top().second;pq.pop();
+ans[i]=y+1;pq.push({x+l[i],y});
 }
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
-}
-ce(n-ans);
+ce("YES");
+coutv(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

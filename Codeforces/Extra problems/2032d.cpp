@@ -63,18 +63,28 @@ return factors;
 }
 void solve() {
 ll n;
-cin>>n;
-ll l[n];
-for(ll i=0;i< n;i++){
-cin>>l[i];
+cin>>n;int r;int k;
+queue<int> q;
+vl ans(n-1,0);
+FOR(i,2,n){
+    cout<<'?'<<" "<<1<<" "<<i<<endl;
+    cout.flush();
+    cin>>r;
+    q.push(i);
+    if(r==0){k=i;break;}
+    // else 
 }
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
+ans[k-1]=1;
+
+FOR(i,k+1,n){
+    r=1;
+    while(r!=0){
+    cout<<'?'<<" "<<q.front()<<" "<<i<<endl;cout.flush();cin>>r;
+    if(r==0){ans[i-1]=q.front();q.pop();q.push(i);}
+    else{q.pop();}}
 }
-ce(n-ans);
+cout<<"! ";
+coutv(ans);cout.flush();
 }
 int main() {
 ios_base::sync_with_stdio(0);

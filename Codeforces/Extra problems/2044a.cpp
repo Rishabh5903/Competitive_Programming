@@ -64,17 +64,7 @@ return factors;
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
-for(ll i=0;i< n;i++){
-cin>>l[i];
-}
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
-}
-ce(n-ans);
+ce(n-1);
 }
 int main() {
 ios_base::sync_with_stdio(0);

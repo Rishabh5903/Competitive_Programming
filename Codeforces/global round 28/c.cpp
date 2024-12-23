@@ -61,20 +61,44 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+string xor_binary_strings_bitwise(const string &a, const string &b) {
+    string result = "";
+    int len_a = a.size(), len_b = b.size();
+    int max_len = max(len_a, len_b);
+
+
+    string a_padded = string(max_len - len_a, '0') + a;
+    string b_padded = string(max_len - len_b, '0') + b;
+
+
+    for (int i = 0; i < max_len; ++i) {
+        result += (a_padded[i] != b_padded[i]) ? '1' : '0';
+    }
+
+    return result;
+}
+
 void solve() {
 ll n;
-cin>>n;
-ll l[n];
-for(ll i=0;i< n;i++){
-cin>>l[i];
+string s;
+cin>>s;n=s.size();
+ll num=1;
+FOR(i,0,n){
+    if(s[i]=='0'){num=n-i;break;}
 }
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
+string temp="";
+string ans;
+ll l=1,r=1;
+FOR(i,0,n-num+1){
+    if(s[i]=='1'){
+    temp=s.substr(i,num);
+    string var=xor_binary_strings_bitwise(temp,s);
+    ans=max(ans,var);
+    if(ans==var){l=i+1;r=i+num;}}
+
 }
-ce(n-ans);
+
+cout<<1<<" "<<n<<" "<<l<<" "<<r<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

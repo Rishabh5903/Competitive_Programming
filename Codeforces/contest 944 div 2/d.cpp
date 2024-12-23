@@ -61,20 +61,41 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+ll dp[201][201];
+ll n,m,t;
+ll help(int i,int j,vvl& a){
+    // cout<<i<<" "<<j<<" "<<k<<endl;
+    if(i>=n || j>=m)return INF;
+    if(i==n-1 && j==m-1){
+        FOR(p,0,m)dp[i][j]=min(dp[i][j],p*t+a[i][(j+p)%m]);
+        return dp[i][j];
+    }
+    if(dp[i][j]!=INF)return dp[i][j];
+    ll ans=a[i][j];
+    // if(i==n-1)return dp[i][j]=ans+help(i,j+1,a);
+    // if(i==m-1)return dp[i][j][k]=ans+help(i+1,j,k,a);
+    FOR(p,0,m){
+        dp[i][j]=min(dp[i][j],ans+p*t+help(i+1,j,a));
+    }
+    if(j+1<m)dp[i][j]=min(dp[i][j],ans+help(i,j+1,a));
+    return dp[i][j];
+    
+}
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
+// ll n,m,k;
+cin>>n>>m>>t;
+vvl a(n,vl(m));
+FOR(i,0,n)FOR(j,0,m)FOR(k,0,m)dp[i][j]=INF;
 for(ll i=0;i< n;i++){
-cin>>l[i];
+    FOR(j,0,m)cin>>a[i][j];
+// cin>>l[i];
 }
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
-}
-ce(n-ans);
+ll ans=INF;
+FOR(p,0,m)ans=min(ans,t*p+help(0,0,a));
+// cout<<dp[0][0][0]<<endl;
+
+ce(ans);
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

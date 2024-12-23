@@ -64,23 +64,59 @@ return factors;
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
+ll a[n];
+stack<int> st;
 for(ll i=0;i< n;i++){
-cin>>l[i];
+cin>>a[i];
 }
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
+ll l[n],r[n];
+l[0]=a[0];
+st.push(0);
+FOR(i,1,n){
+    while(st.size() && (a[st.top()]>=a[i]))st.pop();
+    // cout<<i<<" "<<st.size()<<endl;
+    // ce(st.top());
+    if(st.size()){
+        l[i]=l[st.top()]+(i-st.top())*a[i];
+    }
+    else{
+        l[i]=(i+1)*a[i];
+    }
+    st.push(i);
 }
-ce(n-ans);
+while(st.size())st.pop();
+r[n-1]=a[n-1];st.push(n-1);
+for(int i=n-2;i>=0;i--){
+        while(st.size() && (a[st.top()]>=a[i]))st.pop();
+    if(st.size()){
+        r[i]=r[st.top()]+(st.top()-i)*a[i];
+    }
+    else{
+        r[i]=(n-i)*a[i];
+    }
+    st.push(i);
+}
+ll ind=0;ll maxo=0;
+FOR(i,0,n){
+maxo=max(maxo,l[i]+r[i]-a[i]);
+if(maxo==(l[i]+r[i]-a[i]))ind=i;
+}
+// FOR(i,0,n)cout<<l[i]<<" ";cout<<endl;
+// FOR(i,0,n)cout<<r[i]<<" ";cout<<endl;
+vl ans(n);ans[ind]=a[ind];
+FOR(i,ind+1,n){
+    ans[i]=min(a[i],ans[i-1]);
+}
+for(int i=ind-1;i>=0;i--){
+    ans[i]=min(a[i],ans[i+1]);
+}
+coutv(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

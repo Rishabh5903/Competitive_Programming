@@ -61,83 +61,36 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-const int MAXN=100000;
-const int val=((1<<30)-1);
-int n, t[4*MAXN],filled[4*MAXN]={0};
-void build(int a[], int v, int tl, int tr) {
-    if (tl == tr) {
-        t[v] = a[tl];
-    } else {
-        int tm = (tl + tr) / 2;
-        build(a, v*2, tl, tm);
-        build(a, v*2+1, tm+1, tr);
-        t[v] = t[v*2] & t[v*2+1];
-    }
-}
-bool query(int a[],int v, int tl, int tr, int l, int r,int q) {
-    if (l > r) 
-        return true;
-    if(l==r){
-        // cout<<l<<" "<<r<<" "<<t[v]<<endl;
-        if(t[v]==q)return true;
-        else if(t[v]==val){t[v]=q;filled[v]=1;return true;}
-        else return false;
-    }
-    if (l == tl && r == tr) {
-        if(t[v]==q)return true;
-        else if(t[v]&q!=q) return false;
-        else if(t[v]==val){
-            FOR(i,tl,tr+1)a[i]=q;
-            filled[v]=1;
-            return true;
-        }
-    }
-    int tm = (tl + tr) / 2;
-    // if(filled[v])
-    // cout<<tl<<" "<<tr<<" "<<l<<" "<<r<<endl;
-    bool ans=query(a,v*2, tl, tm, l, min(r, tm),q)
-           & query(a,v*2+1, tm+1, tr, max(l, tm+1), r,q);
-    filled[v]&=(filled[2*v] & filled[2*v+1]);
-    // ce("dbg3");
-    return ans;
-}
-// void update(int v, int tl, int tr, int pos, int new_val) {
-//     if (tl == tr) {
-//         t[v] = new_val;
-//     } else {
-//         int tm = (tl + tr) / 2;
-//         if (pos <= tm)
-//             update(v*2, tl, tm, pos, new_val);
-//         else
-//             update(v*2+1, tm+1, tr, pos, new_val);
-//         t[v] = t[v*2] + t[v*2+1];
-//     }
-// }
 void solve() {
-int n,m;
-cin>>n>>m;
-int a[n];FOR(i,0,n)a[i]=val;
-// ce(a[1]);
-build(a,1,0,n-1);
-bool ans=1;
-// ce("dbg");
-for(ll i=0;i< m;i++){int l,r,q;
-cin>>l>>r>>q;
-ans&=query(a,1,0,n-1,l-1,r-1,q);
+ll n;
+cin>>n;int r;int k;
+queue<int> q;q.push(2);
+vl ans(n-1,0);
+FOR(i,2,n){
+    cout<<'?'<<" "<<1<<" "<<i<<endl;
+    cout.flush();
+    cin>>r;
+    q.push(i);
+    if(r==0){k=i;break;}
+    // else 
 }
-// ce("dbg");
-if(!ans)ce("NO");
-else{
-    ce("YES");
-    FOR(i,0,n)cout<<a[i]<<" ";
-    cout<<endl;
+ans[k-1]=1;
+
+FOR(i,k+1,n){
+    r=1;
+    while(r!=0){
+    cout<<'?'<<" "<<q.front()<<" "<<i<<endl;cout.flush();cin>>r;
+    if(r==0){ans[i-1]=q.front();q.pop();q.push(i);}
+    else{q.pop();}}
 }
+cout<<"! ";
+coutv(ans);cout.flush();
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-// cin >> n;
+cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

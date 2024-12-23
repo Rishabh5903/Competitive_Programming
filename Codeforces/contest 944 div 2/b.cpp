@@ -61,20 +61,43 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+bool check(const string &s, int i, int t, const vl &v, int n) {
+    set<ll> st, st2;
+    if (t == 1) {
+        FOR(j, 1, i + 2) st.insert(j);
+        FOR(j, 0, i + 1) st2.insert(v[j]);
+    } else {
+        FOR(j, 1, n - i + 1) st.insert(j);
+        FOR(j, i, n) st2.insert(v[j]);
+    }
+    return st == st2;
+}
+
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
-for(ll i=0;i< n;i++){
-cin>>l[i];
-}
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
-}
-ce(n-ans);
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+
+    vl v1(n), v2(n);
+    FOR(i, 0, n) v1[i] = i + 1;
+    v2 = v1;
+    reverse(v2.begin(), v2.end());
+
+    bool ans1 = true, ans2 = true;
+    FOR(i, 0, n) {
+        if (s[i] == 'p') {
+            ans1 &= check(s, i, 1, v1, n);
+            ans2 &= check(s, i, 1, v2, n);
+        }
+        if (s[i] == 's') {
+            ans1 &= check(s, i, 2, v1, n);
+            ans2 &= check(s, i, 2, v2, n);
+        }
+    }
+
+    if (ans1 || ans2) ce("YES");
+    else ce("NO");
 }
 int main() {
 ios_base::sync_with_stdio(0);

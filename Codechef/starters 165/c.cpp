@@ -64,17 +64,38 @@ return factors;
 void solve() {
 ll n;
 cin>>n;
-ll l[n];
-for(ll i=0;i< n;i++){
-cin>>l[i];
-}
-sort(l,l+n);
-ll ans=0;
+// ll l[n];
+string s;
+cin>>s;
+ll l=-1,r=-1;
 FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
+    if(s[i]==s[i+1]){
+        if(l==-1){l=i+1;r=i+1;}
+        else r=i;
+    }
 }
-ce(n-ans);
+if(l==-1){ce("YES");return;}
+ll ans=1;
+if(l==r){
+    ll l1=0,r1=l-1;r=n-1;string s1=s;
+while(l1<r1){
+    swap(s1[l1],s1[r1]);
+    l1++;r1--;
+}
+FOR(i,0,n-1){
+    if(s1[i]==s1[i+1]){ans=0;break;}
+}
+// ce(s1);
+    if(ans){ce("YES");return;}
+    }
+while(l<r){
+    swap(s[l],s[r]);
+    l++;r--;
+}
+FOR(i,0,n-1){
+    if(s[i]==s[i+1]){ce("NO");return;}
+}
+ce("YES");
 }
 int main() {
 ios_base::sync_with_stdio(0);

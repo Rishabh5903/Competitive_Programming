@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include<sstream> 
 using namespace std;
-template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ', ' << p.second << ')'; }
+template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p[0] << ', ' << p[1] << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ', '; return os << '}'; }
 void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
@@ -62,25 +62,46 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
-for(ll i=0;i< n;i++){
-cin>>l[i];
+string s;
+cin>>s;
+vl st;
+unordered_map<ll,ll> mp;
+int temp=0;
+vvl prev;
+for(int i=0;i<s.size();i++){
+    char c=s[i];
+    if(c==')'){
+        if(!st.size()){temp=0;}
+        else {
+            
+            ll temp=i-st.back()+1;
+            // cout<<prev<<" "<<st<<" "<<temp<<endl;
+            while(prev.size() && st.back()<prev.back()[0])prev.pop_back();
+            if(prev.size() && (st.back()-prev.back()[0]==1)){temp=i-st.back()+1+prev.back()[1];mp[temp]++;
+            st.pop_back();
+            // st.pb(prev.back()[0]-prev.back()[1]+1);
+            prev.pop_back();}
+            else{mp[temp]++;
+        st.pop_back();}
+        prev.pb({i,temp});
+        }
+    }
+    else {st.pb(i);temp++;}
+
 }
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
+ll ans1=0,ans2;
+for(auto i:mp){
+    ans1=maxm({ans1,i.first});
+    if(i.first==ans1)ans2=i.second;
 }
-ce(n-ans);
+if(ans1==0)ans2=1;
+cout<<ans1<<" "<<ans2<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

@@ -61,26 +61,96 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+const int MAXN=200000;
+bool marked[4*MAXN]={0}; int t[4*MAXN]={0};
+void push(int v) {
+    if (marked[v]) {
+        t[v*2] = t[v*2+1] = t[v];
+        marked[v*2] = marked[v*2+1] = true;
+        marked[v] = false;
+    }
+}
+
+void update(int v, int tl, int tr, int l, int r, int new_val) {
+    if (l > r) 
+        return;
+    if (l == tl && tr == r) {
+        t[v] = new_val;
+        marked[v] = true;
+    } else {
+        push(v);
+        int tm = (tl + tr) / 2;
+        update(v*2, tl, tm, l, min(r, tm), new_val);
+        update(v*2+1, tm+1, tr, max(l, tm+1), r, new_val);
+    }
+}
+int get(int v, int tl, int tr, int pos) {
+    if (tl == tr) {
+        return t[v];
+    }
+    push(v);
+    int tm = (tl + tr) / 2;
+    if (pos <= tm) 
+        return get(v*2, tl, tm, pos);
+    else
+        return get(v*2+1, tm+1, tr, pos);
+}
 void solve() {
-ll n;
-cin>>n;
-ll l[n];
+int n,q;
+cin>>n>>q;
+int l[n];
+
+int f=0;
 for(ll i=0;i< n;i++){
-cin>>l[i];
+cin>>l[i];if(l[i]==q)f=1;
 }
-sort(l,l+n);
-ll ans=0;
-FOR(i,0,n-1){
-    ll ind=lower_bound(l,l+n,l[i]+l[i+1])-l-1;
-    ans=max(ans,ind-i+1);
+
+unordered_map<int,pair<int,int>> mp;
+FOR(i,0,n){
+    if(l[i]==0)continue;
+    if(mp.find(l[i])==mp.end())mp[l[i]]={i,i};
+    else mp[l[i]].second=i;
 }
-ce(n-ans);
+
+FOR(i,1,q+1){
+    if(mp.find(i)!=mp.end())update(1,0,n-1,mp[i].first,mp[i].second,i);
+}
+ll ans=1;
+
+FOR(i,0,n){ll temp=get(1,0,n-1,i);
+    if(l[i]==0 && !f){l[i]=q;f=1;continue;}
+    if(l[i]!=0 && l[i]!=temp){ce("NO");return;}
+    l[i]=temp;
+    }
+// ce(mp);
+// FOR(i,0,n)cout<<l[i]<<" ";cout<<endl;
+// ll cnt=0;
+// FOR(i,0,n-1){
+// if(l[i]==0 && l[i+1]!=0)cnt++;
+// }
+// if(l[n-1]==0)cnt++;
+if(!f ){ce("NO");return;}
+FOR(i,0,n){
+    if(l[i]==0){
+        if(i==0){
+            if(n>=2 && l[i+1]!=0)l[i]=l[i+1];
+            else l[i]=1;
+        }
+        else {
+            l[i]=l[i-1];}
+    }
+}
+
+    ce("YES");
+    FOR(i,0,n)cout<<l[i]<<" ";
+    cout<<endl;
+
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

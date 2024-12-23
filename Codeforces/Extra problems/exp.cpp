@@ -1,61 +1,56 @@
-#include <iostream>
-#include <algorithm>
-#include <cstring>
+#include<bits/stdc++.h>
 using namespace std;
-const int INF = 1000000000;
-const int MAX = 1000005;
-int a[MAX], tmp[MAX], cnt[MAX], le[MAX], ri[MAX];
-long long solve(int l, int r)
-{
-    if (r - l < 2)
-        return 0;
-    int mid = (l + r) / 2;
-    long long ret = solve(l, mid) + solve(mid, r);
-    int p1 = l, p2 = mid;
-    while (p1 != mid || p2 != r)
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double lld;
+#define fr(i, n) for (ll i = 0; i < n; i++)
+#define pb push_back
+#define sze(x) x.size()
+#define all(v) v.begin(), v.end()
+#define rall(v) v.rbegin(), v.rend()
+#pragma GCC optimize("unroll-loops,O3,Ofast")
+#pragma GCC target("avx2,avx,fma,bmi,bmi2,lzcnt,popcnt")
+#define ff first
+#define ss second
+#define py cout << "YES\n"
+#define pn cout << "NO\n"
+#define mk minavkaria
+
+int main() {
+    // your code goes here
+    int t;
+    cin >> t;
+
+    while (t--)
     {
-        int val1 = (p1 < mid ? le[p1] : INF);
-        int val2 = (p2 < r ? ri[p2] : INF);
-        if (val1 <= val2)
+        int x1,y1,z1,x2,y2,z2,k;
+        cin>>x1>>y1>>z1>>x2>>y2>>z2>>k;
+        
+        int distX=abs(x1-x2);
+        int distY=abs(y1-y2);
+        int distZ=abs(z1-z2);
+        
+        vector<int> a={distX,distY,distZ};
+        
+        sort(rall(a));
+        
+        int gap=((a[0]+k-1)/k)-1;
+        // cout<<gap<<"--\n";
+        if(a[1]+a[2]>=gap)
         {
-            p1++;
-            ret += p2 - mid;
+            // cout<<"I am here";
+            cout<<distX+distY+distZ<<"\n";
         }
         else
-            p2++;
+        {
+            int ext=gap-(a[1]+a[2]);
+            cout<<distX+distY+distZ+ext+ext%2<<"\n";
+        }
+        
+        
+        
+        
     }
-    merge(le + l, le + mid, le + mid, le + r, tmp);
-    for (int i = 0; i < r - l; i++)
-        le[i + l] = tmp[i];
-    merge(ri + l, ri + mid, ri + mid, ri + r, tmp);
-    for (int i = 0; i < r - l; i++)
-        ri[i + l] = tmp[i];
-    return ret;
-}
-int main()
-{
-    ios::sync_with_stdio(false);
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
-        tmp[i] = a[i];
-    }
-    sort(tmp, tmp + n);
-    for (int i = 0; i < n; i++)
-        a[i] = lower_bound(tmp, tmp + n, a[i]) - tmp;
-    for (int i = 0; i < n; i++)
-    {
-        cnt[a[i]]++;
-        le[i] = cnt[a[i]];
-    }
-    memset(cnt, 0, sizeof(cnt));
-    for (int i = n - 1; i >= 0; i--)
-    {
-        cnt[a[i]]++;
-        ri[i] = cnt[a[i]];
-    }
-    cout << solve(0, n) << endl;
+
     return 0;
 }
