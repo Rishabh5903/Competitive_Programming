@@ -2,11 +2,11 @@
 #include<sstream> 
 using namespace std;
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ', ' << p.second << ')'; }
-template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ', '; return os << '}'; }
+template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
 void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
 #ifdef LOCAL
-#define dbg(...) cerr << '(' << #__VA_ARGS__ << '):', dbg_out(__VA_ARGS__)
+#define dbg(...) cerr << '(' << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
 #else
 #define dbg(...)
 #endif
@@ -23,13 +23,20 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pb push_back
 #define ce(x) cout<<x<<endl
 #define cinv(v) for( long long int i = 0; i<v.size();i++)cin>>v[i];
-#define coutv(v) for( long long int i = 0; i<v.size();i++)cout<<v[i]<<" ";cout<<endl;
 ll modmul(ll a,ll b,ll m){ a %= m;b %= m; return (a * b) % m;}
 ll modadd(ll a,ll b,ll m){ a %= m;b %= m; return (a + b) % m;}
 ll modsub(ll a,ll b,ll m){ a %= m;b %= m; return (a - b + m) % m;}
 ll gcd(ll a, ll b){ if(b == 0) return a; return gcd(b, a % b);}
 ll expo(ll a,ll n,ll md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
 ll expo(ll a,ll n){ ll res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
+ll modinv(ll b, ll m) {
+return expo(b, m - 2, m);
+}
+ll moddiv(ll a, ll b, ll m) {
+a %= m; b %= m;
+ll inv = modinv(b, m); 
+ return modmul(a, inv, m);
+}
 template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
@@ -42,6 +49,13 @@ return v[v.size()-1];
 ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
+}
+void coutv(vl v){
+ll sz=v.size();
+FOR(i,0,sz)cout<<v[i]<<' ';cout<<endl;
+}
+void couta(ll a[],ll n){
+FOR(i,0,n)cout<<a[i]<<' ';cout<<endl;
 }
 vl primeFactorization(ll n){
 vl factors;
@@ -61,31 +75,35 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void solve() {
-ll x1,y1,z1,x2,y2,z2,k;
-cin>>x1>>y1>>z1>>x2>>y2>>z2>>k;
-ll a,b,c;
-a=abs(x1-x2);b=abs(y1-y2);c=abs(z1-z2);
-vl v={a,b,c};sort(all(v));
-a=v[0];b=v[1];c=v[2];
-// cout<<a<<" "<<b<<" "<<c<<endl;
-ll ans=0,temp=0;
-// ans+=a+2*b;c-=b;
-ll y=c/k;
-if(y%2==0)temp+=y;else {if(c%k)temp+=(y);else temp+=(y-1);}
-temp=max(0LL,temp-(a+b));ans+=temp+temp%2;
-ans+=a+b+c;
 
-// ans+=c;
-ce(ans);
+void solve() {
+    string s;
+    cin >> s;
+    vl digits(s.size());
+    FOR(i, 0, s.size()) {
+        digits[i] = s[i] - '0';
+    }
+    int sum_digits = accumulate(all(digits), 0);
+    int count_two = count(all(digits), 2);
+    int count_three = count(all(digits), 3);
+    FOR(i, 0, min(10, count_two + 1)) {
+        FOR(j, 0, min(10, count_three + 1)) {
+            if ((sum_digits + i * 2 + j * 6) % 9 == 0) {
+                ce("YES");
+                return;
+            }
+        }
+    }
+    ce("NO");
 }
+
 int main() {
-ios_base::sync_with_stdio(0);
-cin.tie(0); cout.tie(0);
-int n = 1;
-cin >> n;
-for (int t = 1; t <= n; t++) {
-// cout << 'Case #' << t << ': ';
-solve();
-}
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    int t;
+    cin >> t;
+    while (t--) {
+        solve();
+    }
+    return 0;
 }

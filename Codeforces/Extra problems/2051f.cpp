@@ -29,14 +29,6 @@ ll modsub(ll a,ll b,ll m){ a %= m;b %= m; return (a - b + m) % m;}
 ll gcd(ll a, ll b){ if(b == 0) return a; return gcd(b, a % b);}
 ll expo(ll a,ll n,ll md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
 ll expo(ll a,ll n){ ll res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
-ll modinv(ll b, ll m) {
-return expo(b, m - 2, m);
-}
-ll moddiv(ll a, ll b, ll m) {
-a %= m; b %= m;
-ll inv = modinv(b, m); 
- return modmul(a, inv, m);
-}
 template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
@@ -50,13 +42,6 @@ ll minm(vector<ll> v){
 sort(all(v));
 return v[0];
 }
-void coutv(vl v){
-ll sz=v.size();
-FOR(i,0,sz)cout<<v[i]<<' ';cout<<endl;
-}
-void couta(ll a[],ll n){
-FOR(i,0,n)cout<<a[i]<<' ';cout<<endl;
-}
 vl primeFactorization(ll n){
 vl factors;
 while (n % 2 == 0)
@@ -69,55 +54,42 @@ for (int i = 3; i <= sqrt(n); i = i + 2)
 while (n % i == 0)
 {
 factors.pb(i);
-n = n/i;
+n = n/i; 
 }
 }
 if (n > 2) factors.pb(n);
 return factors;
 }
-void find(ll n, ll arr[], ll result[]) {
-    set<pair<ll, ll>> st;
-    for (ll i = n - 1; i >= 0; i--) {
-        auto it = st.lower_bound({arr[i], 0});
-        if (it != st.begin()) {
-            --it;
-            result[i] = it->second;
-        } else {
-            result[i] = n+1;
-        }
-        st.insert({arr[i], i});
-    }
+void coutv(vl v){
+    ll sz=v.size();
+    FOR(i,0,sz)cout<<v[i]<<" ";cout<<endl;
 }
 void solve() {
-ll n;
-cin>>n;
-ll q[n],k[n],j[n];
-FOR(i,0,n){cin>>q[i];}FOR(i,0,n){cin>>k[i];}FOR(i,0,n){cin>>j[i];}
-    ll qq[n], kk[n], jj[n];
-    FOR(i, 0, n) qq[i] = kk[i] = jj[i] = n+1;
-    find(n, q, qq);
-    find(n, k, kk);
-    find(n, j, jj);
-ll i=0;vector<pair<char,ll>> ans;ll ind1,ind2,ind3,next;
-// couta(qq,n);couta(kk,n);couta(jj,n);
-while(i<n-1){
-ind1=qq[i];ind2=kk[i];ind3=jj[i];next=min(ind1,min(ind2,ind3));
-// coutv({i,ind1,ind2,ind3,next});
-if(next==(n+1)){ans.clear();break;}
-else{
-    if(next==ind1)ans.pb({'q',next+1});
-    else if(next==ind2)ans.pb({'k',next+1});
-    else ans.pb({'j',next+1});
-    i=next;
-}
+ll n,m,q;
+cin>>n>>m>>q;
+ll l[q];
+ll l1=n+1,r1=n+1,l2=m,r2=m,l3=0,r3=0;
+ll f=1;
+for(ll i=0;i< q;i++){
+cin>>l[i];ll f1=1,f2=1;
+if(f && l[i]<=r2 && l[i]>=l2){
+    if(i==0){f=0;l2=n+1;r2=0;}
+    if(l1==n+1){l1=1;r1=1;f1=0;}
+    else if(l[i]>r1) {r1=min(r1+1,l2);f1=0;}
+    // else f1=0;
+    if(r3==0){r3=n;l3=n;f2=0;}
+    else if(l[i]<l3){l3=max(l3-1,r2);f2=0;}
+    // else f2=0;
 
 }
-if(!ans.size())ce("NO");
-else{
-    ce("YES");
-    ce(ans.size());
-    for(auto i:ans)cout<<i.first<<" "<<i.second<<endl;
+else if(f && l[i]<l2){if(r1==n+1)l2=max(1LL,l2-1);else l2=max(l2-1,r1);}
+else if(f && l[i]>r2){if(r3==0)r2=min(n,r2+1);else r2=min(r2+1,l3);}
+if(f2 && l[i]<l3)l3=max(l3-1,max(r2,r1)+1);
+if(f1 && l[i]>r1) r1=min(r1+1,min(l3,l2)-1);
+// coutv({l1,r1,l2,r2,l3,r3});
+cout<<((r1-l1+1)*(l1!=n+1)+(r2-l2+1)*f+(r3-l3+1)*(r3!=0)-(r1==l2)*f-(r2==l3)*f)<<" ";
 }
+cout<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

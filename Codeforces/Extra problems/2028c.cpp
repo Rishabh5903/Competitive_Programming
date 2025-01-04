@@ -75,48 +75,20 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void find(ll n, ll arr[], ll result[]) {
-    set<pair<ll, ll>> st;
-    for (ll i = n - 1; i >= 0; i--) {
-        auto it = st.lower_bound({arr[i], 0});
-        if (it != st.begin()) {
-            --it;
-            result[i] = it->second;
-        } else {
-            result[i] = n+1;
-        }
-        st.insert({arr[i], i});
-    }
-}
 void solve() {
-ll n;
-cin>>n;
-ll q[n],k[n],j[n];
-FOR(i,0,n){cin>>q[i];}FOR(i,0,n){cin>>k[i];}FOR(i,0,n){cin>>j[i];}
-    ll qq[n], kk[n], jj[n];
-    FOR(i, 0, n) qq[i] = kk[i] = jj[i] = n+1;
-    find(n, q, qq);
-    find(n, k, kk);
-    find(n, j, jj);
-ll i=0;vector<pair<char,ll>> ans;ll ind1,ind2,ind3,next;
-// couta(qq,n);couta(kk,n);couta(jj,n);
-while(i<n-1){
-ind1=qq[i];ind2=kk[i];ind3=jj[i];next=min(ind1,min(ind2,ind3));
-// coutv({i,ind1,ind2,ind3,next});
-if(next==(n+1)){ans.clear();break;}
-else{
-    if(next==ind1)ans.pb({'q',next+1});
-    else if(next==ind2)ans.pb({'k',next+1});
-    else ans.pb({'j',next+1});
-    i=next;
+ll n,m,v;
+cin>>n>>m>>v;
+ll l[n];
+ll ans=0;
+ll psum[n+1];psum[0]=0;
+for(ll i=0;i< n;i++){
+cin>>l[i];ans+=l[i];psum[i+1]=psum[i]+l[i];
 }
-
-}
-if(!ans.size())ce("NO");
-else{
-    ce("YES");
-    ce(ans.size());
-    for(auto i:ans)cout<<i.first<<" "<<i.second<<endl;
+ll left=0,right=n-1;
+FOR(i,0,m){
+    ll ind1=lower_bound(psum+left,psum+n,psum[left]+v)-psum;
+    ll ind2=lower_bound(psum,psum+n,psum[right]-v)-1-psum;
+    if()
 }
 }
 int main() {

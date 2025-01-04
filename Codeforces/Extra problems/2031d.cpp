@@ -75,49 +75,35 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void find(ll n, ll arr[], ll result[]) {
-    set<pair<ll, ll>> st;
-    for (ll i = n - 1; i >= 0; i--) {
-        auto it = st.lower_bound({arr[i], 0});
-        if (it != st.begin()) {
-            --it;
-            result[i] = it->second;
-        } else {
-            result[i] = n+1;
-        }
-        st.insert({arr[i], i});
-    }
-}
 void solve() {
 ll n;
 cin>>n;
-ll q[n],k[n],j[n];
-FOR(i,0,n){cin>>q[i];}FOR(i,0,n){cin>>k[i];}FOR(i,0,n){cin>>j[i];}
-    ll qq[n], kk[n], jj[n];
-    FOR(i, 0, n) qq[i] = kk[i] = jj[i] = n+1;
-    find(n, q, qq);
-    find(n, k, kk);
-    find(n, j, jj);
-ll i=0;vector<pair<char,ll>> ans;ll ind1,ind2,ind3,next;
-// couta(qq,n);couta(kk,n);couta(jj,n);
+ll l[n];
+ll maxo[n]={-1},mino[n]={-1};ll mx=LLONG_MIN,mi=LLONG_MAX;ll ind=0;
+for(ll i=0;i< n;i++){
+cin>>l[i];if(l[i]>=mx)ind=i;mx=max(mx,l[i]);maxo[i]=ind;
+}
+ind=n-1;
+for(int i=n-1;i>=0;i--){
+    if(l[i]<=mi)ind=i;mi=min(mi,l[i]);mino[i]=ind;
+}
+ll i=0;ll prev=0;ll val=l[0];
+// couta(mino,n);couta(maxo,n);
 while(i<n-1){
-ind1=qq[i];ind2=kk[i];ind3=jj[i];next=min(ind1,min(ind2,ind3));
-// coutv({i,ind1,ind2,ind3,next});
-if(next==(n+1)){ans.clear();break;}
-else{
-    if(next==ind1)ans.pb({'q',next+1});
-    else if(next==ind2)ans.pb({'k',next+1});
-    else ans.pb({'j',next+1});
-    i=next;
+    ll ind1=mino[i+1],ind2=maxo[ind1-1];
+    // coutv({i,ind1,ind2});
+    if(l[ind1]>=val){
+        
+        FOR(j,prev,i+1)l[j]=val;
+        i++;prev=i;val=l[i];
+    }
+    else{
+        i=ind1;
+        val=l[ind2];
+    }
 }
-
-}
-if(!ans.size())ce("NO");
-else{
-    ce("YES");
-    ce(ans.size());
-    for(auto i:ans)cout<<i.first<<" "<<i.second<<endl;
-}
+FOR(j,prev,n)l[j]=l[maxo[n-1]];
+couta(l,n);
 }
 int main() {
 ios_base::sync_with_stdio(0);

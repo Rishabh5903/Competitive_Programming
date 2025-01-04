@@ -29,14 +29,6 @@ ll modsub(ll a,ll b,ll m){ a %= m;b %= m; return (a - b + m) % m;}
 ll gcd(ll a, ll b){ if(b == 0) return a; return gcd(b, a % b);}
 ll expo(ll a,ll n,ll md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
 ll expo(ll a,ll n){ ll res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
-ll modinv(ll b, ll m) {
-return expo(b, m - 2, m);
-}
-ll moddiv(ll a, ll b, ll m) {
-a %= m; b %= m;
-ll inv = modinv(b, m); 
- return modmul(a, inv, m);
-}
 template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
@@ -53,9 +45,6 @@ return v[0];
 void coutv(vl v){
 ll sz=v.size();
 FOR(i,0,sz)cout<<v[i]<<' ';cout<<endl;
-}
-void couta(ll a[],ll n){
-FOR(i,0,n)cout<<a[i]<<' ';cout<<endl;
 }
 vl primeFactorization(ll n){
 vl factors;
@@ -75,49 +64,41 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void find(ll n, ll arr[], ll result[]) {
-    set<pair<ll, ll>> st;
-    for (ll i = n - 1; i >= 0; i--) {
-        auto it = st.lower_bound({arr[i], 0});
-        if (it != st.begin()) {
-            --it;
-            result[i] = it->second;
-        } else {
-            result[i] = n+1;
-        }
-        st.insert({arr[i], i});
+struct customcomp{
+bool operator()(const pair<ll,ll>& a,const pair<ll,ll>& b){return a.first>b.first;}
+};
+bool check(ll top,ll temp,ll cnt){
+    while(cnt && temp<=top){
+        temp*=2;cnt--;
     }
+    return temp>top;
 }
 void solve() {
 ll n;
 cin>>n;
-ll q[n],k[n],j[n];
-FOR(i,0,n){cin>>q[i];}FOR(i,0,n){cin>>k[i];}FOR(i,0,n){cin>>j[i];}
-    ll qq[n], kk[n], jj[n];
-    FOR(i, 0, n) qq[i] = kk[i] = jj[i] = n+1;
-    find(n, q, qq);
-    find(n, k, kk);
-    find(n, j, jj);
-ll i=0;vector<pair<char,ll>> ans;ll ind1,ind2,ind3,next;
-// couta(qq,n);couta(kk,n);couta(jj,n);
-while(i<n-1){
-ind1=qq[i];ind2=kk[i];ind3=jj[i];next=min(ind1,min(ind2,ind3));
-// coutv({i,ind1,ind2,ind3,next});
-if(next==(n+1)){ans.clear();break;}
-else{
-    if(next==ind1)ans.pb({'q',next+1});
-    else if(next==ind2)ans.pb({'k',next+1});
-    else ans.pb({'j',next+1});
-    i=next;
+ll l[n];
+priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,customcomp> pq;
+ll ans=0;
+for(ll i=0;i< n;i++){
+cin>>l[i];
+ll cnt=0;ll temp=l[i];
+while(temp%2==0){
+    temp/=2;cnt++;
 }
+while(pq.size() && check(pq.top().first,temp,cnt)){
+    
+    auto [x,y]=pq.top();pq.pop();cnt+=y;
+ans=modsub(ans,modmul((x),(expo(2,y,MOD)),MOD),MOD);
+ans=modadd(ans,x,MOD);
 
+// l[i]=modmul(l[i],(1LL<<y),MOD);
+// if(pq.size())cout<<pq.top()<<" "<<x<<" "<<y<<" "<<l[i]<<endl;
 }
-if(!ans.size())ce("NO");
-else{
-    ce("YES");
-    ce(ans.size());
-    for(auto i:ans)cout<<i.first<<" "<<i.second<<endl;
-}
+ans=modadd(ans,modmul(temp,expo(2,cnt,MOD),MOD),MOD);
+
+pq.push({temp,cnt});
+cout<<ans<<" ";
+}cout<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);
