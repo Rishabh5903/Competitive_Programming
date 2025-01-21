@@ -75,33 +75,29 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+ll dp[1001][5][5];vector<char> l={'n','a','r','e','k'};ll n,m;unordered_map<char,int> mp;
+ll help(ll i,ll j,vector<string>& v,ll scoren){
+        if(i==n)return dp[i][scoren][j]=-scoren;
+        if(dp[i][scoren][j]!=-1)return dp[i][scoren][j];
+        ll ind=j,scorec=0,temp=scoren;
+        FOR(k,0,m){
+            if(v[i][k]==l[ind%5]){ind++;scoren++;}
+            else if(mp.find(v[i][k])!=mp.end())scorec++;
+            // coutv({i,ind,k,scoren,scorec});
+        }
+        ll x=(scoren/5)*5-scorec;scoren%=5;
+        return dp[i][scoren][j]=max(help(i+1,j,v,temp),x+help(i+1,ind%5,v,scoren));
+        
+}
 void solve() {
-ll n;
-cin>>n;
-vl l(n);
+cin>>n>>m;for(char c:l)mp[c]=1;
+vector<string> v(n);
+
 for(ll i=0;i< n;i++){
-cin>>l[i];
+cin>>v[i];
 }
-vl ans(n,INF);vl psum(n+1,0);
-FOR(i,0,n)psum[i+1]=l[i]+psum[i];
-// ce(psum);
-set<ll> st;
-ll left[n],right[n];
-FOR(i,0,n){
-    left[i]=st.size();
-    st.insert(l[i]);
-}st.clear();
-for(int i=n-1;i>=0;i--){right[i]=st.size();st.insert(l[i]);}
-FOR(i,0,n){
-    ll ind1=lower_bound(psum.begin()+i+1,psum.end(),psum[i+1]+l[i]+1)-psum.begin();
-    ll ind2=lower_bound(all(psum),psum[i]-l[i])-psum.begin()-1;
-    ll len1=ind1-i-1,len2=i-ind2;
-    if((l[i]<psum[i]) && (left[i]>1 || i==1))ans[i]=min(ans[i],len2);if((psum[n]-psum[i+1]>l[i]) && (right[i]>1 || i==n-2))ans[i]=min(ans[i],len1);
-    if(ans[i]==INF)ans[i]=-1;
-    // coutv({ind1,ind2,len1,len2,left[i],right[i],ans[i]});
-    
-}
-coutv(ans);
+FOR(i,0,n+1)FOR(k,0,5)FOR(j,0,5)dp[i][k][j]=-1;
+ce(help(0,0,v,0));
 }
 int main() {
 ios_base::sync_with_stdio(0);

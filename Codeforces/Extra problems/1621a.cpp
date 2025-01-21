@@ -76,32 +76,14 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n;
-cin>>n;
-vl l(n);
-for(ll i=0;i< n;i++){
-cin>>l[i];
+ll n,k;
+cin>>n>>k;
+if(k>(n+1)/2){ce(-1);return;}
+vector<vector<char>> ans(n,vector<char>(n,'.'));
+FOR(i,0,k){
+    ans[2*i][2*i]='R';
 }
-vl ans(n,INF);vl psum(n+1,0);
-FOR(i,0,n)psum[i+1]=l[i]+psum[i];
-// ce(psum);
-set<ll> st;
-ll left[n],right[n];
-FOR(i,0,n){
-    left[i]=st.size();
-    st.insert(l[i]);
-}st.clear();
-for(int i=n-1;i>=0;i--){right[i]=st.size();st.insert(l[i]);}
-FOR(i,0,n){
-    ll ind1=lower_bound(psum.begin()+i+1,psum.end(),psum[i+1]+l[i]+1)-psum.begin();
-    ll ind2=lower_bound(all(psum),psum[i]-l[i])-psum.begin()-1;
-    ll len1=ind1-i-1,len2=i-ind2;
-    if((l[i]<psum[i]) && (left[i]>1 || i==1))ans[i]=min(ans[i],len2);if((psum[n]-psum[i+1]>l[i]) && (right[i]>1 || i==n-2))ans[i]=min(ans[i],len1);
-    if(ans[i]==INF)ans[i]=-1;
-    // coutv({ind1,ind2,len1,len2,left[i],right[i],ans[i]});
-    
-}
-coutv(ans);
+FOR(i,0,n){FOR(j,0,n)cout<<ans[i][j];cout<<endl;}
 }
 int main() {
 ios_base::sync_with_stdio(0);

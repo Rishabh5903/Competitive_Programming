@@ -78,30 +78,28 @@ return factors;
 void solve() {
 ll n;
 cin>>n;
-vl l(n);
+ll l[n];
 for(ll i=0;i< n;i++){
 cin>>l[i];
 }
-vl ans(n,INF);vl psum(n+1,0);
-FOR(i,0,n)psum[i+1]=l[i]+psum[i];
-// ce(psum);
-set<ll> st;
-ll left[n],right[n];
-FOR(i,0,n){
-    left[i]=st.size();
-    st.insert(l[i]);
-}st.clear();
-for(int i=n-1;i>=0;i--){right[i]=st.size();st.insert(l[i]);}
-FOR(i,0,n){
-    ll ind1=lower_bound(psum.begin()+i+1,psum.end(),psum[i+1]+l[i]+1)-psum.begin();
-    ll ind2=lower_bound(all(psum),psum[i]-l[i])-psum.begin()-1;
-    ll len1=ind1-i-1,len2=i-ind2;
-    if((l[i]<psum[i]) && (left[i]>1 || i==1))ans[i]=min(ans[i],len2);if((psum[n]-psum[i+1]>l[i]) && (right[i]>1 || i==n-2))ans[i]=min(ans[i],len1);
-    if(ans[i]==INF)ans[i]=-1;
-    // coutv({ind1,ind2,len1,len2,left[i],right[i],ans[i]});
+ll ans=0,i=0,j=1;
+while(i<n){
+    if(l[i]==0){j=1;i++;continue;}
+    if(i==(n-1)){if(l[i]>0)ans++;break;}
+    if(l[i]>=3 ){j=1;ans+=1;i+=1;continue;}
+    if(j==1){
+        if(l[i+1]>=3){l[i+1]-=2;j=3;ans++;i++;}
+        else {l[i+1]=0;j=1;ans++;i++;}
+
+    }
+    else{
+        if(l[i+1]>=3){l[i+1]=max(2LL,l[i+1]-2);}
+        j=1;ans++;i++;
+    }
+
     
-}
-coutv(ans);
+
+}ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -96,7 +96,7 @@ FOR(i,0,n){
     ll ind1=lower_bound(psum.begin()+i+1,psum.end(),psum[i+1]+l[i]+1)-psum.begin();
     ll ind2=lower_bound(all(psum),psum[i]-l[i])-psum.begin()-1;
     ll len1=ind1-i-1,len2=i-ind2;
-    if((l[i]<psum[i]) && (left[i]>1 || i==1))ans[i]=min(ans[i],len2);if((psum[n]-psum[i+1]>l[i]) && (right[i]>1 || i==n-2))ans[i]=min(ans[i],len1);
+    if((l[i]<psum[i]) && (left[i]>1 || len2==1))ans[i]=min(ans[i],len2);if((psum[n]-psum[i+1]>l[i]) && (right[i]>1 || len1==1))ans[i]=min(ans[i],len1);
     if(ans[i]==INF)ans[i]=-1;
     // coutv({ind1,ind2,len1,len2,left[i],right[i],ans[i]});
     

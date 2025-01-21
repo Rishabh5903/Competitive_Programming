@@ -75,33 +75,30 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+ll dp[5001][5001];ll n;
 void solve() {
-ll n;
 cin>>n;
-vl l(n);
+ll l[n],fr[n+1]={0};
 for(ll i=0;i< n;i++){
-cin>>l[i];
+cin>>l[i];fr[l[i]]++;
 }
-vl ans(n,INF);vl psum(n+1,0);
-FOR(i,0,n)psum[i+1]=l[i]+psum[i];
-// ce(psum);
-set<ll> st;
-ll left[n],right[n];
-FOR(i,0,n){
-    left[i]=st.size();
-    st.insert(l[i]);
-}st.clear();
-for(int i=n-1;i>=0;i--){right[i]=st.size();st.insert(l[i]);}
-FOR(i,0,n){
-    ll ind1=lower_bound(psum.begin()+i+1,psum.end(),psum[i+1]+l[i]+1)-psum.begin();
-    ll ind2=lower_bound(all(psum),psum[i]-l[i])-psum.begin()-1;
-    ll len1=ind1-i-1,len2=i-ind2;
-    if((l[i]<psum[i]) && (left[i]>1 || i==1))ans[i]=min(ans[i],len2);if((psum[n]-psum[i+1]>l[i]) && (right[i]>1 || i==n-2))ans[i]=min(ans[i],len1);
-    if(ans[i]==INF)ans[i]=-1;
-    // coutv({ind1,ind2,len1,len2,left[i],right[i],ans[i]});
-    
+vector<pair<ll,ll>> v;
+FOR(i,0,n+1)if(fr[i])v.pb({i,fr[i]});sort(all(v));ll m=v.size();FOR(i,0,m+1)FOR(j,0,m+1)dp[i][j]=INF;
+dp[0][0]=0;
+FOR(i,1,m+1){
+    FOR(j,0,m+1){
+        dp[i][j]=min(dp[i][j],dp[i-1][j]);
+        if(j>=1){
+        ll s=dp[i-1][j-1]+v[i-1].second;
+        if(s<=(i-j))dp[i][j]=min(dp[i][j],s);}
+        
+    }
 }
-coutv(ans);
+ll ans=m;
+ll ind=m;
+while(dp[m][ind]>=INF){ind--;}
+// coutv({m,ind,ans});
+ce(ans-ind);
 }
 int main() {
 ios_base::sync_with_stdio(0);

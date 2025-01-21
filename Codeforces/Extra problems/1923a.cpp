@@ -78,30 +78,14 @@ return factors;
 void solve() {
 ll n;
 cin>>n;
-vl l(n);
+ll a[n];
 for(ll i=0;i< n;i++){
-cin>>l[i];
+cin>>a[i];
 }
-vl ans(n,INF);vl psum(n+1,0);
-FOR(i,0,n)psum[i+1]=l[i]+psum[i];
-// ce(psum);
-set<ll> st;
-ll left[n],right[n];
-FOR(i,0,n){
-    left[i]=st.size();
-    st.insert(l[i]);
-}st.clear();
-for(int i=n-1;i>=0;i--){right[i]=st.size();st.insert(l[i]);}
-FOR(i,0,n){
-    ll ind1=lower_bound(psum.begin()+i+1,psum.end(),psum[i+1]+l[i]+1)-psum.begin();
-    ll ind2=lower_bound(all(psum),psum[i]-l[i])-psum.begin()-1;
-    ll len1=ind1-i-1,len2=i-ind2;
-    if((l[i]<psum[i]) && (left[i]>1 || i==1))ans[i]=min(ans[i],len2);if((psum[n]-psum[i+1]>l[i]) && (right[i]>1 || i==n-2))ans[i]=min(ans[i],len1);
-    if(ans[i]==INF)ans[i]=-1;
-    // coutv({ind1,ind2,len1,len2,left[i],right[i],ans[i]});
-    
-}
-coutv(ans);
+ll l=-1,r=-1;
+FOR(i,0,n)if(a[i]==1){if(l==-1){l=i;r=i;}else r=i;}
+ll ans=0;
+FOR(i,l,r+1)if(a[i]==0)ans++;ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);
