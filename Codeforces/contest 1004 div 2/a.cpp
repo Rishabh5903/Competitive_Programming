@@ -76,7 +76,14 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+ll l[n];
+string s;
+cin>>s;
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -75,8 +75,46 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+bool chk(vl& a,ll k){
+    vl cnt(22,0);ll n=a.size();
+    FOR(i,0,k){
+        FOR(j,0,22){
+            cnt[j]+=((1LL)&(a[i]>>j));
+        }
+    }
+    ll l=0,r=k;
+    while(r<n){
+        // ce(cnt);
+        FOR(j,0,22){
+            ll temp=((1LL)&(a[r]>>j))-((1LL)&(a[l]>>j));
+            // coutv({temp,l,r,j,a[r],a[l],((1LL<<j)&a[r]),((1LL<<j)&a[l])});
+            if(!temp)continue;
+            
+            if((temp>0 && cnt[j]==0) ||(cnt[j]+temp<=0))return false;
+            cnt[j]+=temp;
+        }
+        
+        l++;
+        r++;
+    }
+    return true;
+}
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+vl a(n);
+
+for(ll i=0;i< n;i++){
+cin>>a[i];
+}
+ll left=1,right=n,mid;
+if(chk(a,left)){ce(1);return;}
+while(left+1!=right){
+    mid=(left)+(right-left)/2;
+    if(chk(a,mid))right=mid;else left=mid;
+}
+ce(right);
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

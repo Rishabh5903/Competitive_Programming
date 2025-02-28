@@ -76,7 +76,24 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n,m;
+cin>>n>>m;
+vector<pair<ll,vl>> v;vl temp(m);
+for(ll i=0;i< n;i++){
+cinv(temp);
+ll val=0;
+FOR(j,0,m){
+    val+=temp[j]*(m-j);
+}
+v.pb({val,temp});
+}sort(all(v));reverse(all(v));
+ll ans=0;
+// ce(v);
+FOR(i,0,n){
+    FOR(j,0,m){
+        ans+=(v[i].second)[j]*(m*n-m*i-j);
+    }
+}ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

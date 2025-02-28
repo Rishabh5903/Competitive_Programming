@@ -76,7 +76,27 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+vl l(n);vl temp;
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+if(n==1){ce(l[0]);return;}
+ll ans=max(-INF,accumulate(all(l),0LL));;
+FOR(i,0,n-1){
+    // ce(l);
+
+    FOR(j,0,l.size()-1){
+        l[j]=l[j+1]-l[j];
+    }
+    l.pop_back();
+    // ce(l);
+    if(l.size()){
+    ans=max(ans,accumulate(all(l),0LL));
+    ans=max(ans,-accumulate(all(l),0LL));}
+
+}ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

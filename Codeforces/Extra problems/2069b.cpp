@@ -75,8 +75,33 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void solve() {
-ce(4%10);
+void solve(int t) {
+ll n,m;
+cin>>n>>m;
+vvl v(n,vl(m));
+for(ll i=0;i< n;i++){
+FOR(j,0,m)cin>>v[i][j];
+}
+vl cnt;
+map<ll,ll> mp;
+FOR(i,0,n){
+    FOR(j,0,m){
+        // if(!mp[v[i][j]]){
+            ll temp=1;
+            if(i-1>=0)temp+=(v[i][j]==v[i-1][j]);
+            if(i+1<n)temp+=(v[i][j]==v[i+1][j]);
+            if(j-1>=0)temp+=(v[i][j]==v[i][j-1]);
+            if(j+1<m)temp+=(v[i][j]==v[i][j+1]);
+            mp[v[i][j]]=max(mp[v[i][j]],min(temp,2LL));
+
+        // }
+    }
+}
+// if(t==52)ce(v);
+for(auto i:mp)cnt.pb(i.second);
+sort(all(cnt));
+// ce(cnt);
+cnt.pop_back();ce((accumulate(all(cnt),0LL)));
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -85,6 +110,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-solve();
+solve(t);
 }
 }

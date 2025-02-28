@@ -76,7 +76,24 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+vl a(n),b(n);set<ll> s1,s2;
+for(ll i=0;i< n;i++){
+cin>>a[i];s1.insert(a[i]);
+}
+for(ll i=0;i< n;i++){
+cin>>b[i];s2.insert(b[i]);
+}
+// sort(all(a));sort(all(b));
+// set<ll> s;
+// ll l=0,r=0;
+// while(l<n){
+//     if(s.find(a[l]+b[r])==s.end()){s.insert(a[l]+b[r]);r++;}l++;
+// }
+// // FOR(i,0,n)s.insert(a[i]+b[i]);
+
+ce(((s1.size()+s2.size()>=4)?"YES":"NO"));
 }
 int main() {
 ios_base::sync_with_stdio(0);

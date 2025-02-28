@@ -75,14 +75,54 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+// ll x,y;
+void dfs(ll i,ll p,ll dis,vvl& g,vl& v){
+    v[i]=max(v[i],dis);
+    for(int j:g[i]){
+        if(j==p)continue;
+        dfs(j,i,dis+1,g,v);
+    }
+}
+pair<ll,ll> dfs2(ll i,ll p,ll temp,vvl& g){
+    pair<ll,ll> ans={temp,i};
+    for(int j:g[i]){
+        if(j==p)continue;
+        ans=max(ans,dfs2(j,i,temp+1,g));
+    }
+    return ans;
+}
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+vvl g(n);
+for(ll i=0;i< n-1;i++){ll u,v;cin>>u>>v;u--;v--;
+g[u].pb(v);g[v].pb(u);
+}
+vl v(n,0);
+auto x=dfs2(0,-1,0,g);
+auto y=dfs2(x.second,-1,0,g);
+dfs(x.second,-1,0,g,v);
+dfs(y.second,-1,0,g,v);
+// ce(v);ce(x);ce(y);
+sort(all(v));
+vl ans(n);
+ll cnt=1;ll prev=0;ll val=1;
+// ce(v);ce(v);
+FOR(i,1,v.size()){
+    // coutv({prev,v[i],v[i-1],val});
+    if(v[i]!=v[i-1]){FOR(j,prev,v[i-1])ans[j]=min(val,n);val+=cnt;prev=v[i-1];cnt=1;}
+    else{cnt++;}
+    // ce(ans);
+}
+FOR(j,prev,v.back())ans[j]=min(val,n);val+=cnt;prev=v.back();cnt=1;
+FOR(j,prev,n)ans[j]=min(val,n);
+coutv(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
-cin >> n;
+// cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

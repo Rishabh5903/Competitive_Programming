@@ -76,7 +76,22 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n,m;
+cin>>n>>m;
+vl a(n),b(m);
+for(ll i=0;i< n;i++){
+cin>>a[i];
+}FOR(i,0,m)cin>>b[i];
+sort(all(b));
+a[0]=min(b[0]-a[0],a[0]);ll f=1;
+FOR(i,1,n){
+    ll ind=lower_bound(all(b),a[i-1]+a[i])-b.begin();
+    if(ind==m){if(a[i]<a[i-1]){f=0;break;}}
+    else if(a[i]>=a[i-1]) a[i]=min(b[ind]-a[i],a[i]);
+    else a[i]=b[ind]-a[i];
+}
+// ce(a);ce(b);
+ce((f?"YES":"NO"));
 }
 int main() {
 ios_base::sync_with_stdio(0);

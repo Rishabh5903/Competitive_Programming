@@ -76,8 +76,19 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+ll l[n-2];
+for(ll i=0;i< n-2;i++){
+cin>>l[i];
 }
+ll ans=1;
+FOR(i,0,n-4){
+    if(l[i]==1 && l[i+1]==0 && l[i+2]==1){ans=0;break;}
+}
+ce((ans ? "YES" : "NO"));
+}
+
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);

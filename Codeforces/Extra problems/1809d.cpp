@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include<sstream> 
 using namespace std;
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ', ' << p.second << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ', '; return os << '}'; }
@@ -29,14 +28,8 @@ ll modsub(ll a,ll b,ll m){ a %= m;b %= m; return (a - b + m) % m;}
 ll gcd(ll a, ll b){ if(b == 0) return a; return gcd(b, a % b);}
 ll expo(ll a,ll n,ll md){ int res=1; while(n){ if(n&1) {res = modmul(res,a,md);--n;} else {a = modmul(a,a,md);n >>= 1;}} return res;}
 ll expo(ll a,ll n){ ll res=1; while(n){ if(n&1) {res *= a;--n;} else {a *= a;n >>= 1;}} return res;}
-ll modinv(ll b, ll m) {
-return expo(b, m - 2, m);
-}
-ll moddiv(ll a, ll b, ll m) {
-a %= m; b %= m;
-ll inv = modinv(b, m); 
- return modmul(a, inv, m);
-}
+ll modinv(ll b, ll m) {return expo(b, m - 2, m);}
+ll moddiv(ll a, ll b, ll m) {a %= m; b %= m; ll inv = modinv(b, m); return modmul(a, inv, m);}
 template <typename T> bool revsort(T a, T b){return a > b;}
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
@@ -75,8 +68,26 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+vl ones,zeroes,dp;
+ll help(int i,string& s,ll& n){
+    if(i>=n)return 0;
+    if(dp[i]!=-1)return dp[i];
+    if(s[i]=='0')return dp[i]=help(i+1,s,n);
+    if(i==n-1)return dp[i]=0;
+    if(s[i+1]=='0'){
+        return dp[i]=min(1e12 + (1e12+1)*(zeroes[i+1]-1), min(1e12+1 + help(i+1,s,n), zeroes[i+1]*(1e12+1)));}
+    return dp[i]=min(zeroes[i]*(1e12+1), (1e12+1) + help(i+1,s,n));
+
+}
 void solve() {
-ce(4%10);
+string s;
+cin>>s;ll n=s.size();
+dp=vl(n,-1),ones=vl(n,0),zeroes=vl(n,0);
+for(int i=n-1;i>=0;i--){
+    if(i<n-1){ones[i]=ones[i+1];zeroes[i]=zeroes[i+1];}
+    if(s[i]=='1')ones[i]++;else zeroes[i]++;
+}
+ce(help(0,s,n));
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -84,7 +95,6 @@ cin.tie(0); cout.tie(0);
 int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
-// cout << 'Case #' << t << ': ';
 solve();
 }
 }

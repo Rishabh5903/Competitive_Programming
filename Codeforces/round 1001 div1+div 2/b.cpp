@@ -76,7 +76,16 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+ll l[n];
+ll ans=1;
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+FOR(i,0,n){
+    if(l[i]<=2*max(i,n-i-1)){ce("NO");return;}
+}ce("YES");
 }
 int main() {
 ios_base::sync_with_stdio(0);

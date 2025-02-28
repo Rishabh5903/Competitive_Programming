@@ -76,7 +76,16 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+vl l(n);
+for(ll i=0;i< n;i++){
+cin>>l[i];
+}
+ll temp=0;FOR(i,0,n)if(i%2==0)temp=max(temp,l[i]);if(n%2==0)temp=*max_element(all(l));
+ll ans=((n+1)/2 + temp);
+if(n%2 && (*max_element(all(l))-temp)>1){ans=*max_element(all(l))+n/2;}
+ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

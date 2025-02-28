@@ -76,7 +76,14 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+ll l[n];
+ll even=0,odd=0;
+for(ll i=0;i< n;i++){
+cin>>l[i];if(l[i]%2)odd++;else even++;
+}
+ce((even>0 ? odd+1 : odd-1));
 }
 int main() {
 ios_base::sync_with_stdio(0);

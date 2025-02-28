@@ -76,7 +76,15 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+ll l[n];
+ll cnt=0,tot=0,mino=INF;
+for(ll i=0;i< n;i++){
+cin>>l[i];tot+=abs(l[i]);if(l[i]<0)cnt++;mino=min(mino,abs(l[i]));
+}
+// coutv({tot,cnt,mino});
+if(cnt%2)tot-=2*mino;ce(tot);
 }
 int main() {
 ios_base::sync_with_stdio(0);

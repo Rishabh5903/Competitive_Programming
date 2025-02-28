@@ -76,7 +76,30 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n,k;
+cin>>n>>k;
+vl a(n,0),b(n);
+for(ll i=0;i< n;i++){
+cin>>b[i];
+}
+vl ops(k);ll next=0;ll ind=0;set<ll> s;
+FOR(i,0,2*((n+k-1)/k)){
+    ll start=next+1;s.clear();s.insert(next);
+    FOR(j,0,k-1){
+        
+        a[next]=b[next];next=b[next]-1;if(s.find(next)!=s.end()){ce("NO");return;}s.insert(next);
+    }
+    // if(s.find(next)!=s.end()){ce("NO");return;}
+    a[next]=start;
+    if(a[next]==b[next]){
+        while(ind<n && a[ind]==b[ind])ind++;
+        next=ind;
+        if(ind==n)break;
+    }
+    // coutv({next,ind});ce(a);
+}
+// ce(a);ce(b);
+ce((a==b ? "YES" : "NO"));
 }
 int main() {
 ios_base::sync_with_stdio(0);

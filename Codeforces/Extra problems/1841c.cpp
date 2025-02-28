@@ -75,8 +75,45 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+ll dp[200001][2][5];ll n;vl val={1,10,100,1000,10000};
+ll help(ll i,ll j,ll k,string& s){
+    // coutv({i,j,k});
+    if(i<0)return 0;
+    ll curr=s[i]-'A';
+    if(dp[i][j][k]!=-INF)return dp[i][j][k];
+    
+    if(j==0){
+        ll temp=0;
+        // if(i<n-1){
+        //     FOR(c,0,5)
+        //     temp=max(temp,max(dp[i+1][0][c],dp[i+1][1][c]));
+        // }
+        return dp[i][j][k]=((k>curr) ? -1:1)*(val[curr])+help(i-1,j,max(k,curr),s)+temp;
+    }
+    else{
+        ll temp=0;
+        // if(i<n-1){
+        //     FOR(c,0,5)
+        //     temp=max(temp,dp[i+1][1][c]);
+        // }
+            FOR(c,0,5){
+                if(c==curr)dp[i][j][k]=max(dp[i][j][k],help(i-1,j,max(k,curr),s)+temp+((k>curr) ? -1:1)*(val[curr]));
+                else{dp[i][j][k]=max(dp[i][j][k],help(i-1,0,max(k,c),s)+temp+((k>c) ? -1:1)*(val[c]));
+
+                }
+            }
+        // }
+    }
+    return dp[i][j][k];
+}
 void solve() {
-ce(4%10);
+string s;
+cin>>s;n=s.size();
+FOR(i,0,n+1)FOR(j,0,2)FOR(k,0,5)dp[i][j][k]=-INF;
+ll ans=-INF;
+help(n-1,1,0,s);
+FOR(i,0,5)ans=max(ans,max(dp[n-1][0][i],dp[n-1][1][i]));ce(ans);
+// FOR(i,0,n+1){FOR(j,0,2){FOR(k,0,5)cout<<dp[i][j][k]<<" ";cout<<endl;}cout<<endl;};
 }
 int main() {
 ios_base::sync_with_stdio(0);

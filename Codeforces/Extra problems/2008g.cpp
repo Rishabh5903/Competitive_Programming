@@ -76,7 +76,27 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n,k;
+cin>>n>>k;
+set<ll> s;vl l(n);
+for(ll i=0;i< n;i++){cin>>l[i];
+// s.insert(l[i]);
+
+}
+if(n==1){ce((l[0]>=k ? k-1 : k));return;}
+// if(s.size()==1){
+//     if(l[0]==1){ce(n+k-1);return;}
+//     ll var=min(n-1,k/(l[0]-1));ce(k+var-((k%(l[0]-1) == 0 )&& (var == (k/(l[0]-1)))));return;
+
+// }
+// ll f=0;for(ll i:s)if(i%2){f=1;break;}
+// if(f)ce(n+k-1);else {
+    ll mino=0;
+    FOR(i,0,n)mino=gcd(mino,l[i]);
+    // ce("dbg");
+    if(mino==1){ce(n+k-1);return;}
+    ll var=min(n-1,k/(mino-1));ce(k+var-((k%(mino-1) == 0 )&& (var == (k/(mino-1)))));
+// }
 }
 int main() {
 ios_base::sync_with_stdio(0);

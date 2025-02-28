@@ -76,7 +76,30 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+vl v(n);
+// string s;
+// cin>>s;
+for(ll i=0;i< n;i++){
+cin>>v[i];
+}sort(all(v));
+stack<ll> st;
+map<ll,ll> a,b;
+for(int i=n-1;i>=0;i--){
+    if(!st.size()){
+        if(b[v[i]]==a[v[i]]){b[v[i]]++;st.push(v[i]);}
+        else a[v[i]]++;
+    }
+    else{
+        while(v[i]<st.top() && b[v[i]]){v[i]++;}
+        if(v[i]==st.top()){st.pop();a[v[i]]++;}
+        else {st.push(v[i]);b[v[i]]++;}
+    }
+    // cout<<a<<b<<endl;
+}
+
+ce(((a==b && (!st.size())) ? "YES" : "NO"));
 }
 int main() {
 ios_base::sync_with_stdio(0);

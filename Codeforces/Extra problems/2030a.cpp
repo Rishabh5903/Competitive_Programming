@@ -76,7 +76,12 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+ll l[n];ll maxo=-INF,mino=INF;
+for(ll i=0;i< n;i++){
+cin>>l[i];mino=min(mino,l[i]);maxo=max(maxo,l[i]);
+}ce((maxo-mino)*(n-1));
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -76,7 +76,38 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll N;
+cin>>N;
+ll l[N];
+vl v;
+for(ll i=0;i< N;i++){
+cin>>l[i];
+}
+ll temp=l[0];
+FOR(i,1,N){
+    if(((temp>0) && (l[i]<0)) ||((temp<0) && (l[i]>0))){
+        v.pb(temp);temp=l[i];
+    }else temp+=l[i];
+    // coutv({temp,l[i]});
+}v.pb(temp);
+// ce(v);
+ll n=v.size();
+ll pre[n]={0},suff[n]={0};if(v[0]>0)pre[0]=v[0];
+FOR(i,1,v.size()){
+    pre[i]=pre[i-1];
+    if(v[i]>0)pre[i]+=v[i];
+}
+if(v[n-1]<0)suff[n-1]=abs(v[n-1]);
+for(int i=n-2;i>=0;i--){
+    suff[i]=suff[i+1];
+    if(v[i]<0)suff[i]+=abs(v[i]);
+}
+ll ans=0;ans=suff[0];
+FOR(i,0,n){
+    if(v[i]>0)ans=max(ans,pre[i]+(i<n-1 ? suff[i+1] : 0LL));
+}
+// ce(v);couta(pre,n);couta(suff,n);
+ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

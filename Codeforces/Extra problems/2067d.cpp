@@ -76,7 +76,25 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+ll l[n];vector<pair<ll,ll>> v;set<ll> s;
+for(ll i=0;i< n;i++){
+cin>>l[i];v.pb({l[i],i});s.insert(l[i]);
+}sort(all(v));
+ll x=v[0].second,y=v.back().second;x++;y++;
+if(s.size()<n){
+FOR(i,1,n+1)if(s.find(i)==s.end()){x=i;y=x%n+1;break;}
+}
+ll a,b;
+cout<<"? "<<x<<" "<<y<<endl;cin>>a;
+cout<<"? "<<y<<" "<<x<<endl;cin>>b;
+if(s.size()<n && a!=0){ce("! B");return;}
+if(a!=b)cout<<"! A"<<endl;
+else{
+    if(a==0 || a<abs(v[0].first-v.back().first))cout<<"! A"<<endl;else ce("! B");
+}
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

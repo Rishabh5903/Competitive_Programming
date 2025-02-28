@@ -76,7 +76,48 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n,m;
+cin>>n>>m;
+vl a(n),b(m);
+for(ll i=0;i< n;i++){
+cin>>a[i];
+}FOR(i,0,m)cin>>b[i];sort(all(a));sort(all(b));
+ll k=min(n,min(m,(n+m)/3));
+// ll k=min(n/3,m/3)*2;ll temp=min(n/3,m/3);
+// ll n1=n-3*temp,m1=m-3*temp;if(n1<m1)swap(n1,m1);
+// if(n1>=4 && m1==2)k+=2;else if(n1>=2 && m1>=1)k++;
+if(!k){ce(0);return;}
+// cout<<"dbg1"<<k<<endl;
+vl ans(k);
+vl apsum={0},bpsum={0};
+FOR(i,0,n/2){
+    apsum.pb(apsum.back()+a[n-i-1]-a[i]);
+}
+FOR(i,0,m/2){
+    bpsum.pb(bpsum.back()+b[m-i-1]-b[i]);
+}
+// ce("dbg2");
+ll k1=0;ll curr=0;
+FOR(i,0,k+1){
+    if((i<apsum.size()) && ((k-i)<bpsum.size()) && ((2*i+k-i<=n) && (2*(k-i)+i<=m))){if(apsum[i]+bpsum[k-i]>=curr){curr=apsum[i]+bpsum[k-i];k1=i;}}
+}
+ll k2=k-k1;
+ans[k-1]=curr;
+// ce("dbg");
+if(k>=2)
+for(int i=k-2;i>=0;i--){
+    curr=0;
+    if(k1>=1)curr=apsum[k1-1]+bpsum[k2];
+    if(k2>=1)curr=max(curr,apsum[k1]+bpsum[k2-1]);
+    if((k1>=2) && (k2+1<bpsum.size()))curr=max(curr,apsum[k1-2]+bpsum[k2+1]);
+    if((k2>=2) && (k1+1<apsum.size()))curr=max(curr,apsum[k1+1]+bpsum[k2-2]);
+    if(curr==apsum[k1-1]+bpsum[k2]){k1--;}
+    else if(curr==apsum[k1]+bpsum[k2-1]){k2--;}
+    else if(curr==apsum[k1-2]+bpsum[k2+1]){k2++;k1-=2;}
+    else if(curr==apsum[k1+1]+bpsum[k2-2]){k2-=2;k1++;}
+    ans[i]=curr;
+}
+ce(ans.size());coutv(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

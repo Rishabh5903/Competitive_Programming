@@ -75,8 +75,21 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void solve() {
-ce(4%10);
+void solve(int t) {
+ll n;
+cin>>n;
+ll a[n];ll psum[n+1]={0};ll mino=INF;
+for(ll i=0;i< n;i++){
+cin>>a[i];psum[i+1]=psum[i]+a[i];if(a[i]<0)mino=min(mino,psum[i+1]);
+}
+// couta(psum,n+1);
+ll ans=-INF;
+ll prevmax=0,maxdiff=-INF;
+// if(t==67)couta(a,n);
+FOR(i,1,n+1){
+    if(prevmax-psum[i]>=maxdiff)ans=prevmax;
+    prevmax=max(prevmax,psum[i]);maxdiff=max(maxdiff,prevmax-psum[i]);
+}ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -85,6 +98,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-solve();
+solve(t);
 }
 }

@@ -76,7 +76,9 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+ce((3*(n/15)+min(n-15*(n/15)+1,3LL)));
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -76,7 +76,18 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+vl l(n);
+for(ll i=0;i< n;i++){
+cin>>l[i];
+
+}sort(all(l));ll maxo=-1;
+for(int i=n-1;i>=1;i--){
+    if(l[i]==l[i-1]){maxo=l[i];l.erase(l.begin()+i-1);l.erase(l.begin()+i-1);break;}
+}
+// ce(l);
+FOR(i,0,n-3)if(l[i]+2*maxo>l[i+1]){coutv({l[i],maxo,maxo,l[i+1]});return;}ce(-1);
 }
 int main() {
 ios_base::sync_with_stdio(0);

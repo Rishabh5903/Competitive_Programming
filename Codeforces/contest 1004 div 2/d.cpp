@@ -76,7 +76,13 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n,m;
+cin>>n>>m;
+while(n>=0 & m>=0){
+    if(m==n+1){ce("YES");return;}
+    n-=9;
+}
+ce("NO");
 }
 int main() {
 ios_base::sync_with_stdio(0);

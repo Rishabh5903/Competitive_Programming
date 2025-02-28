@@ -76,7 +76,21 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n,q;
+cin>>n>>q;
+ll l[n],lis[q];map<ll,ll> mp;
+for(ll i=0;i< n;i++){
+cin>>l[i];
+
+}FOR(i,0,q)cin>>lis[i];
+mp[n-1]++;
+FOR(i,0,n-1){
+    mp[(n-i-1)*(i+1)]+=l[i+1]-l[i]-1;
+    mp[(n-i-1)*(i+1)+(n-i-2)]+=1;
+}
+FOR(i,0,q){
+    cout<<mp[lis[i]]<<" ";
+}cout<<endl;
 }
 int main() {
 ios_base::sync_with_stdio(0);

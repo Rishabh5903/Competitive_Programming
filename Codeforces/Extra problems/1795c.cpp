@@ -76,7 +76,24 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ce(4%10);
+ll n;
+cin>>n;
+vl a(n),b(n);vl psum(n+1,0);
+for(ll i=0;i< n;i++){
+cin>>a[i];
+}FOR(i,0,n){cin>>b[i];psum[i+1]=psum[i]+b[i];}
+vl ans(n,0);vl cnt(n,0);
+// ce(psum);
+FOR(i,0,n){
+    ll ind=lower_bound(all(psum),psum[i]+a[i])-psum.begin()-1;
+    if(ind+1<=n){ans[ind]+=a[i]-psum[ind]+psum[i];cnt[ind]--;}
+    cnt[i]++;
+    // cout<<ind<<" "<<ans<<" "<<cnt<<endl;
+}
+FOR(i,1,n)cnt[i]+=cnt[i-1];
+FOR(i,0,n)ans[i]+=cnt[i]*b[i];
+coutv(ans);
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

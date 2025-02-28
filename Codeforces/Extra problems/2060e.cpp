@@ -75,8 +75,58 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+void dfs(ll i,vl& comp,ll cnt,vvl& g2){
+    if(comp[i])return;
+    comp[i]=cnt;
+    for(ll j:g2[i]){
+        dfs(j,comp,cnt,g2);
+    }
+}
+void dfs2(ll i,vl& comp,ll cnt,vvl& g1){
+    // if(comp[i]==-1)return true;
+    if(comp[i]!=cnt)return;
+    comp[i]=-1;
+    // bool ans=true;
+    for(ll j:g1[i]){
+        dfs2(j,comp,cnt,g1);
+    }
+    // return ans;
+
+}
 void solve() {
-ce(4%10);
+ll n,m1,m2;
+cin>>n>>m1>>m2;
+vvl g1(n),g2(n);
+for(ll i=0;i< m1;i++){ll u,v;cin>>u>>v;u--;v--;
+g1[u].pb(v);g1[v].pb(u);
+}
+for(ll i=0;i< m2;i++){ll u,v;cin>>u>>v;u--;v--;
+g2[u].pb(v);g2[v].pb(u);
+}
+ll ans=0;
+ll cnt=1;
+vl comp(n,0);
+vl extra(n+1,0);
+FOR(i,0,n){
+    if(!comp[i]){dfs(i,comp,cnt,g2);cnt++;}
+}
+// ce("dbg1");
+// cout<<comp<<" "<<cnt<<endl;
+// ans+=cnt-2;
+ll temp=0;
+FOR(i,0,n){
+    for(ll j:g1[i])if(comp[j]!=comp[i])temp++;
+}
+ans+=temp/2;
+FOR(i,0,n){
+    if(comp[i]!=-1){
+        extra[comp[i]]++;dfs2(i,comp,comp[i],g1);
+    }
+}
+// cout<<comp<<extra<<endl;
+// ce("dbg2");
+for(ll i:extra)ans+=max(0LL,i-1);
+ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);
