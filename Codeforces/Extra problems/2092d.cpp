@@ -75,17 +75,77 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+char fn(char& c1,char& c2){
+    if(c1!='I' && c2!='I')return 'I';
+    else if(c1!='L' && c2!='L')return 'L';
+    else if(c1!='T' && c2!='T')return 'T';
+}
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
-for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+ll n;
+cin>>n;
+string st;
+cin>>st;vector<char> s;for(char c:st)s.pb(c);
+if(n==1 || n==2){ce(-1);return;}
+vl ans;
+ll steps=0,n1=0,n2=0,n3=0,d1=0,d2=0;char c1,c2,c3;
+FOR(i,0,n)if(s[i]=='L')n1++;else if(s[i]=='I')n2++;else n3++;
+vector<pair<ll,char>> v={{n1,'L'},{n2,'I'},{n3,'T'}};sort(all(v));
+d1=(n3=v[2].first)-(n1=v[0].first),d2=v[2].first-(n2=v[1].first);
+c1=v[0].second,c2=v[1].second,c3=v[2].second;
+if(d1==0){ce(0);return;}
+FOR(i,0,n-1){
+    if(s[i]!=s[i+1] && (s[i]==c3 || s[i+1]==c3)){
+        if(s[i]==c3)
+        FOR(j,0,d2){
+            ans.pb(i+1);s.insert(s.begin()+i+1,fn(s[i],s[i+1]));
+            ans.pb(i+1);s.insert(s.begin()+i+1,fn(s[i],s[i+1]));
+            n1++;n2++;
+        }
+        else{
+            FOR(j,0,d2){
+                ans.pb(i+1+2*j);s.insert(s.begin()+i+2*j+1,fn(s[i+2*j],s[i+2*j+1]));
+                ans.pb(i+1+2*j+1);s.insert(s.begin()+i+2*j+2,fn(s[i+2*j+1],s[i+2*j+2]));
+                n1++;n2++;
+            }
+        }
+        d1-=d2;d2=0;break;
+    }
+}
+ll temp1=d1,temp2=2*n-ans.size();
+FOR(j,0,min(temp1,temp2)){
+    if(d1==0)break;
+    FOR(i,0,s.size()-1)if(s[i]!=s[i+1] && s[i]!=c1 && s[i+1]!=c1){
+        ans.pb(i+1);n1++;d1--;s.insert(s.begin()+i+1,c1);
+        if(d1==0)break;
+    }
+}
+FOR(i,0,s.size()-1){
+    if(s[i]!=s[i+1] && (s[i]!=c1 || s[i+1]!=c1)){
+        if(s[i+1]==c1)
+        FOR(j,0,d1){
+            ans.pb(i+1);s.insert(s.begin()+i+1,fn(s[i],s[i+1]));
+            ans.pb(i+1);s.insert(s.begin()+i+1,fn(s[i],s[i+1]));
+            ans.pb(i+3);s.insert(s.begin()+i+3,fn(s[i+2],s[i+3]));
+            ans.pb(i+3);s.insert(s.begin()+i+3,fn(s[i+2],s[i+3]));
+            n1+=2;n2++;n3++;
+        }
+        else{
+            FOR(j,0,d1){
+                ans.pb(i+1);s.insert(s.begin()+i+1,fn(s[i],s[i+1]));
+                ans.pb(i+1);s.insert(s.begin()+i+1,fn(s[i],s[i+1]));
+                ans.pb(i+2);s.insert(s.begin()+i+2,fn(s[i+1],s[i+2]));
+                ans.pb(i+4);s.insert(s.begin()+i+4,fn(s[i+3],s[i+4]));
+                n1+=2;n2++;n3++;
+            }
+        }
+        break;
+    }
+}
+// ce(ans);ce(s);cout<<n1<<" "<<n2<<" "<<n3<<endl;
+if(n1==n2 && n2==n3 && ans.size()<=2*n){
+    ce(ans.size());for(ll i:ans)ce(i);
+}else ce(-1);
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

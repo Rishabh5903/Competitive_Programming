@@ -76,16 +76,22 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
+ll n;
+cin>>n;
+vl a(n),b(n);
+// string s;
+// cin>>s;
 for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+cin>>a[i];
+}FOR(i,0,n)cin>>b[i];
+ll ind=find(all(a),b[0])-a.begin();
+// ce(ind);
+vector<pair<ll,ll>> v;
+FOR(i,0,n)v.pb({abs(a[i]-a[ind]),a[i]});sort(all(v));
+FOR(i,0,n){
+    if(v[i].second!=b[i]){ce(-1);return;}
+}
+ce(ind+1);
 }
 int main() {
 ios_base::sync_with_stdio(0);

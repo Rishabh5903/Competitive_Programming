@@ -79,13 +79,13 @@ void solve() {
 ll n,k;
 cin>>n>>k;
 ll l[n];
-ll gc=0,ans=0;
-for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+string s;
+cin>>s;set<char> st;for(char c:s)st.insert(c);
+if(s[0]<s.back()){ce("YES");return;}
+if(k==0){
+    string temp=s;reverse(all(temp));
+    ce((s<temp?"YES":"NO"));return;}
+ce((st.size()>1?"YES":"NO"));
 }
 int main() {
 ios_base::sync_with_stdio(0);

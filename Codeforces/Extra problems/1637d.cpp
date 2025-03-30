@@ -76,16 +76,23 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
+ll n;
+cin>>n;
+ll a[n],b[n];
+
 for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+cin>>a[i];
+}FOR(i,0,n)cin>>b[i];
+vector<vector<ll>> v(n);
+FOR(i,0,n)v[i]={abs(a[i]-b[i]),a[i],b[i]};sort(all(v));reverse(all(v));
+ll sum1=v[0][1],sum2=v[0][2],sum3=v[0][1]*v[0][1],sum4=v[0][2]*v[0][2];
+FOR(i,1,n){
+    if((sum1>=sum2 && v[i][1]>v[i][2]) || (sum1<sum2 && v[i][1]<v[i][2]))swap(v[i][1],v[i][2]);
+    sum1+=v[i][1];sum2+=v[i][2];
+    sum3+=v[i][1]*v[i][1];sum4+=v[i][2]*v[i][2];
+}
+ce((n-2)*(sum3+sum4)+sum1*sum1+sum2*sum2);
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

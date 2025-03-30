@@ -23,6 +23,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pb push_back
 #define ce(x) cout<<x<<endl
 #define cinv(v) for( long long int i = 0; i<v.size();i++)cin>>v[i];
+#define x first
+#define y second
 ll modmul(ll a,ll b,ll m){ a %= m;b %= m; return (a * b) % m;}
 ll modadd(ll a,ll b,ll m){ a %= m;b %= m; return (a + b) % m;}
 ll modsub(ll a,ll b,ll m){ a %= m;b %= m; return (a - b + m) % m;}
@@ -76,16 +78,28 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
+ll n;
+cin>>n;
+vector<pair<pair<char,ll>,pair<char,ll>>> v(n);
+vector<pair<ll,ll>> mul(n);
 for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+cin>>v[i].x.x>>v[i].x.y>>v[i].y.x>>v[i].y.y;
+if(v[i].x.x=='x')mul[i].x=v[i].x.y;else mul[i].x=1;
+if(v[i].y.x=='x')mul[i].y=v[i].y.y;else mul[i].y=1;
+}
+for(int i=n-2;i>=0;i--){
+if(mul[i].x==mul[i].y){mul[i].x=mul[i+1].x;mul[i].y=mul[i+1].y;}
+}
+// ce(mul);
+ll a=1,b=1,newa=0,newb=0;
+FOR(i,0,n){
+if(v[i].x.x=='+')newa=a+v[i].x.y;else newa=a*v[i].x.y;
+if(v[i].y.x=='+')newb=b+v[i].y.y;else newb=b*v[i].y.y;
+if(i<n-1){
+    if(mul[i+1].x>mul[i+1].y)a=newa+newb-b;else b=newb+newa-a;
+}
+}
+ce(newa+newb);
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -78,14 +78,12 @@ return factors;
 void solve() {
 ll n,k;
 cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
-for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+if(n%2==0){
+    ce(n/(min(k-k%2,n))+(n%(min(k-k%2,n))!=0));
+}
+else{
+    n-=min(n,k);ce(1+n/(k-1)+(n%(k-1)!=0));
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -75,17 +75,25 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void solve() {
+void solve(int t) {
 ll n,k;
 cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
+vl v(n);multiset<ll> s;
 for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+cin>>v[i];s.insert(v[i]);
+}
+// if(t==114)cout<<v<<" "<<k<<endl;
+// ll ans=0,l=0,r=n-1;
+ll ans=0;
+while(s.size()){
+    ans++;
+    ll curr=0;
+    auto ind=s.lower_bound(0LL);curr+=*ind;s.erase(ind);
+    if(s.size() && curr<k){
+        ind=s.lower_bound(k-curr);if(ind==s.begin()){s.erase(prev(s.end()));}else {ind--;s.erase(ind);if(s.size())s.erase(prev(s.end()));}
+    }
+}
+ce(ans-1);
 }
 int main() {
 ios_base::sync_with_stdio(0);
@@ -94,6 +102,6 @@ int n = 1;
 cin >> n;
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
-solve();
+solve(t);
 }
 }

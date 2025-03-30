@@ -75,23 +75,32 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+const ll maxo=120;
+ll dp[maxo+1][maxo+1];
+void precompute(){
+ll largest=1<<15;
+FOR(i,0,largest+1){
+    FOR(j,0,16){
+        
+    }
+}
+}
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
-for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+ll x,y;
+cin>>x>>y;
+vl l1(maxo+1),l2(maxo+1);
+FOR(i,0,maxo+1)l1[i]=x>>i;
+FOR(i,0,maxo+1)l2[i]=y>>i;
+ll ans=INF;
+FOR(i,0,maxo+1)FOR(j,0,maxo+1)if(dp[i][j]!=INF && l1[i]==l2[j])ans=min(ans,dp[i][j]);
+ce(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
 cin >> n;
+memset(dp,INF,sizeof(dp));
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

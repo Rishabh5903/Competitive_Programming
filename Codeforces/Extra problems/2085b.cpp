@@ -76,16 +76,25 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
+ll n;
+cin>>n;
+ll l[n];vector<pair<ll,ll>> ops;ll rem=0,start=-1;
 for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+cin>>l[i];
+if(l[i]==0 && start==-1)start=i;
+else if(l[i]!=0 && start!=-1){
+    if(start==i-1)ops.pb({start+1-rem,start+2-rem});else ops.pb({start+1-rem,i-rem});
+    start=-1;rem+=ops.back().second-ops.back().first;
+}
+}
+if(start!=-1){
+    if(start==n-1)ops.pb({n-1-rem,n-rem});else ops.pb({start+1-rem,n-rem});rem+=ops.back().second-ops.back().first;
+}
+if(ops.size()==1 && ops[0].first==1 && ops[0].second==n) {ops[0]={1,2};ops.pb({2,n-1});rem=n-2;}
+ce(ops.size()+1);
+for(auto &i:ops)cout<<i.first<<" "<<i.second<<endl;cout<<1<<" "<<(n-rem)<<endl;
+
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include<sstream> 
 using namespace std;
-template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ', ' << p.second << ')'; }
+template<typename l, typename B> ostream& operator<<(ostream &os, const pair<l, B> &p) { return os << '(' << p.first << ', ' << p.second << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ', '; return os << '}'; }
 void dbg_out() { cerr << endl; }
 template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
@@ -75,25 +75,38 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
-void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
-for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+
+void solve(){
+
+ int n;cin>>n;
+ vi l(n);
+ FOR(i,0,n)cin>>l[i];
+ ll tot=(ll)n*(n-1)/2;
+ unordered_map<int,ll> cnt;cnt.reserve(n*15);
+
+ FOR(i,0,n){
+  int x=l[i];vi bits;for(int b=0;b<30;b++){if(x&(1<<b))bits.pb(b);}
+  int k=bits.size();int tot=(1<<k);for(int mask=1;mask<tot;mask++){
+   int s=0;for(int j=0;j<k;j++){if(mask&(1<<j))s|=(1<<bits[j]);}cnt[s]++;
+  }
+ }
+ ll common=0;
+ for(auto&p:cnt){
+    int popc=__builtin_popcount(p.first);ll c=p.second;ll pairs=c*(c-1)/2;
+    if(popc&1)common+=pairs;else common-=pairs;
+    
 }
+ ll ans=tot+common;
+ ce(ans);
+}
+
 int main() {
-ios_base::sync_with_stdio(0);
-cin.tie(0); cout.tie(0);
-int n = 1;
-cin >> n;
-for (int t = 1; t <= n; t++) {
-// cout << 'Case #' << t << ': ';
-solve();
-}
-}
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    int n = 1;
+    cin >> n;
+    for (int t = 1; t <= n; t++) {
+    // cout << 'Case #' << t << ': ';
+    solve();
+    }
+    }

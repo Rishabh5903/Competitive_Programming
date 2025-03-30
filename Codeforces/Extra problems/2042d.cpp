@@ -76,16 +76,37 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
-for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+ll n;
+cin>>n;
+vector<pair<ll,ll>> v;
+map<pair<ll,ll>,ll> mp;
+for(ll i=0;i< n;i++){ll a,b;
+cin>>a>>b;v.pb({a,-b});
+}
+vector<pair<ll,ll>> org=v;
+sort(all(v));
+set<ll> s;
+s.insert(-v[0].second);mp[{v[0].first,-v[0].second}]=0;
+FOR(i,1,n){
+    auto num=s.lower_bound(-v[i].second);
+mp[{v[i].first,-v[i].second}]+=(num!=s.end()?(*num+v[i].second):0);
+s.insert(-v[i].second);
+}
+
+
+s.clear();
+FOR(i,0,n){swap(v[i].first,v[i].second);}sort(all(v));
+s.insert(-v[0].second);
+FOR(i,1,n){
+    if(v[i]==v[i-1]){mp[{v[i].second,-v[i].first}]=0;continue;}
+    auto num=s.lower_bound(-v[i].second);
+mp[{v[i].second,-v[i].first}]+=(num!=s.end()?(*num+v[i].second):0);
+s.insert(-v[i].second);
+}
+// ce(mp);
+for(auto [a,b]:org){
+    ce((mp[{a,-b}]));
+}
 }
 int main() {
 ios_base::sync_with_stdio(0);

@@ -75,17 +75,19 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+bool sq(ll n){
+    ll num=sqrt((n*(n+1))/2);
+    return (num*num==((n*(n+1))/2));
+}
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
-for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+ll n;
+cin>>n;
+if(sq(n)){ce(-1);return;}
+vl ans;FOR(i,1,n+1)ans.pb(i);
+FOR(i,0,n-1){
+    if(sq(i+1))swap(ans[i],ans[i+1]);
+}
+coutv(ans);
 }
 int main() {
 ios_base::sync_with_stdio(0);

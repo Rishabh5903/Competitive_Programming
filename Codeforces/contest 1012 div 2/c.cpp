@@ -76,16 +76,69 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n,k;
-cin>>n>>k;
+ll n;
+cin>>n;
+priority_queue<tuple<int, int, int>, std::vector<tuple<int, int, int>>, greater<>> pq;
+int sz=sqrt(2*n)+100;
+vector<pair<ll,ll>> seq;
+FOR(i,0,sz){
+    FOR(j,0,i+1){
+        int k=i-j;
+        seq.pb({j,k});
+    }
+}
+reverse(all(seq));
+// ce(seq);
+// FOR(x,0,sz+10)FOR(y,0,sz+10){
+//     pq.push({2,1,1});
+//     pq.push({3,2,1});
+//     pq.push({3,1,2});
+//     pq.push({4,2,2});seq.pop_back();
+// // }
 ll l[n];
-ll gc=0,ans=0;
 for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+cin>>l[i];
+if(l[i]==1){
+    if(pq.size()){
+        auto [x,y,z]=pq.top();
+        if(seq.size()){ll x2=3*seq.back().first+1,y2=3*seq.back().second+1;
+            ll val=(x2+y2);
+            if((val < x) || (val==(x) && (x2<y)) || (val==(x) && (x2 == y) && (y2 < z)) ){
+                auto [x1,y1]=seq.back();seq.pop_back();cout<<(3*x1+1)<<" "<<(3*y1+1)<<endl;
+                // pq.push({3*x+3*y+2,3*x+1,3*y+1});
+                pq.push({3*x1+3*y1+3,3*x1+2,3*y1+1});
+                pq.push({3*x1+3*y1+6,3*x1+2,3*y1+2});
+                pq.push({3*x1+3*y1+3,3*x1+1,3*y1+2});
+            }
+            else
+            {cout<<y<<" "<<z<<endl;pq.pop();}
+        }
+        else
+        {cout<<y<<" "<<z<<endl;pq.pop();}
+    }
+    else{
+        auto [x,y]=seq.back();seq.pop_back();
+        pq.push({3*x+3*y+2,3*x+1,3*y+1});
+        pq.push({3*x+3*y+3,3*x+2,3*y+1});
+        pq.push({3*x+3*y+6,3*x+2,3*y+2});
+        pq.push({3*x+3*y+3,3*x+1,3*y+2});
+        auto [a,b,c]=pq.top();pq.pop();
+        cout<<b<<" "<<c<<endl;
+    }
+}
+else{
+    auto [x,y]=seq.back();seq.pop_back();cout<<(3*x+1)<<" "<<(3*y+1)<<endl;
+    // pq.push({3*x+3*y+2,3*x+1,3*y+1});
+    pq.push({3*x+3*y+3,3*x+2,3*y+1});
+    pq.push({3*x+3*y+6,3*x+2,3*y+2});
+    pq.push({3*x+3*y+3,3*x+1,3*y+2});
+
+    
+    // auto [a,b,c]=pq.top();pq.pop();coutv({a,b,c});
+    // cout<<b<<" "<<c<<endl;
+}
+}
+
 }
 int main() {
 ios_base::sync_with_stdio(0);

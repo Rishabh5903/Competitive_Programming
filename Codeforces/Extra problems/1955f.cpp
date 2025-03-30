@@ -75,23 +75,31 @@ n = n/i;
 if (n > 2) factors.pb(n);
 return factors;
 }
+vector<vvl> dp(201,vvl(201,vl(201,0)));
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
-for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+ll a,b,c,d;
+cin>>a>>b>>c>>d;
+
+// dp[0][0][0]=0;
+
+ce(dp[a][b][c]+d/2);
 }
 int main() {
 ios_base::sync_with_stdio(0);
 cin.tie(0); cout.tie(0);
 int n = 1;
 cin >> n;
+ll f1,f2,f3;
+FOR(i,0,201){
+    FOR(j,0,201){
+        FOR(k,0,201){
+            f1=0;f2=0;f3=0;
+            if((i%2==j%2) && (j%2==k%2) && ((i+j+k)>0))dp[i][j][k]++;
+            if(i>0)f1=1;if(j>0)f2=1;if(k>0)f3=1;
+            dp[i][j][k]+=maxm({f1?dp[i-1][j][k]:0,f2?dp[i][j-1][k]:0,f3?dp[i][j][k-1]:0});
+        }
+    }
+}
 for (int t = 1; t <= n; t++) {
 // cout << 'Case #' << t << ': ';
 solve();

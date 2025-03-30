@@ -76,16 +76,34 @@ if (n > 2) factors.pb(n);
 return factors;
 }
 void solve() {
-ll n,k;
-cin>>n>>k;
-ll l[n];
-ll gc=0,ans=0;
+ll n;
+cin>>n;
+ll a[n],b[n];
+
 for(ll i=0;i< n;i++){
-cin>>l[i];gc=gcd(gc,l[i]-k);
-}if(n==1 || gc==0){ce(0);return;}
-FOR(i,0,n){ll num=(l[i]-k)/(gc)-1;if(num<0){ce(-1);return;}
-    ans+=(num);
-}ce((max(ans,-1LL)));
+cin>>a[i];
+}FOR(i,0,n)cin>>b[i];
+set<ll> s;
+FOR(i,0,n){
+    if(a[i]==0 && b[i]==0)continue;
+    ll p=b[i],q=abs(a[i]-b[i]),temp=0;ll k,prev;
+    while(q!=0){
+        
+        // cout<<p<<" "<<q<<" "<<temp<<endl;
+        if(p<q){temp++;prev=p;p=q;q=abs(prev-q);continue;}
+        if(p==q){temp++;break;}
+        if(p==2*q){temp+=2;break;}
+        k=((p+q-1)/q-1);
+        temp+=(k/2)*3+1;prev=p;
+        if(prev%q==0)break;
+        p=prev%q;q=abs(q-p);
+        if(q)temp++;
+        
+    }
+    // ce(temp);
+    s.insert(temp%3);
+}
+ce((s.size()==1?"YES":"NO"));
 }
 int main() {
 ios_base::sync_with_stdio(0);
